@@ -1,0 +1,17 @@
+name: hbo-plugin
+version: "0.1.0"
+description: Hermes Business Operations Plugin — business ops tools, demo state, and dashboard extension
+author: nicoware-dev
+provides_tools:
+  - hbo_get_workspace
+  - hbo_list_agents
+  - hbo_list_workflows
+  - hbo_run_workflow
+  - hbo_list_leads
+  - hbo_detect_signals
+  - hbo_list_actions
+  - hbo_approve_action
+  - hbo_reject_action
+  - hbo_generate_briefing
+  - hbo_list_audit_events
+  - hbo_load_demo_data

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "sig_001",
+    "type": "missed_followup",
+    "leadId": "lead_001",
+    "summary": "No follow-up in 48h for high-priority lead",
+    "ownerAgentId": "sales-ops-agent"
+  },
+  {
+    "id": "sig_002",
+    "type": "bot_qa",
+    "conversationId": "conv_001",
+    "summary": "Bot response may be incomplete on shipping question",
+    "ownerAgentId": "sales-ops-agent"
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "id": "act_001",
+    "title": "Create follow-up task",
+    "agentId": "sales-ops-agent",
+    "source": "lead_001",
+    "risk": "low",
+    "status": "pending",
+    "description": "Lead has high buying intent and no recent follow-up."
+  },
+  {
+    "id": "act_002",
+    "title": "Draft outreach message",
+    "agentId": "growth-agent",
+    "source": "lead_002",
+    "risk": "low",
+    "status": "pending",
+    "description": "Wholesale prospect ready for first contact."
+  },
+  {
+    "id": "act_003",
+    "title": "Escalate hot lead",
+    "agentId": "sales-ops-agent",
+    "source": "lead_003",
+    "risk": "medium",
+    "status": "pending",
+    "description": "Marketplace buyer requesting bulk quote."
+  }
+]

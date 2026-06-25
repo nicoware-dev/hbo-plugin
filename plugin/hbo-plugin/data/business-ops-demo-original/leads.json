@@ -1,0 +1,35 @@
+[
+  {
+    "id": "lead_001",
+    "name": "Demo Lead 001",
+    "source": "demo_sheet",
+    "segment": "commerce",
+    "score": 82,
+    "priority": "high",
+    "status": "needs_followup",
+    "ownerAgentId": "sales-ops-agent",
+    "recommendedAction": "Send follow-up about shipping timeline"
+  },
+  {
+    "id": "lead_002",
+    "name": "Demo Lead 002",
+    "source": "google_places",
+    "segment": "wholesale",
+    "score": 74,
+    "priority": "medium",
+    "status": "new",
+    "ownerAgentId": "growth-agent",
+    "recommendedAction": "Add to outreach batch"
+  },
+  {
+    "id": "lead_003",
+    "name": "Demo Lead 003",
+    "source": "marketplace",
+    "segment": "commerce",
+    "score": 91,
+    "priority": "high",
+    "status": "hot",
+    "ownerAgentId": "sales-ops-agent",
+    "recommendedAction": "Escalate to human"
+  }
+]

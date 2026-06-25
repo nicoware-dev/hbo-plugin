@@ -1,0 +1,23 @@
+[
+  {
+    "id": "sales-ops-agent",
+    "name": "Sales Ops Agent",
+    "role": "sales_ops",
+    "description": "Handles inbound sales operations and bot QA.",
+    "status": "active"
+  },
+  {
+    "id": "growth-agent",
+    "name": "Growth Agent",
+    "role": "growth",
+    "description": "Handles outbound lead generation and outreach planning.",
+    "status": "active"
+  },
+  {
+    "id": "ops-lead-agent",
+    "name": "Ops Lead Agent",
+    "role": "ops_lead",
+    "description": "Daily briefing, prioritization, and cross-agent coordination.",
+    "status": "active"
+  }
+]

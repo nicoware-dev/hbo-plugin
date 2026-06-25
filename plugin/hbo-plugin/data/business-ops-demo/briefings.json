@@ -1,0 +1,12 @@
+[
+  {
+    "id": "brief_seed_001",
+    "generatedAt": "2026-06-25T10:00:00Z",
+    "title": "Daily Ops Briefing",
+    "priorities": [
+      "3 actions awaiting approval",
+      "2 open signals need review"
+    ],
+    "pendingApprovals": 3
+  }
+]

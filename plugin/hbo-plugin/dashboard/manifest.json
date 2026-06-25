@@ -1,0 +1,14 @@
+{
+  "name": "hbo-plugin",
+  "label": "Business Ops",
+  "description": "Hermes Business Operations workspace — agents, workflows, leads, actions, and audit.",
+  "icon": "BarChart3",
+  "version": "0.1.0",
+  "tab": {
+    "path": "/business-ops",
+    "position": "after:skills"
+  },
+  "entry": "dist/index.js",
+  "css": "dist/style.css",
+  "api": "plugin_api.py"
+}

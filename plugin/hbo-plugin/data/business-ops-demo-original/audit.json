@@ -1,0 +1,9 @@
+[
+  {
+    "id": "audit_seed_001",
+    "timestamp": "2026-06-25T10:00:00Z",
+    "agentId": "ops-lead-agent",
+    "eventType": "workspace_loaded",
+    "summary": "Business Ops Demo workspace initialized."
+  }
+]
