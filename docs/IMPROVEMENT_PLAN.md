@@ -343,3 +343,53 @@ NVIDIA NemoClaw docs/skill, Stripe Link CLI docs/skill, `deploy/nemoclaw/` Docke
 19. Additional tests (7.2) + CI (7.3)
 20. Phase 6 demo polish — script, screenshots, video, GitHub Pages
 21. HubSpot sync (5.4) + proactive signals (5.5) — future
+22. **Response consistency** (11.1) — standardize all CRUD responses
+23. **Input validation** (11.2) — score 0-100, enum validation
+24. **Lead pagination** (12.1) — 10 per page
+25. **Search & filters** (12.2) — search bar + dropdowns
+26. **Notification badges** (12.3) — pending count on tabs
+27. **Visual timeline** (12.4) — bar chart for audit events
+28. **Export CSV** (12.5) — download leads as CSV
+
+---
+
+## Priority 11 — Response Consistency & Input Validation
+
+### 11.1 Response shape consistency
+- **Problem:** `delete_action` returns `{'deleted': {...}}` instead of `{'action': {...}}`; `update_lead` returns dict instead of None for missing records
+- **Fix:** Standardize all CRUD responses to `{'success': bool, 'action'|'lead'|'signal': {...}, 'auditEvent': {...}}` or `{'success': False, 'error': '...'}`
+- Files: `business_rules.py`
+
+### 11.2 Input validation
+- **Problem:** No validation on lead score (accepts >100, negative), status accepts any string
+- **Fix:** Validate score is 0-100, status/priority/risk are from allowed enums, required fields present
+- Files: `business_rules.py`, `schemas.py`
+
+---
+
+## Priority 12 — Dashboard UX Improvements
+
+### 12.1 Lead pagination
+- **Problem:** With 15+ leads, the list is long and hard to navigate
+- **Fix:** Add pagination (10 per page) or infinite scroll to Leads page
+- Files: `dashboard/src/routes/Leads.tsx`
+
+### 12.2 Search and filters
+- **Problem:** No way to find a specific lead or filter by status/agent/segment
+- **Fix:** Add search bar + filter dropdowns (status, priority, segment, agent)
+- Files: `dashboard/src/routes/Leads.tsx`, `plugin_api.py` (filtered list routes)
+
+### 12.3 Notification badges
+- **Problem:** No visual indicator of pending actions count in tab headers
+- **Fix:** Add badge/count on Actions tab showing pending count
+- Files: `dashboard/src/index.tsx`, `dashboard/src/routes/Actions.tsx`
+
+### 12.4 Visual timeline chart
+- **Problem:** Audit timeline data exists but is not rendered as a chart
+- **Fix:** Render auditTimeline as a bar chart in Overview page
+- Files: `dashboard/src/routes/Overview.tsx`, `dashboard/src/components/BarChart.tsx`
+
+### 12.5 Export to CSV
+- **Problem:** No way to export leads for sharing with team
+- **Fix:** Add export button on Leads page that generates CSV download
+- Files: `dashboard/src/routes/Leads.tsx`
