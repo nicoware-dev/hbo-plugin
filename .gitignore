@@ -1,7 +1,11 @@
 _local/
 _temp/
 .cursor/
-_system/
+# Local system state (session history is tracked)
+_system/*
+!_system/records/
+_system/records/*
+!_system/records/session-history/
 
 # Dependencies
 node_modules/
@@ -13,6 +17,9 @@ build/
 # Keep dashboard bundle — required for Hermes install without Node build
 dist/
 !plugin/hbo-plugin/dashboard/dist/
+
+# Keep original demo data — source for load_demo_data() reset
+!plugin/hbo-plugin/data/business-ops-demo-original/
 
 # Python
 __pycache__/
