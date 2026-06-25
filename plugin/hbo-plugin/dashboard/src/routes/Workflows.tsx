@@ -1,5 +1,6 @@
 import { getSDK } from "../api/client";
 import { postAction, useFetch } from "../api/hooks";
+import { ConversationReviewPanel } from "../components/ConversationReviewPanel";
 
 type Workflow = {
   id: string;
@@ -48,6 +49,16 @@ function OutputPanel({ outputs }: { outputs: Record<string, unknown> | undefined
     React.Fragment,
     null,
     React.createElement(OutreachPreviewPanel, { outputs }),
+    Array.isArray(outputs.botQaFlags) &&
+      (outputs.botQaFlags as Array<{ conversationId: string }>).length > 0 &&
+      React.createElement(ConversationReviewPanel, {
+        flags: outputs.botQaFlags as Array<{
+          conversationId: string;
+          channel?: string;
+          issue?: string;
+          summary?: string;
+        }>,
+      }),
     React.createElement(
       "details",
       { className: "mt-2 text-xs" },

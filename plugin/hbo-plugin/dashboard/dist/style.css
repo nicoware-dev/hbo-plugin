@@ -1,6 +1,28 @@
 /* HBO Plugin dashboard extension — inherits Hermes dashboard theme */
 .hbo-plugin-page {
   min-height: 100%;
+  color: inherit;
+}
+
+.hbo-plugin-page table th {
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: hsl(var(--muted-foreground));
+}
+
+.hbo-plugin-page .hbo-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.hbo-plugin-page .hbo-filter-bar select,
+.hbo-plugin-page .hbo-filter-bar input {
+  width: auto;
+  min-width: 9rem;
 }
 
 .hbo-chart-bars {

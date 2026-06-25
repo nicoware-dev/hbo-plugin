@@ -28,7 +28,7 @@ const STATUS_OPTIONS = ["pending", "approved", "rejected", "executed", "failed",
 export function ActionsPage({ onNavigate }: PageProps) {
   const { React, components } = getSDK();
   const { Card, CardHeader, CardTitle, CardContent, Button } = components;
-  const [statusFilter, setStatusFilter] = React.useState<string>("pending");
+  const [statusFilter, setStatusFilter] = React.useState<string>("all");
   const query = statusFilter === "all" ? "/actions" : `/actions?status=${statusFilter}`;
   const { data, loading, refetch } = useFetch<{ actions: ActionRow[] }>(query);
   const { data: ws } = useFetch<Record<string, string>>("/workspace");

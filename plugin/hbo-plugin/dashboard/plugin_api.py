@@ -130,6 +130,19 @@ async def get_leads():
     return {"leads": _state.list_leads()}
 
 
+@router.get("/conversations")
+async def get_conversations():
+    return {"conversations": _state.list_conversations()}
+
+
+@router.get("/conversations/{conversation_id}")
+async def get_conversation(conversation_id: str):
+    conv = _state.get_conversation(conversation_id)
+    if not conv:
+        return {"success": False, "error": f"Conversation not found: {conversation_id}"}
+    return {"success": True, "conversation": conv}
+
+
 @router.post("/leads")
 async def create_lead(body: dict[str, Any] = Body(...)):
     return _rules.create_lead(body)

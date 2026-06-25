@@ -25,6 +25,7 @@ type Automation = {
   bridge: string;
   silent: boolean;
   cronFile: string;
+  enableCommand?: string;
 };
 
 export function SetupPage() {
@@ -32,7 +33,16 @@ export function SetupPage() {
   const { Card, CardContent, CardHeader, CardTitle, Button } = components;
   const [busy, setBusy] = React.useState(false);
   const [message, setMessage] = React.useState<string | null>(null);
+  const [copiedId, setCopiedId] = React.useState<string | null>(null);
   const { data: autoData } = useFetch<{ automations: Automation[]; safetyNote: string }>("/automations");
+
+  function copyEnableCommand(a: Automation) {
+    if (!a.enableCommand) return;
+    navigator.clipboard.writeText(a.enableCommand).then(() => {
+      setCopiedId(a.id);
+      setTimeout(() => setCopiedId(null), 2000);
+    });
+  }
 
   async function resetDemo() {
     if (!window.confirm("Reset all demo data to bundled defaults? This cannot be undone.")) return;
@@ -101,7 +111,22 @@ export function SetupPage() {
                 { className: "text-xs text-muted-foreground" },
                 `Agent: ${a.agentId} · Bridge: ${a.bridge} · Skills: ${a.skills.join(", ")}`
               ),
-              React.createElement("code", { className: "text-xs block mt-1" }, a.cronFile)
+              React.createElement("code", { className: "text-xs block mt-1" }, a.cronFile),
+              a.enableCommand &&
+                React.createElement(
+                  "div",
+                  { className: "mt-2 flex flex-wrap gap-2 items-center" },
+                  React.createElement(
+                    Button,
+                    { variant: "outline", size: "sm", onClick: () => copyEnableCommand(a) },
+                    copiedId === a.id ? "Copied!" : "Copy enable command"
+                  ),
+                  React.createElement(
+                    "code",
+                    { className: "text-xs block w-full break-all text-muted-foreground" },
+                    a.enableCommand
+                  )
+                )
             )
           )
         )

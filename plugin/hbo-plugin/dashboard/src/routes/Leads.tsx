@@ -9,6 +9,12 @@ type Workspace = {
 
 const PAGE_SIZE = 10;
 
+function uniqueValues(leads: Lead[], key: keyof Lead): string[] {
+  return [...new Set(leads.map((l) => String(l[key] ?? "").trim()).filter(Boolean))].sort();
+}
+
+const fieldClass = "border border-input rounded-md p-2 text-sm bg-background w-full min-w-0";
+
 export function LeadsPage() {
   const { React, components } = getSDK();
   const { Card, CardContent, Button } = components;
@@ -152,8 +158,8 @@ export function LeadsPage() {
   }
 
   // Unique values for filter dropdowns
-  const segments = [...new Set(allLeads.map((l) => String(l.segment).filter(Boolean)))];
-  const agents = [...new Set(allLeads.map((l) => String(l.ownerAgentId).filter(Boolean)))];
+  const segments = uniqueValues(allLeads, "segment");
+  const agents = uniqueValues(allLeads, "ownerAgentId");
 
   return React.createElement(
     "div",
@@ -191,44 +197,43 @@ export function LeadsPage() {
     ),
     React.createElement(
       "div",
-      { className: "flex flex-wrap gap-2 items-center" },
+      { className: "flex flex-wrap gap-2 items-center hbo-filter-bar" },
       React.createElement("input", {
-        className: "border rounded p-2 text-sm flex-1 min-w-48",
+        className: `${fieldClass} flex-1 min-w-48`,
         placeholder: "Search by name, company, or email…",
         value: search,
         onChange: (e: { target: { value: string } }) => { setSearch(e.target.value); setPage(0); },
       }),
       React.createElement(
         "select",
-        { className: "border rounded p-2 text-sm", value: filterStatus,
+        { className: fieldClass, value: filterStatus,
           onChange: (e: { target: { value: string } }) => { setFilterStatus(e.target.value); setPage(0); } },
         React.createElement("option", { value: "" }, "All statuses"),
         React.createElement("option", { value: "new" }, "New"),
         React.createElement("option", { value: "needs_followup" }, "Needs follow-up"),
-        React.createElement("option", { value: "hot" }, "Hot"),
-        React.createElement("option", { value: "converted" }, "Converted")
+        React.createElement("option", { value: "hot" }, "Hot")
       ),
       React.createElement(
         "select",
-        { className: "border rounded p-2 text-sm", value: filterPriority,
+        { className: fieldClass, value: filterPriority,
           onChange: (e: { target: { value: string } }) => { setFilterPriority(e.target.value); setPage(0); } },
         React.createElement("option", { value: "" }, "All priorities"),
         React.createElement("option", { value: "low" }, "Low"),
         React.createElement("option", { value: "medium" }, "Medium"),
         React.createElement("option", { value: "high" }, "High")
       ),
-      filterSegment && segments.length > 1 &&
+      segments.length > 0 &&
         React.createElement(
           "select",
-          { className: "border rounded p-2 text-sm", value: filterSegment,
+          { className: fieldClass, value: filterSegment,
             onChange: (e: { target: { value: string } }) => { setFilterSegment(e.target.value); setPage(0); } },
           React.createElement("option", { value: "" }, "All segments"),
           ...segments.map((s) => React.createElement("option", { key: s, value: s }, s))
         ),
-      filterAgent && agents.length > 1 &&
+      agents.length > 0 &&
         React.createElement(
           "select",
-          { className: "border rounded p-2 text-sm", value: filterAgent,
+          { className: fieldClass, value: filterAgent,
             onChange: (e: { target: { value: string } }) => { setFilterAgent(e.target.value); setPage(0); } },
           React.createElement("option", { value: "" }, "All agents"),
           ...agents.map((a) => React.createElement("option", { key: a, value: a }, a))
@@ -241,13 +246,13 @@ export function LeadsPage() {
         "div",
         { className: "border rounded p-3 grid gap-2 text-sm md:grid-cols-2" },
         React.createElement("input", {
-          className: "border rounded p-2 md:col-span-2",
+          className: `${fieldClass} md:col-span-2`,
           placeholder: "Google Sheets spreadsheet ID",
           value: sheetId,
           onChange: (e: { target: { value: string } }) => setSheetId(e.target.value),
         }),
         React.createElement("input", {
-          className: "border rounded p-2",
+          className: fieldClass,
           placeholder: "Sheet tab name",
           value: sheetName,
           onChange: (e: { target: { value: string } }) => setSheetName(e.target.value),
@@ -265,7 +270,7 @@ export function LeadsPage() {
         ...["name", "source", "segment", "score", "recommendedAction"].map((field) =>
           React.createElement("input", {
             key: field,
-            className: "border rounded p-2",
+            className: fieldClass,
             placeholder: field,
             value: (form as Record<string, string>)[field],
             onChange: (e: { target: { value: string } }) => setForm({ ...form, [field]: e.target.value }),
@@ -274,7 +279,7 @@ export function LeadsPage() {
         React.createElement(
           "select",
           {
-            className: "border rounded p-2",
+            className: fieldClass,
             value: form.priority,
             onChange: (e: { target: { value: string } }) => setForm({ ...form, priority: e.target.value }),
           },
@@ -285,7 +290,7 @@ export function LeadsPage() {
         React.createElement(
           "select",
           {
-            className: "border rounded p-2",
+            className: fieldClass,
             value: form.status,
             onChange: (e: { target: { value: string } }) => setForm({ ...form, status: e.target.value }),
           },
@@ -306,10 +311,10 @@ export function LeadsPage() {
       { className: "overflow-x-auto" },
       React.createElement(
         "table",
-        { className: "w-full text-sm" },
+        { className: "w-full text-sm border border-border rounded-md" },
         React.createElement(
           "thead",
-          null,
+          { className: "bg-muted/40" },
           React.createElement(
             "tr",
             null,
@@ -324,7 +329,7 @@ export function LeadsPage() {
           ...paged.map((lead) =>
             React.createElement(
               "tr",
-              { key: String(lead.id), className: "border-t" },
+              { key: String(lead.id), className: "border-t border-border hover:bg-muted/30" },
               ...["name", "source", "segment", "score", "priority", "status", "ownerAgentId", "recommendedAction"].map(
                 (k) => React.createElement("td", { key: k, className: "p-2" }, String(lead[k] ?? ""))
               ),

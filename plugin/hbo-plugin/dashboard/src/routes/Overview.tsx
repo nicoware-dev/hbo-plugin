@@ -68,8 +68,13 @@ export function OverviewPage({ onNavigate }: PageProps) {
               Number(value) > 0 &&
               React.createElement(
                 Button,
-                { variant: "link", size: "sm", className: "px-0 h-auto", onClick: () => onNavigate("actions") },
-                "Review queue →"
+                {
+                  variant: "outline",
+                  size: "sm",
+                  className: "mt-2 h-7 text-xs font-normal",
+                  onClick: () => onNavigate("actions"),
+                },
+                "Review queue"
               ),
             label === "Last briefing" &&
               ws?.lastBriefingAt &&
