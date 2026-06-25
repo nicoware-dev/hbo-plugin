@@ -61,6 +61,7 @@ def _load_plugin_modules():
         ("sources.gmail", "sources/gmail.py"),
         ("sources.bridge", "sources/bridge.py"),
         ("sources.sheets", "sources/sheets.py"),
+        ("sources.sync", "sources/sync.py"),
         ("mutations", "mutations.py"),
         ("execution", "execution.py"),
         ("automations", "automations.py"),

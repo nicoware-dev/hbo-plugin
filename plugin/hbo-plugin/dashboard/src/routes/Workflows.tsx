@@ -21,17 +21,42 @@ function formatOutputs(outputs: Record<string, unknown> | undefined): string {
   return parts.length ? parts.join(" · ") : JSON.stringify(outputs).slice(0, 120);
 }
 
+function OutreachPreviewPanel({ outputs }: { outputs: Record<string, unknown> | undefined }) {
+  const { React } = getSDK();
+  const batch = outputs?.outreachBatch as { draftMessages?: Array<{ name?: string; preview?: string }> } | undefined;
+  const drafts = batch?.draftMessages ?? [];
+  if (!drafts.length) return null;
+  return React.createElement(
+    "div",
+    { className: "mt-2 space-y-2" },
+    React.createElement("p", { className: "text-xs font-medium text-primary" }, "Outreach previews"),
+    ...drafts.map((d, i) =>
+      React.createElement(
+        "details",
+        { key: i, className: "text-xs border rounded p-2" },
+        React.createElement("summary", { className: "cursor-pointer font-medium" }, d.name ?? "Lead"),
+        React.createElement("pre", { className: "mt-2 whitespace-pre-wrap text-muted-foreground" }, d.preview ?? "")
+      )
+    )
+  );
+}
+
 function OutputPanel({ outputs }: { outputs: Record<string, unknown> | undefined }) {
   const { React } = getSDK();
   if (!outputs) return null;
   return React.createElement(
-    "details",
-    { className: "mt-2 text-xs" },
-    React.createElement("summary", { className: "cursor-pointer text-muted-foreground" }, "View structured outputs"),
+    React.Fragment,
+    null,
+    React.createElement(OutreachPreviewPanel, { outputs }),
     React.createElement(
-      "pre",
-      { className: "mt-1 p-2 border rounded overflow-x-auto whitespace-pre-wrap" },
-      JSON.stringify(outputs, null, 2)
+      "details",
+      { className: "mt-2 text-xs" },
+      React.createElement("summary", { className: "cursor-pointer text-muted-foreground" }, "View structured outputs"),
+      React.createElement(
+        "pre",
+        { className: "mt-1 p-2 border rounded overflow-x-auto whitespace-pre-wrap" },
+        JSON.stringify(outputs, null, 2)
+      )
     )
   );
 }

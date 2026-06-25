@@ -1,8 +1,21 @@
 import { getSDK } from "../api/client";
 
-const DEFAULT_BAR = "#2563eb";
-const TRACK_BG = "#e5e7eb";
-const PALETTE = ["#2563eb", "#7c3aed", "#db2777", "#ea580c", "#16a34a", "#0891b2"];
+/** Blue-forward palette aligned with Hermes dashboard primary */
+const BAR_PALETTE = [
+  "hsl(221 83% 53%)",
+  "hsl(221 70% 45%)",
+  "hsl(217 91% 60%)",
+  "hsl(213 94% 68%)",
+  "hsl(199 89% 48%)",
+  "hsl(262 83% 58%)",
+];
+
+const FUNNEL_COLORS: Record<string, string> = {
+  new: "hsl(221 83% 53%)",
+  needs_followup: "hsl(38 92% 50%)",
+  hot: "hsl(0 72% 51%)",
+  converted: "hsl(142 71% 45%)",
+};
 
 type BarChartProps = {
   title: string;
@@ -18,61 +31,60 @@ function filterNonZero(data: Record<string, number>): Record<string, number> {
   return filtered;
 }
 
+function formatLabel(label: string): string {
+  return label.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 export function BarChart({ title, data, colors }: BarChartProps) {
-  const { React } = getSDK();
+  const { React, components } = getSDK();
+  const { Card, CardHeader, CardTitle, CardContent } = components;
   const filtered = filterNonZero(data);
   const entries = Object.entries(filtered);
   const max = Math.max(...entries.map(([, v]) => v), 1);
 
   return React.createElement(
-    "div",
-    {
-      style: {
-        border: "1px solid #e5e7eb",
-        borderRadius: "8px",
-        padding: "16px",
-        backgroundColor: "#fff",
-      },
-    },
-    React.createElement("h3", { style: { fontSize: "14px", fontWeight: 600, marginBottom: "12px" } }, title),
-    entries.length === 0
-      ? React.createElement("p", { style: { fontSize: "13px", color: "#6b7280" } }, "No data yet — reset demo or import leads.")
-      : React.createElement(
-          "div",
-          { style: { display: "flex", flexDirection: "column", gap: "10px" } },
-          ...entries.map(([label, value], i) =>
-            React.createElement(
-              "div",
-              { key: label },
-              React.createElement(
+    Card,
+    null,
+    React.createElement(
+      CardHeader,
+      { className: "pb-2" },
+      React.createElement(CardTitle, { className: "text-sm font-medium" }, title)
+    ),
+    React.createElement(
+      CardContent,
+      { className: "pt-0" },
+      entries.length === 0
+        ? React.createElement("p", { className: "text-sm text-muted-foreground" }, "No data yet — reset demo or import leads.")
+        : React.createElement(
+            "div",
+            { className: "hbo-chart-bars text-primary" },
+            ...entries.map(([label, value], i) => {
+              const fillColor = colors?.[label] ?? BAR_PALETTE[i % BAR_PALETTE.length];
+              return React.createElement(
                 "div",
-                {
-                  style: {
-                    display: "flex",
-                    justifyContent: "space-between",
-                    fontSize: "12px",
-                    color: "#6b7280",
-                    marginBottom: "4px",
-                  },
-                },
-                React.createElement("span", null, label.replace(/_/g, " ")),
-                React.createElement("span", { style: { fontWeight: 600, color: "#111827" } }, String(value))
-              ),
-              React.createElement(
-                "div",
-                { style: { height: "10px", borderRadius: "4px", backgroundColor: TRACK_BG, overflow: "hidden" } },
-                React.createElement("div", {
-                  style: {
-                    height: "100%",
-                    width: `${Math.max((value / max) * 100, value > 0 ? 8 : 0)}%`,
-                    borderRadius: "4px",
-                    backgroundColor: colors?.[label] ?? PALETTE[i % PALETTE.length] ?? DEFAULT_BAR,
-                    transition: "width 0.3s ease",
-                  },
-                })
-              )
-            )
+                { key: label },
+                React.createElement(
+                  "div",
+                  { className: "hbo-chart-row-label text-muted-foreground" },
+                  React.createElement("span", null, formatLabel(label)),
+                  React.createElement("span", { className: "font-semibold text-foreground" }, String(value))
+                ),
+                React.createElement(
+                  "div",
+                  { className: "hbo-chart-track" },
+                  React.createElement("div", {
+                    className: "hbo-chart-fill",
+                    style: {
+                      width: `${Math.max((value / max) * 100, 8)}%`,
+                      backgroundColor: fillColor,
+                    },
+                  })
+                )
+              );
+            })
           )
-        )
+    )
   );
 }
+
+export { FUNNEL_COLORS };

@@ -1,4 +1,33 @@
-/* HBO Plugin dashboard extension styles */
+/* HBO Plugin dashboard extension — inherits Hermes dashboard theme */
 .hbo-plugin-page {
   min-height: 100%;
+}
+
+.hbo-chart-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hbo-chart-row-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.hbo-chart-track {
+  height: 0.5rem;
+  border-radius: 9999px;
+  overflow: hidden;
+  opacity: 0.25;
+  background: currentColor;
+}
+
+.hbo-chart-fill {
+  height: 100%;
+  border-radius: 9999px;
+  min-width: 4px;
+  transition: width 0.25s ease;
 }

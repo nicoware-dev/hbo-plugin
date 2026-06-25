@@ -166,6 +166,17 @@ export function ActionsPage() {
             { className: "text-xs text-muted-foreground mt-1" },
             `Agent: ${action.agentId} · Risk: ${action.risk}`
           ),
+          action.outreachPreview &&
+            React.createElement(
+              "details",
+              { className: "mt-2 text-sm" },
+              React.createElement("summary", { className: "cursor-pointer text-primary font-medium" }, "Preview outreach message"),
+              React.createElement(
+                "pre",
+                { className: "mt-2 p-2 border rounded text-xs whitespace-pre-wrap bg-muted/30" },
+                String(action.outreachPreview)
+              )
+            ),
           React.createElement(
             "div",
             { className: "flex gap-2 mt-3" },
