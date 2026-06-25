@@ -2,7 +2,7 @@
 
 **Repository:** [nicoware-dev/hbo-plugin](https://github.com/nicoware-dev/hbo-plugin)  
 **Last updated:** 2026-06-25  
-**Phase:** Phases 1–5 complete; audit P0–P3 done; Phase 6 (screenshots/video/Pages) next  
+**Phase:** Phases 1–5 complete; audit P0–P3 done; Phase 6 (screenshots/video/Vercel) next  
 
 This document records what was built, how it maps to the PRD/technical spec, and what remains.
 
@@ -99,13 +99,13 @@ pnpm test:plugin        # pytest
 | 3 — Dashboard extension | Tab, pages, API routes | **Done** |
 | 4 — Profiles + skills | 3 distributions, 7 skills | **Done** |
 | 5 — Workflows + approval + audit | Full workflow outputs, tests | **Done** |
-| 6 — Demo polish | Screenshots, video, GitHub Pages | **Partial** — script + reset done |
+| 6 — Demo polish | Screenshots, video, Vercel docs | **Partial** — script + reset done |
 
 ---
 
 ## Known gaps (before public release)
 
-1. GitHub Pages deployment workflow not configured
+1. Vercel docs deployment — verify `hbo-plugin-docs.vercel.app` after each docs change
 2. Dashboard screenshots for docs site
 3. Demo video not recorded
 4. Runtime state still writes inside plugin package (future: `~/.hermes/hbo-plugin/state/`)

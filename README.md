@@ -33,7 +33,7 @@ hermes profile install ./profiles/ops-lead-agent --alias ops-lead
 
 ### Demo prompt
 
-Paste the [demo prompt](https://github.com/nicoware-dev/hbo-plugin/blob/main/docs/INSTALLATION_PROMPT.md) into Hermes to run the Business Ops Demo end-to-end.
+Paste the [demo prompt](https://hbo-plugin-docs.vercel.app/docs/install#prompt) into Hermes to run the Business Ops Demo end-to-end.
 
 ## Monorepo layout
 
@@ -57,10 +57,8 @@ pnpm build             # Build dashboard + docs
 
 ## Documentation
 
-- [Public docs site](apps/docs/) — run `pnpm dev:docs`
-- [Demo script](docs/DEMO_SCRIPT.md) — canonical 3-minute demo path
-- [Hermes alignment](docs/HERMES_ALIGNMENT.md) — install paths and conventions
-- [Roadmap](docs/ROADMAP.md) — next steps and MVP phases
+- [Public docs](https://hbo-plugin-docs.vercel.app/) — install, demo, architecture (source: `apps/docs/`)
+- [Demo script](https://hbo-plugin-docs.vercel.app/docs/demo-script) — canonical 3-minute demo path
 
 ## License
 

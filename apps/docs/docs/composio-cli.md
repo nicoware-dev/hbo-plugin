@@ -89,6 +89,16 @@ composio execute <TOOL> -d '{...}'
 | `composio execute` | Run a tool |
 | `composio whoami` | Verify authentication |
 
+## Google Sheets import
+
+HBO Plugin does **not** ship a hardcoded spreadsheet ID. Configure one of:
+
+- **Dashboard → Leads** — paste spreadsheet ID in the import form before running import
+- **`workspace.json` → `demoSources.googleSheetsSpreadsheetId`** — used by `hbo_sync_sales_sources` and the sales-source-sync cron blueprint
+- **Tool call** — pass `spreadsheetId` to `hbo_import_leads_from_sheets`
+
+Default tab name: `demoSources.defaultSheetName` (falls back to `Hoja 1`).
+
 ## Local workspace fallback
 
 If Composio is not configured, HBO Plugin continues to operate on **local workspace state** with no external credentials required.

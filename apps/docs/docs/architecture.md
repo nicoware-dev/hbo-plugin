@@ -29,4 +29,4 @@ HBO Plugin extends Hermes as a single installable package under `plugin/hbo-plug
 
 ![HBO Plugin architecture — alternate layout](/img/hbo-plugin-architecture-2.png)
 
-See the repository `docs/` folder for detailed architecture notes.
+See [Architecture](./architecture) for diagrams and component details.

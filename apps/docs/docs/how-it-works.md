@@ -5,7 +5,9 @@ title: How it works
 
 # How it works
 
-HBO Plugin implements a **signal → proposal → approval** operating loop inside Hermes. This page explains each stage and how business data flows through the system.
+HBO Plugin implements a **signal → proposal → approve/reject → optional execute → audit** operating loop inside Hermes.
+
+![HBO Plugin runtime flow](/img/hbo-plugin-architecture-2.png)
 
 ## Overview
 
@@ -23,11 +25,13 @@ flowchart LR
   SIG --> WF
   WF --> ACT
   ACT --> OP
-  OP -->|approve| AUD
-  OP -->|reject| AUD
-  OP -->|when enabled| BR
+  OP -->|approve / reject| AUD
+  OP -->|execute when enabled| BR
   BR --> EXT
+  BR --> AUD
 ```
+
+**Approve records intent.** **Execute** is a separate step for eligible approved actions when the bridge is set to `composio` or `hybrid`. External effects never run on approve alone.
 
 ## 1. Data capture
 
@@ -87,22 +91,24 @@ Actions are proposals — not auto-executed. Each has:
 | `title` | Short description |
 | `agentId` | Owning profile (sales-ops, growth, ops-lead) |
 | `risk` | `low`, `medium`, or `high` |
-| `status` | `pending`, `approved`, or `rejected` |
+| `status` | `pending`, `approved`, `rejected`, `executed`, or `failed` |
 | `source` | Lead or conversation ID |
 
 List with `hbo_list_actions`. Filter by `status: pending` for the approval queue.
 
-## 5. Approvals
+## 5. Approvals and execution
 
 Operators review the queue in:
 
-- **Hermes chat** — ask to list pending actions and approve one
-- **Dashboard → Actions** — approve/reject buttons with live state update
+- **Hermes chat** — list pending actions, approve or reject, then execute when needed
+- **Dashboard → Actions** — approve, reject, and **Execute** buttons with live state updates
 
-Tools:
-
-- `hbo_approve_action` — marks approved, writes audit event
-- `hbo_reject_action` — marks rejected, writes audit event
+| Tool | What it does |
+|------|-------------|
+| `hbo_approve_action` | Marks approved, writes audit event — **no external side effects** |
+| `hbo_reject_action` | Marks rejected, writes audit event |
+| `hbo_execute_action` | Runs external effects for eligible approved actions (bridge `composio` / `hybrid`) |
+| `hbo_list_audit_events` | Full trace of approvals, rejections, executions, and workflow runs |
 
 Every decision is traceable in **Audit**.
 
@@ -118,6 +124,8 @@ The Ops Lead workflow aggregates workspace state into a briefing:
 Generate with `hbo_generate_briefing` or `hbo_run_workflow` with `daily_ops_briefing`.
 
 ## 7. Three agents, one workspace
+
+![Three specialist agents share one workspace](/img/hbo-plugin-architecture.png)
 
 | Profile | Role in the loop |
 |---------|------------------|

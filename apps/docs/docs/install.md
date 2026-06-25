@@ -141,4 +141,4 @@ For scheduled import, use `hbo_sync_sales_sources` (matches the **sales-source-s
 
 ## Source
 
-This prompt is also in the repository at [`docs/INSTALLATION_PROMPT.md`](https://github.com/nicoware-dev/hbo-plugin/blob/main/docs/INSTALLATION_PROMPT.md).
+The install prompt lives on this page — copy the block under [Prompt](#prompt) above.

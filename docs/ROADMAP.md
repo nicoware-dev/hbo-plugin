@@ -38,13 +38,13 @@ Repository: [nicoware-dev/hbo-plugin](https://github.com/nicoware-dev/hbo-plugin
 | 3 | Dashboard CRUD UI + Signals page | Done |
 | 4 | Composio bridge + Gmail execution | Done |
 | 5 | Profile cron blueprints + sponsor docs | Done |
-| 6 | Demo script, screenshots, video, GitHub Pages | Partial — script + reset done |
+| 6 | Demo script, screenshots, video, Vercel docs | Partial — script + reset done |
 
 ## Phase 6 — Release packaging (next)
 
-1. ~~Write `DEMO_SCRIPT.md`~~ — done
+1. ~~Write `DEMO_SCRIPT.md`~~ — done (`apps/docs/docs/demo-script.md`)
 2. Add screenshots to `apps/docs`
-3. Publish docs site (GitHub Pages: `nicoware-dev.github.io/hbo-plugin`)
+3. Publish docs site on [Vercel](https://hbo-plugin-docs.vercel.app/)
 4. Record demo video
 
 ## Technical follow-ups
