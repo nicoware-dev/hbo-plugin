@@ -6,6 +6,13 @@
     "source": "lead_001",
     "risk": "low",
     "status": "pending",
+    "actionType": "send_email",
+    "composioTool": "GMAIL_SEND_EMAIL",
+    "composioPayload": {
+      "recipient_email": "demo.lead001@example.com",
+      "subject": "Follow-up: Demo Lead 001",
+      "body": "Send follow-up about shipping timeline"
+    },
     "description": "Lead has high buying intent and no recent follow-up."
   },
   {

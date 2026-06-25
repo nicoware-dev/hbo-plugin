@@ -35,11 +35,23 @@ def get_workspace_summary() -> dict[str, Any]:
     return {
         "workspaceName": ws.get("name", "Business Ops Demo"),
         "status": ws.get("status", "ready"),
+        "selectedBridge": ws.get("selectedBridge", "local-demo"),
         "activeAgents": len(read_json("agents.json", [])),
-        "openSignals": len(read_json("signals.json", [])),
+        "openSignals": len(list_signals(open_only=True)),
         "pendingActions": pending,
         "lastBriefingAt": last,
     }
+
+
+def get_workspace_config() -> dict[str, Any]:
+    return read_json("workspace.json", {})
+
+
+def set_selected_bridge(mode: str) -> dict[str, Any]:
+    ws = read_json("workspace.json", {})
+    ws["selectedBridge"] = mode
+    write_json("workspace.json", ws)
+    return ws
 
 
 def list_agents() -> list[dict[str, Any]]:
@@ -104,8 +116,11 @@ def update_lead(lead_id: str, data: dict[str, Any]) -> dict[str, Any] | None:
     return None
 
 
-def list_signals() -> list[dict[str, Any]]:
-    return read_json("signals.json", [])
+def list_signals(*, open_only: bool = False) -> list[dict[str, Any]]:
+    signals = read_json("signals.json", [])
+    if not open_only:
+        return signals
+    return [s for s in signals if s.get("status", "open") != "resolved"]
 
 
 def list_conversations() -> list[dict[str, Any]]:
@@ -114,9 +129,21 @@ def list_conversations() -> list[dict[str, Any]]:
 
 def append_signal(signal: dict[str, Any]) -> dict[str, Any]:
     signals = read_json("signals.json", [])
+    signal.setdefault("status", "open")
     signals.append(signal)
     write_json("signals.json", signals)
     return signal
+
+
+def resolve_signal(signal_id: str) -> dict[str, Any] | None:
+    signals = read_json("signals.json", [])
+    for signal in signals:
+        if signal.get("id") == signal_id:
+            signal["status"] = "resolved"
+            signal["resolvedAt"] = datetime.now(timezone.utc).isoformat()
+            write_json("signals.json", signals)
+            return signal
+    return None
 
 
 def append_action(action: dict[str, Any]) -> dict[str, Any]:
@@ -135,6 +162,16 @@ def list_actions(*, status: str | None = None) -> list[dict[str, Any]]:
 
 def list_audit_events() -> list[dict[str, Any]]:
     return read_json("audit.json", [])
+
+
+def remove_action(action_id: str) -> dict[str, Any] | None:
+    actions = read_json("actions.json", [])
+    for i, action in enumerate(actions):
+        if action.get("id") == action_id:
+            removed = actions.pop(i)
+            write_json("actions.json", actions)
+            return removed
+    return None
 
 
 def update_action(action_id: str, status: str) -> dict[str, Any] | None:

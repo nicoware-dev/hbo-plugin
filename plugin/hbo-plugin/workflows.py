@@ -80,19 +80,24 @@ def run_inbound_sales() -> dict[str, Any]:
         }
         follow_ups.append(rec)
         if lead.get("status") == "needs_followup":
-            actions_created.append(
-                state.append_action(
-                    {
-                        "id": f"act_{uuid4().hex[:8]}",
-                        "title": "Create follow-up task",
-                        "agentId": "sales-ops-agent",
-                        "source": lead["id"],
-                        "risk": "low",
-                        "status": "pending",
-                        "description": lead.get("recommendedAction", "Follow up with lead."),
-                    }
-                )
-            )
+            action_data: dict[str, Any] = {
+                "id": f"act_{uuid4().hex[:8]}",
+                "title": "Create follow-up task",
+                "agentId": "sales-ops-agent",
+                "source": lead["id"],
+                "risk": "low",
+                "status": "pending",
+                "description": lead.get("recommendedAction", "Follow up with lead."),
+            }
+            if lead.get("email"):
+                action_data["actionType"] = "send_email"
+                action_data["composioTool"] = "GMAIL_SEND_EMAIL"
+                action_data["composioPayload"] = {
+                    "recipient_email": lead["email"],
+                    "subject": f"Follow-up: {lead.get('name', 'your inquiry')}",
+                    "body": lead.get("recommendedAction", "Following up on your recent inquiry."),
+                }
+            actions_created.append(state.append_action(action_data))
 
     return {
         "signals": signals_created,

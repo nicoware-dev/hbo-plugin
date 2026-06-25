@@ -36,6 +36,27 @@ export function useFetch<T>(path: string): {
   return { data, loading, error, refetch };
 }
 
+async function requestJSON(path: string, method: string, body?: unknown): Promise<unknown> {
+  const options: RequestInit = { method };
+  if (body !== undefined) {
+    options.headers = { "Content-Type": "application/json" };
+    options.body = JSON.stringify(body);
+  }
+  return getSDK().fetchJSON(`${API_BASE}${path}`, options);
+}
+
 export async function postAction(path: string): Promise<unknown> {
-  return getSDK().fetchJSON(`${API_BASE}${path}`, { method: "POST" });
+  return requestJSON(path, "POST");
+}
+
+export async function postJSON(path: string, body: unknown): Promise<unknown> {
+  return requestJSON(path, "POST", body);
+}
+
+export async function putJSON(path: string, body: unknown): Promise<unknown> {
+  return requestJSON(path, "PUT", body);
+}
+
+export async function deleteJSON(path: string): Promise<unknown> {
+  return requestJSON(path, "DELETE");
 }

@@ -12,9 +12,10 @@ import importlib.util
 import sys
 import types
 from pathlib import Path
+from typing import Any
 
 try:
-    from fastapi import APIRouter
+    from fastapi import APIRouter, Body
 except Exception:  # pragma: no cover - allows import without FastAPI in dev
     class APIRouter:  # type: ignore[no-redef]
         def get(self, *_args, **_kwargs):
@@ -22,6 +23,15 @@ except Exception:  # pragma: no cover - allows import without FastAPI in dev
 
         def post(self, *_args, **_kwargs):
             return lambda fn: fn
+
+        def put(self, *_args, **_kwargs):
+            return lambda fn: fn
+
+        def delete(self, *_args, **_kwargs):
+            return lambda fn: fn
+
+    def Body(default=None, **_kwargs):  # type: ignore[no-redef]
+        return default
 
 router = APIRouter()
 
@@ -34,26 +44,50 @@ def _load_plugin_modules():
     if _PACKAGE not in sys.modules:
         sys.modules[_PACKAGE] = types.ModuleType(_PACKAGE)
 
+    def _ensure_pkg(name: str, subpath: str | None = None) -> None:
+        full = f"{_PACKAGE}.{name}" if name else _PACKAGE
+        if full not in sys.modules:
+            mod = types.ModuleType(full)
+            if subpath:
+                mod.__path__ = [str(_PLUGIN_ROOT / subpath)]  # type: ignore[attr-defined]
+            sys.modules[full] = mod
+
     loaded: dict[str, object] = {}
-    for name, filename in (
+    for name, rel_path in (
         ("schemas", "schemas.py"),
         ("state", "state.py"),
         ("workflows", "workflows.py"),
+        ("sources.composio_client", "sources/composio_client.py"),
+        ("sources.gmail", "sources/gmail.py"),
+        ("sources.bridge", "sources/bridge.py"),
+        ("sources.sheets", "sources/sheets.py"),
+        ("mutations", "mutations.py"),
+        ("execution", "execution.py"),
         ("business_rules", "business_rules.py"),
     ):
         full_name = f"{_PACKAGE}.{name}"
         if full_name in sys.modules:
-            loaded[name] = sys.modules[full_name]
+            loaded[name.split(".")[-1] if name == "business_rules" else name] = sys.modules[full_name]
             continue
-        path = _PLUGIN_ROOT / filename
+        if name.startswith("sources."):
+            _ensure_pkg("sources", "sources")
+        path = _PLUGIN_ROOT / rel_path
         spec = importlib.util.spec_from_file_location(full_name, path)
         if spec is None or spec.loader is None:
             raise ImportError(f"Cannot load {path}")
         mod = importlib.util.module_from_spec(spec)
-        mod.__package__ = _PACKAGE
+        mod.__package__ = f"{_PACKAGE}.{name.rsplit('.', 1)[0]}" if "." in name else _PACKAGE
         sys.modules[full_name] = mod
         spec.loader.exec_module(mod)
-        loaded[name] = mod
+        key = name.split(".")[-1] if "." in name else name
+        if name == "business_rules":
+            loaded["business_rules"] = mod
+        elif name.startswith("sources."):
+            loaded.setdefault("sources", sys.modules[f"{_PACKAGE}.sources"])
+    if "state" not in loaded:
+        loaded["state"] = sys.modules[f"{_PACKAGE}.state"]
+    if "business_rules" not in loaded:
+        loaded["business_rules"] = sys.modules[f"{_PACKAGE}.business_rules"]
     return loaded
 
 
@@ -68,8 +102,8 @@ async def get_workflows():
 
 
 @router.get("/signals")
-async def get_signals():
-    return {"signals": _state.list_signals()}
+async def get_signals(open_only: bool = True):
+    return {"signals": _state.list_signals(open_only=open_only)}
 
 
 @router.post("/demo/reset")
@@ -92,9 +126,38 @@ async def get_leads():
     return {"leads": _state.list_leads()}
 
 
+@router.post("/leads")
+async def create_lead(body: dict[str, Any] = Body(...)):
+    return _rules.create_lead(body)
+
+
+@router.put("/leads/{lead_id}")
+async def update_lead(lead_id: str, body: dict[str, Any] = Body(...)):
+    return _rules.update_lead_record(lead_id, body)
+
+
+@router.post("/leads/import/sheets")
+async def import_leads_from_sheets(body: dict[str, Any] = Body(...)):
+    return _rules.import_leads_from_sheets(
+        spreadsheet_id=body.get("spreadsheetId", ""),
+        sheet=body.get("sheet", "Hoja 1"),
+        max_rows=int(body.get("maxRows", 100)),
+    )
+
+
 @router.get("/actions")
 async def get_actions(status: str | None = None):
     return {"actions": _state.list_actions(status=status)}
+
+
+@router.post("/actions")
+async def create_action(body: dict[str, Any] = Body(...)):
+    return _rules.create_action(body)
+
+
+@router.delete("/actions/{action_id}")
+async def delete_action(action_id: str):
+    return _rules.delete_action(action_id)
 
 
 @router.get("/audit")
@@ -112,6 +175,26 @@ async def reject_action(action_id: str):
     return _rules.reject_action(action_id)
 
 
+@router.post("/signals")
+async def create_signal(body: dict[str, Any] = Body(...)):
+    return _rules.create_signal(body)
+
+
+@router.post("/signals/{signal_id}/resolve")
+async def resolve_signal(signal_id: str):
+    return _rules.resolve_signal_record(signal_id)
+
+
 @router.post("/workflows/{workflow_id}/run")
 async def run_workflow(workflow_id: str):
     return _rules.run_workflow(workflow_id)
+
+
+@router.get("/bridge/status")
+async def get_bridge_status():
+    return _rules.get_bridge_status()
+
+
+@router.post("/bridge/mode")
+async def set_bridge_mode(body: dict[str, Any] = Body(...)):
+    return _rules.set_bridge_mode(body.get("mode", "local-demo"))

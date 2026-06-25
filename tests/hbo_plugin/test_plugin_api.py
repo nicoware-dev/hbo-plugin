@@ -23,6 +23,12 @@ def _load_plugin_modules():
         ("schemas", "schemas.py"),
         ("state", "state.py"),
         ("workflows", "workflows.py"),
+        ("sources.composio_client", "sources/composio_client.py"),
+        ("sources.gmail", "sources/gmail.py"),
+        ("sources.bridge", "sources/bridge.py"),
+        ("sources.sheets", "sources/sheets.py"),
+        ("mutations", "mutations.py"),
+        ("execution", "execution.py"),
         ("business_rules", "business_rules.py"),
     ):
         full_name = f"{PACKAGE}.{name}"
@@ -93,3 +99,66 @@ async def test_reset_demo(api_module):
     assert result["success"] is True
     workspace = await api_module.get_workspace()
     assert workspace["pendingActions"] == 3
+
+
+@pytest.mark.asyncio
+async def test_create_lead(api_module):
+    result = await api_module.create_lead(
+        {
+            "name": "API Lead",
+            "source": "test",
+            "segment": "commerce",
+            "score": 77,
+            "priority": "high",
+            "status": "new",
+            "ownerAgentId": "sales-ops-agent",
+            "recommendedAction": "Call back",
+        }
+    )
+    assert result["success"] is True
+    leads = await api_module.get_leads()
+    names = [l["name"] for l in leads["leads"]]
+    assert "API Lead" in names
+
+
+@pytest.mark.asyncio
+async def test_update_lead(api_module):
+    created = await api_module.create_lead({"name": "To Update", "ownerAgentId": "growth-agent"})
+    lead_id = created["lead"]["id"]
+    result = await api_module.update_lead(lead_id, {"status": "hot", "score": 99})
+    assert result["success"] is True
+    assert result["lead"]["status"] == "hot"
+
+
+@pytest.mark.asyncio
+async def test_create_and_delete_action(api_module):
+    created = await api_module.create_action(
+        {"title": "Test action", "agentId": "ops-lead-agent", "risk": "low", "description": "x"}
+    )
+    assert created["success"] is True
+    action_id = created["action"]["id"]
+    deleted = await api_module.delete_action(action_id)
+    assert deleted["success"] is True
+
+
+@pytest.mark.asyncio
+async def test_create_and_resolve_signal(api_module):
+    created = await api_module.create_signal(
+        {"type": "custom", "summary": "Test signal", "ownerAgentId": "sales-ops-agent"}
+    )
+    assert created["success"] is True
+    signal_id = created["signal"]["id"]
+    resolved = await api_module.resolve_signal(signal_id)
+    assert resolved["success"] is True
+    open_signals = await api_module.get_signals(open_only=True)
+    ids = [s["id"] for s in open_signals["signals"]]
+    assert signal_id not in ids
+
+
+@pytest.mark.asyncio
+async def test_set_bridge_mode_api(api_module):
+    result = await api_module.set_bridge_mode({"mode": "hybrid"})
+    assert result["success"] is True
+    assert result["mode"] == "hybrid"
+    status = await api_module.get_bridge_status()
+    assert status["mode"] == "hybrid"

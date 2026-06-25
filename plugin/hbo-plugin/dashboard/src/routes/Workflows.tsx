@@ -21,12 +21,29 @@ function formatOutputs(outputs: Record<string, unknown> | undefined): string {
   return parts.length ? parts.join(" · ") : JSON.stringify(outputs).slice(0, 120);
 }
 
+function OutputPanel({ outputs }: { outputs: Record<string, unknown> | undefined }) {
+  const { React } = getSDK();
+  if (!outputs) return null;
+  return React.createElement(
+    "details",
+    { className: "mt-2 text-xs" },
+    React.createElement("summary", { className: "cursor-pointer text-muted-foreground" }, "View structured outputs"),
+    React.createElement(
+      "pre",
+      { className: "mt-1 p-2 border rounded overflow-x-auto whitespace-pre-wrap" },
+      JSON.stringify(outputs, null, 2)
+    )
+  );
+}
+
 export function WorkflowsPage() {
   const { React, components } = getSDK();
   const { Card, CardHeader, CardTitle, CardContent, Button } = components;
   const { data, loading, refetch } = useFetch<{ workflows: Workflow[] }>("/workflows");
   const [running, setRunning] = React.useState<string | null>(null);
-  const [lastResult, setLastResult] = React.useState<string | null>(null);
+  const [lastResult, setLastResult] = React.useState<{ summary: string; outputs?: Record<string, unknown> } | null>(
+    null
+  );
 
   async function runWorkflow(id: string) {
     setRunning(id);
@@ -38,13 +55,13 @@ export function WorkflowsPage() {
         error?: string;
       };
       if (result.success) {
-        setLastResult(formatOutputs(result.outputs));
+        setLastResult({ summary: formatOutputs(result.outputs), outputs: result.outputs });
         refetch();
       } else {
-        setLastResult(result.error ?? "Workflow failed");
+        setLastResult({ summary: result.error ?? "Workflow failed" });
       }
     } catch (err) {
-      setLastResult(err instanceof Error ? err.message : "Workflow failed");
+      setLastResult({ summary: err instanceof Error ? err.message : "Workflow failed" });
     } finally {
       setRunning(null);
     }
@@ -58,10 +75,10 @@ export function WorkflowsPage() {
     React.createElement("h2", { className: "text-lg font-semibold" }, "Workflows"),
     lastResult &&
       React.createElement(
-        "p",
-        { className: "text-sm text-muted-foreground border rounded p-2" },
-        "Last run: ",
-        lastResult
+        "div",
+        { className: "text-sm text-muted-foreground border rounded p-2 space-y-1" },
+        React.createElement("p", null, "Last run: ", lastResult.summary),
+        React.createElement(OutputPanel, { outputs: lastResult.outputs })
       ),
     ...(data?.workflows ?? []).map((wf) =>
       React.createElement(
@@ -78,11 +95,8 @@ export function WorkflowsPage() {
             `Status: ${wf.status}`,
             wf.lastRunAt ? ` · Last run: ${wf.lastRunAt}` : ""
           ),
-          React.createElement(
-            "p",
-            { className: "text-xs mt-2" },
-            formatOutputs(wf.lastOutputs as Record<string, unknown> | undefined)
-          ),
+          React.createElement("p", { className: "text-xs mt-2" }, formatOutputs(wf.lastOutputs)),
+          React.createElement(OutputPanel, { outputs: wf.lastOutputs as Record<string, unknown> | undefined }),
           React.createElement(
             Button,
             {

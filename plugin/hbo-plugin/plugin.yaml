@@ -16,3 +16,6 @@ provides_tools:
   - hbo_list_audit_events
   - hbo_load_demo_data
   - hbo_import_leads_from_sheets
+  - hbo_send_approval_email
+  - hbo_get_bridge_status
+  - hbo_set_bridge_mode

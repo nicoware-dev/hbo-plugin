@@ -182,4 +182,57 @@ def get_tool_definitions() -> list[ToolDef]:
                 )
             ),
         ),
+        (
+            "hbo_send_approval_email",
+            {
+                "name": "hbo_send_approval_email",
+                "description": "Send a follow-up email via Composio Gmail for an approved action or explicit recipient.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "actionId": {"type": "string"},
+                        "recipientEmail": {"type": "string"},
+                        "subject": {"type": "string"},
+                        "body": {"type": "string"},
+                    },
+                },
+            },
+            lambda params, **_: _json_response(
+                business_rules.send_approval_email(
+                    action_id=params.get("actionId", ""),
+                    recipient_email=params.get("recipientEmail", ""),
+                    subject=params.get("subject", ""),
+                    body=params.get("body", ""),
+                )
+            ),
+        ),
+        (
+            "hbo_get_bridge_status",
+            {
+                "name": "hbo_get_bridge_status",
+                "description": "Return tool bridge status (local demo + Composio CLI).",
+                "parameters": {"type": "object", "properties": {}},
+            },
+            lambda params, **_: _json_response(business_rules.get_bridge_status()),
+        ),
+        (
+            "hbo_set_bridge_mode",
+            {
+                "name": "hbo_set_bridge_mode",
+                "description": "Set data source mode: local-demo, composio, or hybrid.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "mode": {
+                            "type": "string",
+                            "enum": ["local-demo", "composio", "hybrid"],
+                        }
+                    },
+                    "required": ["mode"],
+                },
+            },
+            lambda params, **_: _json_response(
+                business_rules.set_bridge_mode(params.get("mode", "local-demo"))
+            ),
+        ),
     ]

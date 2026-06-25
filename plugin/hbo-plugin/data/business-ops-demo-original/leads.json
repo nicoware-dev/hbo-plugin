@@ -2,6 +2,7 @@
   {
     "id": "lead_001",
     "name": "Demo Lead 001",
+    "email": "demo.lead001@example.com",
     "source": "demo_sheet",
     "segment": "commerce",
     "score": 82,

@@ -1,15 +1,14 @@
 """Multi-platform Composio CLI client.
 
-Windows  → WSL Ubuntu (composio CLI runs inside WSL)
+Windows  → WSL Ubuntu (composio CLI runs inside WSL), same as scripts/composio.ps1
 macOS    → native composio CLI
 Linux    → native composio CLI
-
-Falls back gracefully if composio is not installed.
 """
 
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -17,36 +16,38 @@ import uuid
 from typing import Any
 
 
+def _wsl_distro() -> str:
+    return os.environ.get("COMPOSIO_WSL_DISTRO", "Ubuntu")
+
+
 def _has_wsl() -> bool:
-    """Check if WSL is available on Windows."""
     if sys.platform != "win32":
         return False
-    return shutil.which("wsl") is not None
+    return shutil.which("wsl") is not None or shutil.which("wsl.exe") is not None
 
 
 def _has_composio() -> bool:
-    """Check if composio CLI is available on PATH."""
     return shutil.which("composio") is not None
 
 
 def _has_composio_wsl() -> bool:
-    """Check if composio CLI is available inside WSL."""
     if not _has_wsl():
         return False
+    distro = _wsl_distro()
     result = subprocess.run(
-        'wsl bash -lc "which composio"',
-        shell=True, capture_output=True, text=True, timeout=10,
+        ["wsl.exe", "-d", distro, "--", "bash", "-lc", "command -v composio"],
+        capture_output=True,
+        text=True,
+        timeout=15,
     )
     return result.returncode == 0 and "composio" in result.stdout
 
 
 def is_available() -> bool:
-    """Check if Composio is accessible on this platform."""
     return _has_composio() or _has_composio_wsl()
 
 
 def platform() -> str:
-    """Return the platform strategy being used."""
     if sys.platform == "win32":
         if _has_composio_wsl():
             return "windows-wsl"
@@ -59,13 +60,11 @@ def platform() -> str:
 
 
 def run(args: str) -> dict[str, Any]:
-    """Run a composio CLI command and return parsed JSON.
-
-    On Windows: writes a temp script to WSL home to avoid shell-quoting issues.
-    On macOS/Linux: runs composio directly on PATH.
-    """
+    """Run a composio CLI command and return parsed JSON."""
     if sys.platform == "win32" and _has_composio_wsl():
-        return _run_wsl(args)
+        if _is_simple_command(args):
+            return _run_wsl_direct(args)
+        return _run_wsl_script(args)
     if _has_composio():
         return _run_native(args)
     raise RuntimeError(
@@ -76,45 +75,83 @@ def run(args: str) -> dict[str, Any]:
     )
 
 
+def _is_simple_command(args: str) -> bool:
+    """Commands safe to run via direct bash -lc without a temp script."""
+    if not args.strip():
+        return False
+    # JSON payloads and nested quotes need the script path (no CRLF issues).
+    return "'" not in args and '"' not in args
+
+
+def _run_wsl_direct(args: str) -> dict[str, Any]:
+    """Run composio inside WSL login shell (matches scripts/composio.ps1)."""
+    distro = _wsl_distro()
+    result = subprocess.run(
+        ["wsl.exe", "-d", distro, "--", "bash", "-lc", f"composio {args}"],
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"composio failed ({result.returncode}): {result.stderr.strip()}")
+    return _parse_json(result.stdout)
+
+
+def _run_wsl_script(args: str) -> dict[str, Any]:
+    """Run composio via a temp bash script in WSL (for JSON / complex quoting).
+
+    Writes with binary stdin to avoid Windows CRLF breaking subcommands.
+    """
+    distro = _wsl_distro()
+    script_name = f"_hbo_composio_{uuid.uuid4().hex[:8]}.sh"
+    script_content = f"#!/bin/bash\ncomposio {args}\n"
+
+    write = subprocess.run(
+        ["wsl.exe", "-d", distro, "--", "bash", "-lc", f"cat > ~/{script_name}"],
+        input=script_content.encode("utf-8"),
+        capture_output=True,
+        timeout=15,
+    )
+    if write.returncode != 0:
+        raise RuntimeError(f"Failed to write WSL script: {write.stderr.decode()}")
+
+    result = subprocess.run(
+        [
+            "wsl.exe",
+            "-d",
+            distro,
+            "--",
+            "bash",
+            "-lc",
+            f"bash ~/{script_name}; rc=$?; rm -f ~/{script_name}; exit $rc",
+        ],
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"composio failed ({result.returncode}): {result.stderr.strip()}")
+    return _parse_json(result.stdout)
+
+
 def _run_native(args: str) -> dict[str, Any]:
-    """Run composio CLI directly (macOS/Linux)."""
     cmd = ["composio"] + _split_args(args)
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
     if result.returncode != 0:
         raise RuntimeError(f"composio failed ({result.returncode}): {result.stderr.strip()}")
-    return json.loads(result.stdout)
+    return _parse_json(result.stdout)
 
 
-def _run_wsl(args: str) -> dict[str, Any]:
-    """Run composio CLI via WSL (Windows).
-
-    Writes a temp bash script to WSL home to avoid Windows shell-quoting issues
-    with nested JSON in -d arguments.
-    """
-    script_name = f"_hbo_composio_{uuid.uuid4().hex[:8]}.sh"
-    script_content = f"#!/bin/bash\ncomposio {args}\n"
-
-    # Write script to WSL home
-    write_cmd = f'wsl bash -lc "cat > ~/{script_name}"'
-    proc = subprocess.run(
-        write_cmd, shell=True, input=script_content,
-        capture_output=True, text=True, timeout=10,
-    )
-    if proc.returncode != 0:
-        raise RuntimeError(f"Failed to write WSL script: {proc.stderr}")
-
-    # Execute and clean up
-    cmd = f'wsl bash -lc "bash ~/{script_name} && rm ~/{script_name}"'
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=60)
-
-    if result.returncode != 0:
-        raise RuntimeError(f"composio failed ({result.returncode}): {result.stderr.strip()}")
-    return json.loads(result.stdout)
+def _parse_json(stdout: str) -> dict[str, Any]:
+    text = stdout.strip()
+    if not text:
+        return {}
+    return json.loads(text)
 
 
 def _split_args(args: str) -> list[str]:
-    """Split args string into list, respecting quoted sections."""
     import shlex
+
     try:
         return shlex.split(args)
     except ValueError:

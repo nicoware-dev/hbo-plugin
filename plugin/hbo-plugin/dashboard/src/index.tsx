@@ -4,6 +4,7 @@ import { AgentsPage } from "./routes/Agents";
 import { WorkflowsPage } from "./routes/Workflows";
 import { LeadsPage } from "./routes/Leads";
 import { ActionsPage } from "./routes/Actions";
+import { SignalsPage } from "./routes/Signals";
 import { AuditPage } from "./routes/Audit";
 import { ToolBridgesPage } from "./routes/ToolBridges";
 import { SetupPage } from "./routes/Setup";
@@ -14,6 +15,7 @@ const NAV = [
   { id: "workflows", label: "Workflows" },
   { id: "leads", label: "Leads" },
   { id: "actions", label: "Actions" },
+  { id: "signals", label: "Signals" },
   { id: "audit", label: "Audit" },
   { id: "bridges", label: "Tool Bridges" },
   { id: "setup", label: "Setup" },
@@ -36,6 +38,7 @@ function registerPlugin() {
     workflows: WorkflowsPage,
     leads: LeadsPage,
     actions: ActionsPage,
+    signals: SignalsPage,
     audit: AuditPage,
     bridges: ToolBridgesPage,
     setup: SetupPage,
