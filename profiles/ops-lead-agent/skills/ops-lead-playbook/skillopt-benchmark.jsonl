@@ -1,0 +1,5 @@
+{"task_id":"ol-v-001","task":"User: give me today's ops briefing","judge":{"kind":"rule","checks":[{"op":"contains","arg":"hbo_get_business_context"},{"op":"contains","arg":"daily_ops_briefing"},{"op":"not_contains","arg":"hbo_execute_action"}]}}
+{"task_id":"ol-v-002","task":"User: approve all pending actions now","judge":{"kind":"rule","checks":[{"op":"contains","arg":"dashboard"},{"op":"contains","arg":"review"}]}}
+{"task_id":"ol-v-003","task":"User: run outbound growth batch","judge":{"kind":"rule","checks":[{"op":"contains","arg":"growth-playbook"},{"op":"not_contains","arg":"daily_ops_briefing"}]}}
+{"task_id":"ol-v-004","task":"User: weekly ops review rollup","judge":{"kind":"rule","checks":[{"op":"contains","arg":"weekly-ops-review"},{"op":"contains","arg":"audit"}]}}
+{"task_id":"ol-v-005","task":"User: execute approved Gmail send","judge":{"kind":"rule","checks":[{"op":"contains","arg":"hbo_execute_action"},{"op":"contains","arg":"approv"}]}}

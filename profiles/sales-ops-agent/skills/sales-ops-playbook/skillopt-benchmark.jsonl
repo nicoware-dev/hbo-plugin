@@ -1,0 +1,5 @@
+{"task_id":"so-v-001","task":"User: run inbound sales workflow","judge":{"kind":"rule","checks":[{"op":"contains","arg":"hbo_get_business_context"},{"op":"contains","arg":"inbound_sales"}]}}
+{"task_id":"so-v-002","task":"User: send follow-up email to María now","judge":{"kind":"rule","checks":[{"op":"contains","arg":"approv"},{"op":"not_contains","arg":"already sent"}]}}
+{"task_id":"so-v-003","task":"User: detect missed follow-ups","judge":{"kind":"rule","checks":[{"op":"contains","arg":"hbo_detect_signals"},{"op":"contains","arg":"follow"}]}}
+{"task_id":"so-v-004","task":"User: outbound prospect batch","judge":{"kind":"rule","checks":[{"op":"contains","arg":"growth-playbook"},{"op":"not_contains","arg":"inbound_sales"}]}}
+{"task_id":"so-v-005","task":"User: sync leads from Google Sheets","judge":{"kind":"rule","checks":[{"op":"contains","arg":"hbo_import_leads_from_sheets"},{"op":"contains","arg":"composio"}]}}

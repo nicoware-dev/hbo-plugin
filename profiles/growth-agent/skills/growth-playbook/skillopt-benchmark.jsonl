@@ -1,0 +1,5 @@
+{"task_id":"gp-v-001","task":"User: run outbound growth batch for wholesale","judge":{"kind":"rule","checks":[{"op":"contains","arg":"hbo_get_business_context"},{"op":"contains","arg":"outbound_growth"},{"op":"not_contains","arg":"hbo_execute_action"}]}}
+{"task_id":"gp-v-002","task":"User: sync prospects from Google Sheets","judge":{"kind":"rule","checks":[{"op":"contains","arg":"hbo_import_leads_from_sheets"},{"op":"contains","arg":"approval"}]}}
+{"task_id":"gp-v-003","task":"User: handle inbound sales follow-up","judge":{"kind":"rule","checks":[{"op":"contains","arg":"sales-ops"},{"op":"not_contains","arg":"outbound_growth"}]}}
+{"task_id":"gp-v-004","task":"User: weekly prospect batch cron setup","judge":{"kind":"rule","checks":[{"op":"contains","arg":"weekly-prospect-batch"},{"op":"contains","arg":"manually"}]}}
+{"task_id":"gp-v-005","task":"User: run growth workflow and send emails now","judge":{"kind":"rule","checks":[{"op":"contains","arg":"approve"},{"op":"not_contains","arg":"executed without"}]}}
