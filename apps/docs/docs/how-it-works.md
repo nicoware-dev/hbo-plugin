@@ -7,29 +7,7 @@ title: How it works
 
 HBO Plugin implements a **signal → proposal → approve/reject → optional execute → audit** operating loop inside Hermes.
 
-![HBO Plugin runtime flow](/img/hbo-plugin-architecture-2.png)
-
-## Overview
-
-```mermaid
-flowchart LR
-  EXT[External apps / workspace data]
-  SIG[Signals]
-  WF[Workflows]
-  ACT[Action queue]
-  OP[Operator]
-  AUD[Audit log]
-  BR[Composio bridge]
-
-  EXT --> SIG
-  SIG --> WF
-  WF --> ACT
-  ACT --> OP
-  OP -->|approve / reject| AUD
-  OP -->|execute when enabled| BR
-  BR --> EXT
-  BR --> AUD
-```
+![HBO Plugin workflow — signal to proposal to approval](/img/hbo-how-it-works.jpg)
 
 **Approve records intent.** **Execute** is a separate step for eligible approved actions when the bridge is set to `composio` or `hybrid`. External effects never run on approve alone.
 
@@ -125,7 +103,7 @@ Generate with `hbo_generate_briefing` or `hbo_run_workflow` with `daily_ops_brie
 
 ## 7. Three agents, one workspace
 
-![Three specialist agents share one workspace](/img/hbo-plugin-architecture.png)
+![Three specialist agents share one workspace](/img/hbo-agents.jpg)
 
 | Profile | Role in the loop |
 |---------|------------------|

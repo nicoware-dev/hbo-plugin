@@ -1,6 +1,12 @@
 # HBO Plugin
 
+<p align="center">
+  <img src="apps/docs/static/img/hbo-og-image.jpg" alt="HBO Plugin — Hermes Business Operations: signals, workflows, approvals, audit trail, and Composio bridge" width="100%" />
+</p>
+
 **Hermes Business Operations Plugin** — a Hermes-native extension for commerce and business operations.
+
+Turn Hermes into a business operations workspace: capture signals from your tools, let agents propose actions, and approve with full audit trails.
 
 HBO Plugin packages:
 
@@ -9,6 +15,10 @@ HBO Plugin packages:
 - three profile distributions (Sales Ops, Growth, Ops Lead)
 - bundled workflow and bridge skills
 - a Docusaurus docs and landing site
+
+## Architecture
+
+![HBO Plugin system architecture — Hermes platform, plugin core, dashboard, profiles, local state, and Composio bridge](apps/docs/static/img/hbo-architecture.jpg)
 
 ## Quick start
 

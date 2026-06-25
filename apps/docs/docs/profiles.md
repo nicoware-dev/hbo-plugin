@@ -7,7 +7,7 @@ title: Profiles
 
 Three Hermes agent profiles ship in `profiles/`. Each is installable via `hermes profile install`.
 
-![HBO Plugin package — three profiles and shared workspace](/img/hbo-plugin-architecture.png)
+![Three specialist agents share one workspace](/img/hbo-agents.jpg)
 
 ## Profiles
 

@@ -60,7 +60,8 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title="HBO Plugin"
-      description="Hermes Business Operations Plugin: signals, workflows, approvals, dashboard, and agent profiles">
+      description="Turn Hermes into a business operations workspace: capture signals, let agents propose actions, and approve with full audit trails."
+      image="img/hbo-og-image.jpg">
       <HomepageHeader />
       <main>
         <RevealOnScroll>

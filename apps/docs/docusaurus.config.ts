@@ -14,6 +14,9 @@ const config: Config = {
   onBrokenLinks: 'throw',
   headTags: [
     { tagName: 'link', attributes: { rel: 'apple-touch-icon', href: '/img/apple-touch-icon.png' } },
+    { tagName: 'meta', attributes: { name: 'twitter:card', content: 'summary_large_image' } },
+    { tagName: 'meta', attributes: { property: 'og:image', content: 'https://hbo-plugin-docs.vercel.app/img/hbo-og-image.jpg' } },
+    { tagName: 'meta', attributes: { name: 'twitter:image', content: 'https://hbo-plugin-docs.vercel.app/img/hbo-og-image.jpg' } },
   ],
   i18n: { defaultLocale: 'en', locales: ['en'] },
   markdown: {
@@ -31,6 +34,7 @@ const config: Config = {
     ],
   ],
   themeConfig: {
+    image: 'img/hbo-og-image.jpg',
     colorMode: {
       defaultMode: 'dark',
       respectPrefersColorScheme: true,

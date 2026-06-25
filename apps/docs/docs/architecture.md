@@ -7,7 +7,7 @@ title: Architecture
 
 HBO Plugin extends Hermes as a single installable package under `plugin/hbo-plugin/`.
 
-![HBO Plugin system architecture](/img/hbo-plugin-architecture.png)
+![HBO Plugin system architecture](/img/hbo-architecture.jpg)
 
 ## Components
 
@@ -25,8 +25,14 @@ HBO Plugin extends Hermes as a single installable package under `plugin/hbo-plug
 3. The **dashboard** calls the same backend logic through plugin API routes.
 4. The **tool bridge** executes actions in external apps when credentials are configured.
 
-## Alternate view
+## Operating loop
 
-![HBO Plugin architecture — alternate layout](/img/hbo-plugin-architecture-2.png)
+![HBO Plugin workflow — signal to proposal to approval](/img/hbo-how-it-works.jpg)
 
-See [Architecture](./architecture) for diagrams and component details.
+See [How it works](./how-it-works) for the full workflow walkthrough.
+
+## Agent profiles
+
+![Three specialist agents share one workspace](/img/hbo-agents.jpg)
+
+See [Profiles](./profiles) for install commands and role details.

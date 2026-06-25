@@ -8,31 +8,45 @@ import styles from './styles.module.css';
 
 const TABS = [
   {
-    id: 'package',
-    label: 'Package view',
-    alt: 'HBO Plugin package architecture diagram',
+    id: 'architecture',
+    label: 'Architecture',
+    src: '/img/hbo-architecture.jpg',
+    alt: 'HBO Plugin system architecture — Hermes-native business operations workspace',
     caption:
-      'Plugin core, dashboard extension, profile distributions, local workspace state, and Composio bridge in one installable Hermes package.',
+      'Operator, Hermes platform, plugin core, dashboard, profiles, local state, and Composio bridge in one installable package.',
+    docsTo: '/docs/architecture',
+    docsLabel: 'Architecture docs',
   },
   {
-    id: 'runtime',
-    label: 'Runtime flow',
-    alt: 'HBO Plugin runtime data flow diagram',
+    id: 'workflow',
+    label: 'How it works',
+    src: '/img/hbo-how-it-works.jpg',
+    alt: 'HBO Plugin workflow — signal to proposal to approval inside Hermes',
     caption:
-      'How operators, Hermes sessions, local JSON state, dashboard API routes, and external apps connect during daily operations.',
+      'Signals from workspace data and external apps become workflows, action proposals, operator approvals, and optional bridge execution.',
+    docsTo: '/docs/how-it-works',
+    docsLabel: 'Workflow guide',
+  },
+  {
+    id: 'agents',
+    label: 'Agents',
+    src: '/img/hbo-agents.jpg',
+    alt: 'Three specialist HBO agent profiles — Sales Ops, Growth, and Ops Lead',
+    caption:
+      'Purpose-built Hermes profiles that share tools, business context, and audit history inside one workspace.',
+    docsTo: '/docs/profiles',
+    docsLabel: 'Profile docs',
   },
 ] as const;
 
 type TabId = (typeof TABS)[number]['id'];
 
 export default function ArchitectureSection(): ReactNode {
-  const packageUrl = useBaseUrl('/img/hbo-plugin-architecture.png');
-  const runtimeUrl = useBaseUrl('/img/hbo-plugin-architecture-2.png');
-  const [active, setActive] = useState<TabId>('package');
+  const [active, setActive] = useState<TabId>('architecture');
   const [zoomed, setZoomed] = useState(false);
 
-  const imageUrl = active === 'package' ? packageUrl : runtimeUrl;
   const activeTab = TABS.find((t) => t.id === active) ?? TABS[0];
+  const imageUrl = useBaseUrl(activeTab.src);
 
   const onTab = useCallback((id: TabId) => {
     setActive(id);
@@ -52,8 +66,8 @@ export default function ArchitectureSection(): ReactNode {
               System architecture
             </Heading>
             <p className={styles.lead}>
-              One installable Hermes package with two useful views: what ships in
-              the repo and how data moves at runtime.
+              One Hermes workspace with three views: what ships in the package,
+              how the operating loop runs, and how specialist agents share state.
             </p>
             <div className={styles.tabs} role="tablist" aria-label="Architecture views">
               {TABS.map((tab) => (
@@ -69,8 +83,8 @@ export default function ArchitectureSection(): ReactNode {
               ))}
             </div>
             <p className={styles.caption}>{activeTab.caption}</p>
-            <Link className="button button--outline button--primary" to="/docs/architecture">
-              Architecture docs
+            <Link className="button button--outline button--primary" to={activeTab.docsTo}>
+              {activeTab.docsLabel}
             </Link>
           </div>
           <figure className={styles.figure}>
