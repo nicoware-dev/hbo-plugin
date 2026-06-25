@@ -40,6 +40,7 @@ export function OverviewPage({ onNavigate }: PageProps) {
     ["Pending actions", ws?.pendingActions],
     ["Total leads", stats?.totalLeads ?? 0],
     ["Bridge mode", ws?.selectedBridge],
+    ["Last briefing", ws?.lastBriefingTitle ?? "—"],
   ];
 
   const hasTimeline = stats?.auditTimeline && Object.values(stats.auditTimeline).some((v) => v > 0);
@@ -54,12 +55,29 @@ export function OverviewPage({ onNavigate }: PageProps) {
       ...cards.map(([label, value]) =>
         React.createElement(
           Card,
-          { key: String(label) },
+          {
+            key: String(label),
+            className: label === "Pending actions" && Number(value) > 0 ? "ring-1 ring-primary/40" : undefined,
+          },
           React.createElement(CardHeader, { className: "pb-2" }, React.createElement(CardTitle, { className: "text-sm" }, label)),
           React.createElement(
             CardContent,
             { className: "pt-0" },
-            React.createElement("p", { className: "text-2xl font-bold" }, String(value ?? "—"))
+            React.createElement("p", { className: "text-2xl font-bold" }, String(value ?? "—")),
+            label === "Pending actions" &&
+              Number(value) > 0 &&
+              React.createElement(
+                Button,
+                { variant: "link", size: "sm", className: "px-0 h-auto", onClick: () => onNavigate("actions") },
+                "Review queue →"
+              ),
+            label === "Last briefing" &&
+              ws?.lastBriefingAt &&
+              React.createElement(
+                "p",
+                { className: "text-xs text-muted-foreground mt-1" },
+                String(ws.lastBriefingAt).slice(0, 10)
+              )
           )
         )
       )

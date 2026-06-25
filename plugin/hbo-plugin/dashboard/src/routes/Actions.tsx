@@ -4,15 +4,34 @@ import { deleteJSON, postAction, postJSON, useFetch } from "../api/hooks";
 type ApiResult = {
   success?: boolean;
   error?: string;
-  action?: { title?: string; status?: string };
+  action?: { title?: string; status?: string; id?: string };
   auditEvent?: { summary?: string };
-  execution?: { success?: boolean; error?: string; tool?: string };
+  execution?: { success?: boolean; error?: string; tool?: string; mock?: boolean };
 };
 
-export function ActionsPage() {
+type ActionRow = Record<string, string | boolean | undefined> & {
+  id: string;
+  title: string;
+  description?: string;
+  agentId?: string;
+  risk?: string;
+  status?: string;
+  executable?: boolean;
+  composioTool?: string;
+  outreachPreview?: string;
+};
+
+type PageProps = { onNavigate?: (page: string) => void };
+
+const STATUS_OPTIONS = ["pending", "approved", "rejected", "executed", "failed", "all"] as const;
+
+export function ActionsPage({ onNavigate }: PageProps) {
   const { React, components } = getSDK();
   const { Card, CardHeader, CardTitle, CardContent, Button } = components;
-  const { data, loading, refetch } = useFetch<{ actions: Array<Record<string, string>> }>("/actions?status=pending");
+  const [statusFilter, setStatusFilter] = React.useState<string>("pending");
+  const query = statusFilter === "all" ? "/actions" : `/actions?status=${statusFilter}`;
+  const { data, loading, refetch } = useFetch<{ actions: ActionRow[] }>(query);
+  const { data: ws } = useFetch<Record<string, string>>("/workspace");
   const [busy, setBusy] = React.useState<string | null>(null);
   const [message, setMessage] = React.useState<string | null>(null);
   const [showForm, setShowForm] = React.useState(false);
@@ -24,22 +43,29 @@ export function ActionsPage() {
     source: "dashboard",
   });
 
-  async function decide(actionId: string, decision: "approve" | "reject") {
+  const bridge = ws?.selectedBridge ?? "local-demo";
+  const showBridgeWarning = bridge === "composio" || bridge === "hybrid";
+
+  async function decide(actionId: string, decision: "approve" | "reject" | "execute") {
     setBusy(actionId);
     setMessage(null);
     try {
-      const result = (await postAction(`/actions/${actionId}/${decision}`)) as ApiResult;
+      const path =
+        decision === "execute"
+          ? `/actions/${actionId}/execute`
+          : `/actions/${actionId}/${decision}`;
+      const result = (await postAction(path)) as ApiResult;
       if (result.success) {
         const audit = result.auditEvent?.summary ? ` — ${result.auditEvent.summary}` : "";
         const exec = result.execution
           ? result.execution.success
-            ? ` · Executed via ${result.execution.tool ?? "Composio"}`
+            ? ` · Executed via ${result.execution.tool ?? "external"}`
             : ` · Execution failed: ${result.execution.error ?? "unknown"}`
           : "";
         const status = result.action?.status ? ` [${result.action.status}]` : "";
-        setMessage(
-          `${decision === "approve" ? "Approved" : "Rejected"}: ${result.action?.title ?? actionId}${status}${audit}${exec}`
-        );
+        const label =
+          decision === "approve" ? "Approved" : decision === "reject" ? "Rejected" : "Executed";
+        setMessage(`${label}: ${result.action?.title ?? actionId}${status}${audit}${exec}`);
         refetch();
       } else {
         setMessage(result.error ?? "Action failed");
@@ -98,10 +124,35 @@ export function ActionsPage() {
     "div",
     { className: "space-y-4 p-4" },
     React.createElement("h2", { className: "text-lg font-semibold" }, "Actions"),
+    showBridgeWarning &&
+      React.createElement(
+        "p",
+        { className: "text-sm border border-amber-500/40 rounded p-2 bg-amber-500/10" },
+        "Bridge mode is ",
+        bridge,
+        ". Approving records intent only; ",
+        React.createElement("strong", null, "Execute"),
+        " on approved actions may trigger real external effects (e.g. Gmail)."
+      ),
     React.createElement(
-      Button,
-      { variant: "outline", size: "sm", onClick: () => setShowForm((v) => !v) },
-      showForm ? "Cancel" : "New action"
+      "div",
+      { className: "flex flex-wrap gap-2 items-center" },
+      React.createElement(
+        "select",
+        {
+          className: "border rounded p-2 text-sm",
+          value: statusFilter,
+          onChange: (e: { target: { value: string } }) => setStatusFilter(e.target.value),
+        },
+        ...STATUS_OPTIONS.map((s) =>
+          React.createElement("option", { key: s, value: s }, s === "all" ? "All statuses" : s)
+        )
+      ),
+      React.createElement(
+        Button,
+        { variant: "outline", size: "sm", onClick: () => setShowForm((v) => !v) },
+        showForm ? "Cancel" : "New action"
+      )
     ),
     showForm &&
       React.createElement(
@@ -151,12 +202,46 @@ export function ActionsPage() {
     message &&
       React.createElement("p", { className: "text-sm border rounded p-2 text-muted-foreground" }, message),
     actions.length === 0 &&
-      React.createElement("p", { className: "text-sm text-muted-foreground" }, "No pending actions."),
-    ...actions.map((action) =>
       React.createElement(
+        "p",
+        { className: "text-sm text-muted-foreground" },
+        `No ${statusFilter === "all" ? "" : statusFilter + " "}actions.`
+      ),
+    ...actions.map((action) => {
+      const status = String(action.status ?? "pending");
+      const canApprove = status === "pending";
+      const canExecute = status === "approved" && Boolean(action.executable);
+      const canDelete = status !== "approved" && status !== "executed";
+
+      return React.createElement(
         Card,
         { key: action.id },
-        React.createElement(CardHeader, null, React.createElement(CardTitle, null, action.title)),
+        React.createElement(
+          CardHeader,
+          null,
+          React.createElement(
+            "div",
+            { className: "flex flex-wrap items-center gap-2" },
+            React.createElement(CardTitle, null, action.title),
+            React.createElement(
+              "span",
+              { className: "text-xs px-2 py-0.5 rounded border" },
+              status
+            ),
+            action.risk &&
+              React.createElement(
+                "span",
+                { className: "text-xs px-2 py-0.5 rounded border text-muted-foreground" },
+                `risk: ${action.risk}`
+              ),
+            action.executable &&
+              React.createElement(
+                "span",
+                { className: "text-xs px-2 py-0.5 rounded border border-primary text-primary" },
+                "executable"
+              )
+          )
+        ),
         React.createElement(
           CardContent,
           null,
@@ -164,7 +249,7 @@ export function ActionsPage() {
           React.createElement(
             "p",
             { className: "text-xs text-muted-foreground mt-1" },
-            `Agent: ${action.agentId} · Risk: ${action.risk}`
+            `Agent: ${action.agentId ?? "—"}${action.composioTool ? ` · Tool: ${action.composioTool}` : ""}`
           ),
           action.outreachPreview &&
             React.createElement(
@@ -179,25 +264,40 @@ export function ActionsPage() {
             ),
           React.createElement(
             "div",
-            { className: "flex gap-2 mt-3" },
-            React.createElement(
-              Button,
-              { disabled: busy === action.id, onClick: () => decide(action.id, "approve") },
-              busy === action.id ? "…" : "Approve"
-            ),
-            React.createElement(
-              Button,
-              { variant: "outline", disabled: busy === action.id, onClick: () => decide(action.id, "reject") },
-              "Reject"
-            ),
-            React.createElement(
-              Button,
-              { variant: "outline", disabled: busy === action.id, onClick: () => removeAction(action.id) },
-              "Delete"
-            )
+            { className: "flex flex-wrap gap-2 mt-3" },
+            canApprove &&
+              React.createElement(
+                Button,
+                { disabled: busy === action.id, onClick: () => decide(action.id, "approve") },
+                busy === action.id ? "…" : "Approve"
+              ),
+            canApprove &&
+              React.createElement(
+                Button,
+                { variant: "outline", disabled: busy === action.id, onClick: () => decide(action.id, "reject") },
+                "Reject"
+              ),
+            canExecute &&
+              React.createElement(
+                Button,
+                { disabled: busy === action.id, onClick: () => decide(action.id, "execute") },
+                busy === action.id ? "…" : "Execute"
+              ),
+            canDelete &&
+              React.createElement(
+                Button,
+                { variant: "outline", disabled: busy === action.id, onClick: () => removeAction(action.id) },
+                "Delete"
+              ),
+            onNavigate &&
+              React.createElement(
+                Button,
+                { variant: "outline", size: "sm", onClick: () => onNavigate("audit") },
+                "View in Audit"
+              )
           )
         )
-      )
-    )
+      );
+    })
   );
 }
