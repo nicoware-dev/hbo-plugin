@@ -13,6 +13,9 @@ _system/records/*
 !docs/SESSION_LOG_*.md
 !docs/PROJECT_STATUS.md
 !docs/ROADMAP.md
+!docs/SPONSOR_INTEGRATIONS.md
+!docs/NVIDIA_NEMOCLAW.md
+!docs/STRIPE_LINK_CLI.md
 
 # Dependencies
 node_modules/

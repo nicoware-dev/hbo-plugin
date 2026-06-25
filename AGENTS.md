@@ -24,7 +24,8 @@ HBO Plugin extends [Hermes Agent](https://hermes-agent.nousresearch.com/) with b
 - **Demo:** Business Ops Demo with local JSON state (no external credentials required)
 - **Bridge:** `composio` skill only (optional; not required for first run)
 - **Profiles:** Sales Ops Agent, Growth Agent, Ops Lead Agent
-- **Dashboard:** One `Business Ops` tab with internal pages (Overview, Agents, Workflows, Leads, Actions, Signals, Audit, Tool Bridges, Setup)
+- **Dashboard:** One `Business Ops` tab with internal pages (Overview, Agents, Workflows, Leads, Actions, Signals, Business, Audit, Tool Bridges, Setup)
+- **Tools:** 17 `hbo_*` tools (includes `hbo_get_business_context`)
 - **Approvals:** Real approve/reject that mutates state and writes audit events
 
 ## Hermes conventions

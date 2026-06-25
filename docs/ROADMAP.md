@@ -36,7 +36,7 @@ Repository: [nicoware-dev/hbo-plugin](https://github.com/nicoware-dev/hbo-plugin
 | 2 | Backend CRUD API | Done |
 | 3 | Dashboard CRUD UI + Signals page | Done |
 | 4 | Composio bridge + Gmail execution | Done |
-| 5 | Profile skills/cron, more tests, CI | Pending |
+| 5 | Profile cron blueprints + sponsor docs | Done |
 | 6 | Demo script, screenshots, video, GitHub Pages | Pending |
 
 ## Phase 6 — Demo polish (next)

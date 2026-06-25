@@ -2,7 +2,7 @@
 
 **Repository:** [nicoware-dev/hbo-plugin](https://github.com/nicoware-dev/hbo-plugin)  
 **Last updated:** 2026-06-25  
-**Phase:** Phases 1–5 complete; oleadas 0–4 (dashboard CRUD + Composio bridge) done; Phase 6 demo polish next  
+**Phase:** Phases 1–5 complete; oleadas 0–4 + cron/sponsor/P8/P10 done; Phase 6 next  
 
 This document records what was built, how it maps to the PRD/technical spec, and what remains.
 
@@ -39,7 +39,7 @@ This document records what was built, how it maps to the PRD/technical spec, and
 | `manifest.json` | Done | Tab `Business Ops` at `/business-ops` |
 | `plugin_api.py` | Done | CRUD + bridge routes; Hermes importlib-safe |
 | Vite IIFE bundle | Done | `dist/index.js` + `dist/style.css` |
-| 9 internal pages | **Functional** | Overview, Agents, Workflows, Leads, Actions, **Signals**, Audit, Tool Bridges, Setup |
+| 10 internal pages | **Functional** | Overview (charts), …, **Business**, … |
 
 ### Profile distributions (`profiles/`)
 
@@ -73,7 +73,7 @@ pnpm install
 pnpm build              # dashboard + docs
 pnpm dev:docs           # http://localhost:3000
 pnpm dev:dashboard      # watch rebuild of dashboard IIFE
-pnpm test:plugin        # 21 pytest tests
+pnpm test:plugin        # 28 pytest tests
 ```
 
 ---

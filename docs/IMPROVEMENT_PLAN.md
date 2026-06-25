@@ -1,7 +1,7 @@
 # HBO Plugin — Improvement Plan
 
 **Created:** 2026-06-25  
-**Last updated:** 2026-06-25 (oleadas 0–4 completas)  
+**Last updated:** 2026-06-25 (oleadas 0–4 + cron/sponsor/P8/P10)  
 **Status:** In progress — Phase 6 demo polish next  
 **Phase:** Post-MVP — Dashboard functionality & Composio bridge
 
@@ -19,15 +19,21 @@
 | Priority 5.7 mode toggle | Done — `workspace.selectedBridge` + Tool Bridges UI |
 | Priority 5.8 scripts | Done |
 | Composio bridge status API | Done — `GET /bridge/status`, fix CRLF WSL |
-| Tests | 21 passing (`pnpm test:plugin`) |
+| Tests | **30** passing (`pnpm test:plugin`) |
+| Priority 8 Overview charts | Done — funnel, segments, scores, priorities |
+| Priority 10 Business context tab | Done — `business-context.json` + form |
+| Sheets phone fix | Done — `_clean_phone()` preserves `+` |
+| Profile cron blueprints | Done — 5 files in `profiles/*/cron/` |
+| Automations dashboard | Done — Setup + `GET /automations` |
+| Sponsor integrations | Done — docs + 2 optional skills + deploy stub |
 
 ---
 
 ## Current State
 
-The HBO Plugin has **16 `hbo_*` tools**, 3 profiles, full workflow outputs, and approve/reject with audit trail via CLI and dashboard.
+The HBO Plugin has **17 `hbo_*` tools**, 3 profiles, full workflow outputs, and approve/reject with audit trail via CLI and dashboard.
 
-**Dashboard (9 pages):** Overview, Agents, Workflows, Leads, Actions, **Signals**, Audit, Tool Bridges, Setup. Full CRUD for leads, actions, and signals. Import from Google Sheets from Leads page. Reset demo from Setup. Approve/reject shows audit + execution status. Workflows show collapsible JSON outputs.
+**Dashboard (10 pages):** Overview, Agents, Workflows, Leads, Actions, Signals, **Business**, Audit, Tool Bridges, Setup.
 
 **Composio bridge:** Google Sheets import, Gmail post-approve (modes `composio`/`hybrid`), dynamic Tool Bridges status via `composio whoami`. Windows uses WSL Ubuntu (`scripts/composio.ps1`).
 
@@ -176,13 +182,13 @@ The HBO Plugin has **16 `hbo_*` tools**, 3 profiles, full workflow outputs, and 
 
 ## Priority 6 — Profile & cron completion
 
-### 6.1 Profile skills directories
-- **Current:** `profiles/*/skills/` are empty
-- **Fix:** Each profile gets its own SOUL-specific skills bundled
+### 6.1 Profile skills directories ✅
+- **Done:** `sales-ops-playbook`, `growth-playbook`, `ops-lead-playbook` in `profiles/*/skills/`
 
-### 6.2 Cron jobs
-- **Current:** `profiles/*/cron/` are empty
-- **Fix:** ops-lead-agent gets daily briefing cron, sales-ops-agent gets follow-up check cron
+### 6.2 Cron jobs ✅
+- **Done:** 5 cron blueprints in `profiles/*/cron/` (sales-source-sync, unread-email-review, prospect-source-sync, daily-ops-briefing, weekly-ops-review)
+- **Done:** `GET /automations` catalog + Setup UI (recommended, not auto-enabled)
+- See `_local/hbo-plugin-cron-automations-note.md` for architecture
 
 ### 6.3 Profile-specific SOUL.md enhancements
 - Add trigger conditions, preferred workflows, escalation rules
@@ -192,7 +198,7 @@ The HBO Plugin has **16 `hbo_*` tools**, 3 profiles, full workflow outputs, and 
 ## Priority 7 — Testing & CI
 
 ### 7.1 Current test coverage
-- **21 tests** passing (business_rules + plugin_api + execution)
+- **30 tests** passing (business_rules, plugin_api, execution, sheets, business_context)
 - Missing: workflows.py, state.py edge cases, dashboard component tests
 
 ### 7.2 Add tests
@@ -205,40 +211,9 @@ The HBO Plugin has **16 `hbo_*` tools**, 3 profiles, full workflow outputs, and 
 
 ---
 
-## Priority 8 — Dashboard Overview redesign
+## Priority 8 — Dashboard Overview redesign ✅
 
-### 8.1 Current state
-Today's Overview page shows 4 plain stat cards (active agents, open signals, pending actions, workspace name). It lacks visual impact and actionable insights.
-
-### 8.2 Goals
-- Visual, at-a-glance understanding of business health
-- Actionable insights (not just numbers)
-- Professional look that stakeholders trust
-
-### 8.3 Proposed visualizations
-- **Funnel chart:** Leads by status (new → needs_followup → hot → converted)
-- **Bar chart:** Leads by segment (commerce, wholesale, services, enterprise)
-- **Score distribution:** Histogram of lead scores (0-50, 51-70, 71-85, 86-100)
-- **Priority breakdown:** Pie/donut of high/medium/low priority
-- **Timeline:** Actions completed over time (from audit events)
-- **Agent workload:** Actions pending per agent
-- **Signal heatmap:** Signals by type
-
-### 8.4 Implementation approach
-- Add lightweight charting library (recharts works with React, can be bundled in IIFE)
-- Alternative: pure CSS/SVG charts if bundle size is a concern
-- New plugin_api routes for aggregated stats:
-  - `GET /api/plugins/hbo-plugin/stats/funnel`
-  - `GET /api/plugins/hbo-plugin/stats/segments`
-  - `GET /api/plugins/hbo-plugin/stats/scores`
-  - `GET /api/plugins/hbo-plugin/stats/priorities`
-  - `GET /api/plugins/hbo-plugin/stats/timeline`
-
-### 8.5 Files
-- `dashboard/src/routes/Overview.tsx` — redesign with charts
-- `dashboard/src/components/` — new chart components (FunnelChart, BarChart, PieChart, etc.)
-- `plugin/hbo-plugin/plugin_api.py` — add stats aggregation routes
-- `plugin/hbo-plugin/state.py` — add `get_stats()` function
+Implemented CSS bar charts (no heavy chart library): funnel, segments, score bins, priorities, agent workload. API: `GET /stats`.
 
 ---
 
@@ -285,22 +260,31 @@ Today's Overview page shows 4 plain stat cards (active agents, open signals, pen
 
 ---
 
-## Priority 10 — Company Context tab
+## Priority 10 — Business Context tab ✅
 
-### 10.1 Why
-Agents need to know what the company does, what it sells, tone of voice, competitors — to act with the right context from day one.
+Implemented Business tab, `business-context.json`, `GET/POST /business-context`, `hbo_get_business_context` tool. SOUL templates instruct agents to load context at session start.
 
-### 10.2 What
-- New "Company" tab in dashboard
-- Form fields: company name, description, products/services, target audience, tone of voice, competitors, unique selling points, custom instructions
-- Stored in `data/company-context.json`
-- Injected into agent prompts automatically
+**Future:** auto-inject `promptBlock` into Hermes profile system prompt via distribution.yaml hooks.
 
-### 10.3 Files
-- `dashboard/src/routes/Company.tsx` — new page with form
-- `dashboard/src/index.tsx` — add Company tab
-- `plugin/hbo-plugin/state.py` — add `get_company_context()`, `save_company_context()`
-- `plugin/hbo-plugin/plugin_api.py` — add `GET/POST /company-context`
+---
+
+## Priority 11 — Cron automations (profile distributions) ✅
+
+Per cron automations note: crons in profiles, catalog in plugin, Setup UI, manual enable only.
+
+---
+
+## Priority 12 — Sponsor integrations (optional) ✅
+
+NVIDIA NemoClaw docs/skill, Stripe Link CLI docs/skill, `deploy/nemoclaw/` Dockerfile, mock spend action, Docusaurus Sponsor section.
+
+**Pending:** tested NemoClaw Dockerfile against real NemoHermes image.
+
+---
+
+## Priority 13 — Sheets phone import fix ✅
+
+`_clean_phone()` in `sources/sheets.py`. Format phone column as Plain text in Sheets.
 
 ---
 
@@ -309,7 +293,7 @@ Agents need to know what the company does, what it sells, tone of voice, competi
 | File | Changes |
 |------|---------|
 | `plugin/hbo-plugin/plugin_api.py` | Add POST/DELETE/PUT routes for leads, actions, signals + stats + company context |
-| `plugin/hbo-plugin/state.py` | Add `append_lead`, `update_lead`, `resolve_signal`, `remove_action`, `get_stats`, `get/save_company_context` |
+| `plugin/hbo-plugin/state.py` | `get_stats`, `get/save_business_context`, `format_business_context_prompt` |
 | `plugin/hbo-plugin/sources/sheets.py` | **NEW** — Google Sheets import: fetch rows, normalize, append leads |
 | `plugin/hbo-plugin/sources/gmail.py` | **NEW** — Gmail send after approval, proactive signal detection |
 | `plugin/hbo-plugin/sources/google_maps.py` | **NEW** — Google Places lead search (future) |
@@ -322,7 +306,7 @@ Agents need to know what the company does, what it sells, tone of voice, competi
 | `dashboard/src/routes/Workflows.tsx` | Add output panel, run history columns |
 | `dashboard/src/routes/Setup.tsx` | Add reset demo button |
 | `dashboard/src/routes/Overview.tsx` | **Redesign** — charts, funnel, segments, scores, timeline |
-| `dashboard/src/routes/Company.tsx` | **NEW** — company context form |
+| `dashboard/src/routes/Business.tsx` | Business context form |
 | `dashboard/src/components/` | **NEW** — chart components (FunnelChart, BarChart, PieChart) |
 | `dashboard/src/index.tsx` | Add Signals tab + Company tab |
 | `skills/connect-source/SKILL.md` | **NEW** — data source onboarding skill |
@@ -349,10 +333,13 @@ Agents need to know what the company does, what it sells, tone of voice, competi
 9. ~~Gmail follow-up emails (5.3)~~ ✅
 10. ~~Mode toggle + bridge status (5.7)~~ ✅
 11. Re-link expired connections (5.6) — manual
-12. **Company Context tab** (10) — high value, low effort
-13. **Dashboard Overview redesign** (8) — charts, funnel, segments
-14. Profile skills & cron (6.1, 6.2)
-15. Skills system (9.1–9.7)
-16. Additional tests (7.2) + CI (7.3)
-17. Phase 6 demo polish — script, screenshots, video, GitHub Pages
-18. HubSpot sync (5.4) + proactive signals (5.5) — future
+12. ~~Business Context tab (10)~~ ✅
+13. ~~Dashboard Overview redesign (8)~~ ✅
+14. ~~Profile cron blueprints (6.2)~~ ✅
+15. ~~Sponsor integrations (12)~~ ✅
+16. ~~Sheets phone fix (13)~~ ✅
+17. ~~Profile skills (6.1)~~ ✅
+18. Skills system (9.1–9.7)
+19. Additional tests (7.2) + CI (7.3)
+20. Phase 6 demo polish — script, screenshots, video, GitHub Pages
+21. HubSpot sync (5.4) + proactive signals (5.5) — future
