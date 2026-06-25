@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 3
 title: How it works
 ---
 
@@ -129,4 +129,4 @@ Profiles install separately but share the same HBO Plugin state and dashboard.
 
 ## Try it yourself
 
-Copy the [install prompt](./install-prompt) into Hermes. It runs the full loop: install → briefing → action queue → approve one → audit.
+Copy the [install prompt](./install#prompt) into Hermes. It runs the full loop: install → briefing → action queue → approve one → audit.

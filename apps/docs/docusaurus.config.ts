@@ -67,7 +67,6 @@ const config: Config = {
           title: 'Profiles',
           items: [
             { label: 'Sales Ops Agent', to: '/docs/profiles' },
-            { label: 'Install prompt', to: '/docs/install-prompt' },
             { label: 'Skills', to: '/docs/skills' },
           ],
         },

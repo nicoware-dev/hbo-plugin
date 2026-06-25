@@ -85,7 +85,7 @@ User pastes install prompt → Hermes installs everything → Dashboard opens �
 
 | Criteria | How to verify |
 |----------|---------------|
-| Install in one prompt | [Install prompt](./install-prompt) completes without manual CLI |
+| Install in one prompt | [Install prompt](./install#prompt) completes without manual CLI |
 | Dashboard works | Business Ops tab shows leads, actions, audit |
 | Approval loop works | Approve/reject mutates state + audit |
 | Three profiles usable | Each profile runs its workflow skill |

@@ -3,7 +3,7 @@ import {useCallback, useState} from 'react';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
-const INSTALL_PROMPT = `Install HBO Plugin from the hbo-plugin repository.
+const INSTALL_PROMPT = `Install HBO Plugin from https://github.com/nicoware-dev/hbo-plugin
 
 Please:
 1. read the README and docs,

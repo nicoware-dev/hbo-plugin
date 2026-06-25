@@ -4,7 +4,6 @@ const sidebars: SidebarsConfig = {
   docs: [
     'intro',
     'install',
-    'install-prompt',
     'how-it-works',
     'objectives',
     'architecture',

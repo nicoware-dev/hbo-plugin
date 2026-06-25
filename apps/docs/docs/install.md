@@ -7,18 +7,43 @@ title: Install
 
 Two paths: **prompt-driven** (recommended) or **manual CLI**.
 
+**Repository:** [github.com/nicoware-dev/hbo-plugin](https://github.com/nicoware-dev/hbo-plugin)
+
 ## Option A — Paste into Hermes (recommended)
 
-Copy the full prompt from [Install prompt](./install-prompt) and paste it into a Hermes Agent session. Hermes will:
+The fastest way to install and verify HBO Plugin. Copy the prompt below and paste it into **Hermes Agent**.
 
-1. Read the repository README and docs
-2. Install the plugin to `~/.hermes/plugins/hbo-plugin`
-3. Install Sales Ops, Growth, and Ops Lead profiles
-4. Open the dashboard and verify the Business Ops tab
-5. Run the daily briefing workflow
-6. Show the action queue and approve one action
+Hermes will read the docs, install the plugin and profiles, open the dashboard, run a workflow, and walk through the approval loop.
 
-This is the fastest way to see the full signal → approval loop.
+### Prompt
+
+```text
+Install HBO Plugin from https://github.com/nicoware-dev/hbo-plugin
+
+Please:
+1. read the README and docs,
+2. install the Hermes plugin,
+3. install the Sales Ops, Growth, and Ops Lead profile distributions,
+4. open the Hermes dashboard,
+5. verify the Business Ops tab,
+6. run the daily briefing workflow,
+7. show the action queue,
+8. approve one action,
+9. explain how to enable the composio-cli skill.
+```
+
+### What each step does
+
+| Step | Outcome |
+|------|---------|
+| 1 | Hermes understands plugin layout and install paths |
+| 2 | Plugin tools and dashboard extension enabled |
+| 3 | Three specialized agent profiles ready |
+| 4–5 | Business Ops tab visible with Overview, Actions, etc. |
+| 6 | Ops Lead briefing with priorities and risks |
+| 7 | Pending action proposals in the queue |
+| 8 | Approval mutates state and writes audit event |
+| 9 | Path to Gmail, Slack, CRM via Composio CLI |
 
 ## Option B — Manual install
 
@@ -26,7 +51,7 @@ This is the fastest way to see the full signal → approval loop.
 
 - [Hermes Agent](https://hermes-agent.nousresearch.com/) installed
 - Node 20+ (for building the dashboard bundle if needed)
-- This repository cloned locally
+- [This repository](https://github.com/nicoware-dev/hbo-plugin) cloned locally
 
 ### 1. Build dashboard bundle (if not pre-built)
 
@@ -97,3 +122,7 @@ See [Composio CLI](./composio-cli). The plugin works on local workspace state wi
 - [How it works](./how-it-works) — understand signals and approvals
 - [Dashboard](./dashboard) — explore all UI pages
 - [Plugin](./plugin) — full tool reference
+
+## Source
+
+This prompt is also in the repository at [`docs/INSTALLATION_PROMPT.md`](https://github.com/nicoware-dev/hbo-plugin/blob/main/docs/INSTALLATION_PROMPT.md).
