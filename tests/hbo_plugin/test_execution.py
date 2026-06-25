@@ -20,11 +20,22 @@ def test_should_execute_only_in_composio_mode(rules_module, state_module):
     assert execution.should_execute(action) is True
 
 
-def test_approve_executes_email_in_composio_mode(rules_module, state_module):
+def test_approve_does_not_execute_in_composio_mode(rules_module, state_module):
     state_module.set_selected_bridge("composio")
     with patch("hbo_plugin.sources.gmail.send_email") as mock_send:
-        mock_send.return_value = {"success": True, "tool": "GMAIL_SEND_EMAIL", "data": {}}
         result = rules_module.approve_action("act_001")
+    assert result["success"] is True
+    assert result["action"]["status"] == "approved"
+    assert "execution" not in result
+    mock_send.assert_not_called()
+
+
+def test_execute_action_sends_email_in_composio_mode(rules_module, state_module):
+    state_module.set_selected_bridge("composio")
+    rules_module.approve_action("act_001")
+    with patch("hbo_plugin.sources.gmail.send_email") as mock_send:
+        mock_send.return_value = {"success": True, "tool": "GMAIL_SEND_EMAIL", "data": {}}
+        result = rules_module.execute_action("act_001")
     assert result["success"] is True
     assert result["action"]["status"] == "executed"
     assert result["execution"]["success"] is True
@@ -39,6 +50,13 @@ def test_approve_skips_execution_in_local_demo_mode(rules_module, state_module):
     assert result["action"]["status"] == "approved"
     assert "execution" not in result
     mock_send.assert_not_called()
+
+
+def test_execute_requires_approved_status(rules_module, state_module):
+    state_module.set_selected_bridge("composio")
+    result = rules_module.execute_action("act_001")
+    assert result["success"] is False
+    assert "approved" in result["error"]
 
 
 def test_send_approval_email_tool(rules_module):
@@ -60,10 +78,19 @@ def test_bridge_status(rules_module):
     assert any(b["id"] == "composio" for b in status["bridges"])
 
 
-def test_mock_stripe_executes_in_local_demo(rules_module, state_module):
+def test_mock_stripe_execute_in_local_demo(rules_module, state_module):
     state_module.set_selected_bridge("local-demo")
-    result = rules_module.approve_action("act_004")
+    rules_module.approve_action("act_004")
+    result = rules_module.execute_action("act_004")
     assert result["success"] is True
     assert result["action"]["status"] == "executed"
     assert result["execution"]["mock"] is True
     assert "stripe link spend" in result["execution"]["command"].lower()
+
+
+def test_list_actions_enriched_executable_flag(rules_module, state_module):
+    state_module.set_selected_bridge("composio")
+    rules_module.approve_action("act_001")
+    actions = rules_module.list_actions_enriched(status="approved")
+    act = next(a for a in actions if a["id"] == "act_001")
+    assert act["executable"] is True

@@ -21,3 +21,4 @@ provides_tools:
   - hbo_set_bridge_mode
   - hbo_get_business_context
   - hbo_sync_sales_sources
+  - hbo_execute_action

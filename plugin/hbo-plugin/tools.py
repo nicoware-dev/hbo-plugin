@@ -133,6 +133,21 @@ def get_tool_definitions() -> list[ToolDef]:
             ),
         ),
         (
+            "hbo_execute_action",
+            {
+                "name": "hbo_execute_action",
+                "description": "Execute an approved action externally (e.g. Composio Gmail). Requires prior approval.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {"actionId": {"type": "string"}},
+                    "required": ["actionId"],
+                },
+            },
+            lambda params, **_: _json_response(
+                business_rules.execute_action(params.get("actionId", ""))
+            ),
+        ),
+        (
             "hbo_generate_briefing",
             {
                 "name": "hbo_generate_briefing",

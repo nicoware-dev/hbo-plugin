@@ -9,7 +9,7 @@ from __future__ import annotations
 from typing import Any
 
 from .. import state
-from .composio_client import is_available, platform, run
+from .composio_client import is_available, platform, run, run_argv
 
 
 def search_spreadsheets(query: str) -> list[dict[str, Any]]:
@@ -20,9 +20,9 @@ def search_spreadsheets(query: str) -> list[dict[str, Any]]:
 
 def get_sheet_names(spreadsheet_id: str) -> list[str]:
     """Get tab names from a spreadsheet."""
-    data = run(
-        f"execute GOOGLESHEETS_GET_SHEET_NAMES "
-        f"-d '{{\"spreadsheet_id\":\"{spreadsheet_id}\"}}'"
+    data = run_argv(
+        ["execute", "GOOGLESHEETS_GET_SHEET_NAMES"],
+        {"spreadsheet_id": spreadsheet_id},
     )
     sheets = data.get("data", {}).get("sheets", [])
     return [s["properties"]["title"] for s in sheets]
@@ -30,10 +30,9 @@ def get_sheet_names(spreadsheet_id: str) -> list[str]:
 
 def read_rows(spreadsheet_id: str, sheet: str, range_str: str) -> list[list[str]]:
     """Read rows from a sheet range."""
-    data = run(
-        f"execute GOOGLESHEETS_VALUES_GET "
-        f"-d '{{\"spreadsheet_id\":\"{spreadsheet_id}\","
-        f"\"range\":\"{sheet}!{range_str}\"}}'"
+    data = run_argv(
+        ["execute", "GOOGLESHEETS_VALUES_GET"],
+        {"spreadsheet_id": spreadsheet_id, "range": f"{sheet}!{range_str}"},
     )
     return data.get("data", {}).get("values", [])
 

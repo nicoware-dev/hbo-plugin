@@ -31,7 +31,7 @@ def get_workspace_summary() -> dict[str, Any]:
     actions = read_json("actions.json", [])
     pending = sum(1 for a in actions if a.get("status") == "pending")
     briefings = read_json("briefings.json", [])
-    last = briefings[-1]["generatedAt"] if briefings else None
+    last_briefing = briefings[-1] if briefings else None
     return {
         "workspaceName": ws.get("name", "Business Ops Demo"),
         "status": ws.get("status", "ready"),
@@ -39,7 +39,8 @@ def get_workspace_summary() -> dict[str, Any]:
         "activeAgents": len(read_json("agents.json", [])),
         "openSignals": len(list_signals(open_only=True)),
         "pendingActions": pending,
-        "lastBriefingAt": last,
+        "lastBriefingAt": last_briefing.get("generatedAt") if last_briefing else None,
+        "lastBriefingTitle": last_briefing.get("title") if last_briefing else None,
     }
 
 

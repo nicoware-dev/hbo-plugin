@@ -151,7 +151,7 @@ async def import_leads_from_sheets(body: dict[str, Any] = Body(...)):
 
 @router.get("/actions")
 async def get_actions(status: str | None = None):
-    return {"actions": _state.list_actions(status=status)}
+    return {"actions": _rules.list_actions_enriched(status=status)}
 
 
 @router.post("/actions")
@@ -177,6 +177,11 @@ async def approve_action(action_id: str):
 @router.post("/actions/{action_id}/reject")
 async def reject_action(action_id: str):
     return _rules.reject_action(action_id)
+
+
+@router.post("/actions/{action_id}/execute")
+async def execute_action(action_id: str):
+    return _rules.execute_action(action_id)
 
 
 @router.post("/signals")

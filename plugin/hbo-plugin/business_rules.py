@@ -66,8 +66,6 @@ def _summary_for_workflow(workflow_id: str, outputs: dict[str, Any]) -> str:
 
 
 def approve_action(action_id: str) -> dict[str, Any]:
-    from . import execution
-
     action = next((a for a in state.list_actions() if a.get("id") == action_id), None)
     if not action:
         return {"success": False, "error": f"Action not found: {action_id}"}
@@ -87,29 +85,60 @@ def approve_action(action_id: str) -> dict[str, Any]:
             "actionId": action_id,
         }
     )
-    result: dict[str, Any] = {"success": True, "action": updated, "auditEvent": event}
+    return {"success": True, "action": updated, "auditEvent": event}
 
-    if execution.should_execute(updated):
-        exec_result = execution.execute_approved_action(updated)
-        result["execution"] = exec_result
-        final_status = "executed" if exec_result.get("success") else "failed"
-        updated = state.update_action(action_id, final_status) or updated
-        result["action"] = updated
-        state.append_audit_event(
-            {
-                "id": f"audit_{uuid4().hex[:8]}",
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-                "agentId": updated.get("agentId", "ops-lead-agent"),
-                "eventType": "action_executed" if exec_result.get("success") else "action_failed",
-                "summary": (
-                    f"Composio executed {action_id}: {exec_result.get('tool', 'email')}."
-                    if exec_result.get("success")
-                    else f"Composio execution failed for {action_id}: {exec_result.get('error', 'unknown')}."
-                ),
-                "actionId": action_id,
-            }
+
+def execute_action(action_id: str) -> dict[str, Any]:
+    from . import execution
+
+    action = next((a for a in state.list_actions() if a.get("id") == action_id), None)
+    if not action:
+        return {"success": False, "error": f"Action not found: {action_id}"}
+    if action.get("status") != "approved":
+        return {
+            "success": False,
+            "error": f"Action must be approved before execute, got: {action.get('status')}",
+        }
+    if not execution.should_execute(action):
+        return {"success": False, "error": "This action is not eligible for external execution"}
+
+    exec_result = execution.execute_approved_action(action)
+    final_status = "executed" if exec_result.get("success") else "failed"
+    updated = state.update_action(action_id, final_status) or action
+    event = state.append_audit_event(
+        {
+            "id": f"audit_{uuid4().hex[:8]}",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "agentId": updated.get("agentId", "ops-lead-agent"),
+            "eventType": "action_executed" if exec_result.get("success") else "action_failed",
+            "summary": (
+                f"Executed {action_id}: {exec_result.get('tool', 'external')}."
+                if exec_result.get("success")
+                else f"Execution failed for {action_id}: {exec_result.get('error', 'unknown')}."
+            ),
+            "actionId": action_id,
+        }
+    )
+    return {
+        "success": exec_result.get("success", False),
+        "action": updated,
+        "execution": exec_result,
+        "auditEvent": event,
+    }
+
+
+def list_actions_enriched(status: str | None = None) -> list[dict[str, Any]]:
+    from . import execution
+
+    actions = state.list_actions(status=status)
+    enriched: list[dict[str, Any]] = []
+    for action in actions:
+        row = dict(action)
+        row["executable"] = (
+            action.get("status") == "approved" and execution.should_execute(action)
         )
-    return result
+        enriched.append(row)
+    return enriched
 
 
 def reject_action(action_id: str) -> dict[str, Any]:
