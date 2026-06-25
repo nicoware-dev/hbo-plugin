@@ -30,15 +30,6 @@ The **Business Ops** tab in Hermes gives operators charts, lead management, work
 
 More screenshots: [Dashboard docs](https://hbo-plugin-docs.vercel.app/docs/dashboard#screenshots)
 
-## Pitch video (HyperFrames)
-
-B-roll scenes live in [`videos/hbo-pitch/`](videos/hbo-pitch/). Lint passes (`npm run check`); render with:
-
-```bash
-cd videos/hbo-pitch
-npx hyperframes render -c compositions/scene-01-hook.html -o renders/scene-01-hook.mp4 -q draft
-```
-
 ## Quick start
 
 ### Install the Hermes plugin
