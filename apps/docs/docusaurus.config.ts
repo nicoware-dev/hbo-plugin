@@ -7,13 +7,13 @@ const config: Config = {
   tagline: 'Hermes Business Operations Plugin',
   favicon: 'img/favicon.ico',
   future: { v4: true },
-  url: 'https://nicoware-dev.github.io',
-  baseUrl: '/hbo-plugin/',
+  url: 'https://hbo-plugin-docs.vercel.app',
+  baseUrl: '/',
   organizationName: 'nicoware-dev',
   projectName: 'hbo-plugin',
   onBrokenLinks: 'throw',
   headTags: [
-    { tagName: 'link', attributes: { rel: 'apple-touch-icon', href: '/hbo-plugin/img/apple-touch-icon.png' } },
+    { tagName: 'link', attributes: { rel: 'apple-touch-icon', href: '/img/apple-touch-icon.png' } },
   ],
   i18n: { defaultLocale: 'en', locales: ['en'] },
   markdown: {
