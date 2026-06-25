@@ -13,6 +13,8 @@ _system/records/*
 !docs/SESSION_LOG_*.md
 !docs/PROJECT_STATUS.md
 !docs/ROADMAP.md
+!docs/HERMES_ALIGNMENT.md
+!docs/DEMO_SCRIPT.md
 !docs/INTEGRATIONS.md
 !docs/NVIDIA_NEMOCLAW.md
 !docs/STRIPE_LINK_CLI.md
