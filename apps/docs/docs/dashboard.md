@@ -14,24 +14,40 @@ Bundle: `dashboard/dist/index.js` (build with `pnpm build:dashboard`)
 
 | Page | What you see | Key actions |
 |------|--------------|-------------|
-| **Overview** | Workspace summary cards — leads, signals, pending actions | Quick status at a glance |
-| **Agents** | Sales Ops, Growth, Ops Lead profile cards | Agent focus areas and activity |
-| **Workflows** | Built-in workflows | Run inbound sales, outbound growth, daily briefing |
-| **Leads** | Leads table | Scores, segments, status, recommended actions |
-| **Actions** | Pending action queue | **Approve** / **Reject** — mutates state + audit |
-| **Audit** | Chronological decision log | Traceability for approvals |
-| **Tool Bridges** | Local workspace + Composio CLI | Path to external app integration |
-| **Setup** | Installation checklist | Verify plugin and profiles |
+| **Overview** | Stat cards + bar charts (funnel, segments, scores, audit timeline) | At-a-glance business health |
+| **Agents** | Sales Ops, Growth, Ops Lead profile cards | Agent focus areas |
+| **Workflows** | Built-in workflows + output panels | Run workflows; outbound shows **outreach previews** |
+| **Leads** | Leads table + import from Sheets | CRUD, edit, Google Sheets import |
+| **Actions** | Pending action queue | Approve / Reject; outreach preview before approve |
+| **Signals** | Open signals | Create, resolve |
+| **Business** | Business context form | Name, products, tone — agents load via `hbo_get_business_context` |
+| **Audit** | Chronological decision log | Traceability |
+| **Tool Bridges** | Bridge mode + Composio status | Toggle local-demo / composio / hybrid |
+| **Setup** | Install checklist, **reset demo**, recommended crons | Restore bundled demo data |
+
+## Overview charts
+
+After install, run **Setup → Reset demo data** to load 12 sample leads and audit history. Charts use the same Card styling as the rest of the Hermes dashboard.
+
+Metrics include:
+
+- Lead funnel by status
+- Leads by segment
+- Score distribution
+- Priority breakdown
+- Audit activity (last 7 days)
+- Pending actions per agent
 
 ## Approvals in the UI
 
-The **Actions** page is the operator control surface for the approval loop:
+The **Actions** page is the operator control surface:
 
 1. Lists actions with `status: pending`
-2. Approve or reject updates workspace state via plugin API
-3. Audit page shows the resulting event
+2. Outreach actions show an expandable **message preview**
+3. Approve or reject updates workspace state via plugin API
+4. Audit page shows the resulting event
 
-Same mutations are available via `hbo_approve_action` / `hbo_reject_action` in Hermes chat.
+Same mutations via `hbo_approve_action` / `hbo_reject_action` in Hermes chat.
 
 ## API routes
 
@@ -40,13 +56,22 @@ Backend: `dashboard/plugin_api.py`
 | Route | Returns |
 |-------|---------|
 | `GET /workspace` | Workspace summary |
+| `GET /stats` | Chart aggregations |
+| `GET /business-context` | Business context JSON |
+| `POST /business-context` | Save business context |
+| `GET /automations` | Recommended cron catalog |
 | `GET /agents` | Agent list |
 | `GET /leads` | Leads |
+| `POST /leads` | Create lead |
+| `POST /leads/import/sheets` | Import from Google Sheets |
 | `GET /signals` | Open signals |
 | `GET /actions` | Action proposals |
 | `POST /actions/{id}/approve` | Approve action |
 | `POST /actions/{id}/reject` | Reject action |
-| `GET /audit` | Audit log |
+| `POST /demo/reset` | Reset demo data |
+| `GET /bridge/status` | Composio bridge status |
+
+CLI tool `hbo_sync_sales_sources` mirrors the sales-source-sync cron (import + audit).
 
 ## Requirements
 
@@ -55,16 +80,11 @@ Backend: `dashboard/plugin_api.py`
 3. Hermes dashboard **restarted** after plugin install or update
 
 :::tip
-If API routes return 404, confirm the plugin path and restart the dashboard process.
+If API routes return 404, confirm the plugin path and restart the dashboard process. If charts are empty, use **Setup → Reset demo data**.
 :::
-
-## Tech stack
-
-- **UI:** React, Vite IIFE bundle, Hermes plugin SDK (`window.__HERMES_PLUGIN_SDK__`)
-- **API:** FastAPI router mounted by Hermes plugin loader
-- **State:** Shared with plugin tools via `state.py`
 
 ## Related
 
 - [Install](./install) — setup and troubleshooting
+- [Sponsor Integrations](./sponsor-integrations) — optional NVIDIA / Stripe
 - [How it works](./how-it-works) — approval loop detail

@@ -29,7 +29,9 @@ Please:
 6. run the daily briefing workflow,
 7. show the action queue,
 8. approve one action,
-9. explain how to enable the composio-cli skill.
+9. explain how to enable the composio-cli skill,
+10. open Business tab and confirm business context is loaded,
+11. reset demo data from Setup if charts look empty.
 ```
 
 ### What each step does
@@ -39,11 +41,12 @@ Please:
 | 1 | Hermes understands plugin layout and install paths |
 | 2 | Plugin tools and dashboard extension enabled |
 | 3 | Three specialized agent profiles ready |
-| 4–5 | Business Ops tab visible with Overview, Actions, etc. |
+| 4–5 | Business Ops tab with Overview charts, Actions, Business context |
 | 6 | Ops Lead briefing with priorities and risks |
 | 7 | Pending action proposals in the queue |
 | 8 | Approval mutates state and writes audit event |
 | 9 | Path to Gmail, Slack, CRM via Composio CLI |
+| 10–11 | Business context + reset demo for full dashboard data |
 
 ## Option B — Manual install
 
@@ -91,10 +94,11 @@ Restart the Hermes dashboard process, then open the **Business Ops** tab.
 
 Verify:
 
-- **Overview** shows workspace summary
+- **Overview** — stat cards + funnel/segment/score charts (use **Setup → Reset demo** if data looks sparse)
+- **Business** — edit business context agents load via `hbo_get_business_context`
 - **Agents** lists three profiles
-- **Actions** shows pending proposals
-- **Workflows** can run `daily_ops_briefing`
+- **Actions** shows pending proposals (outreach actions include message preview)
+- **Workflows** can run `daily_ops_briefing` or `outbound_growth` for outreach previews
 
 ### 5. Run first workflow
 
@@ -107,6 +111,12 @@ Approve one action via chat or the dashboard **Actions** page. Check **Audit** f
 ## Optional — enable Composio bridge
 
 See [Composio CLI](./composio-cli). The plugin works on local workspace state without external credentials.
+
+For scheduled import, use `hbo_sync_sales_sources` (matches the **sales-source-sync** cron blueprint).
+
+## Sponsor integrations (optional)
+
+See [Sponsor Integrations](./sponsor-integrations) for NVIDIA NemoClaw and Stripe Link CLI — not required for MVP.
 
 ## Troubleshooting
 

@@ -48,6 +48,8 @@ Review the prompt before enabling. Crons are **recommended**, not auto-enabled.
 ## Test
 
 ```bash
-hbo_import_leads_from_sheets spreadsheetId=<id>
+hbo_sync_sales_sources spreadsheetId=<id>
 hbo_get_workspace
 ```
+
+Or call tool `hbo_sync_sales_sources` from Hermes (writes audit event).
