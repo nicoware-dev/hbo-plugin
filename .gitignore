@@ -1,11 +1,10 @@
 _local/
 _temp/
 .cursor/
-# Local system state (session history is tracked)
-_system/*
-!_system/records/
-_system/records/*
-!_system/records/session-history/
+_system/
+
+# Contributor docs (local only; public site is apps/docs/)
+/docs/
 
 # Dependencies
 node_modules/
@@ -36,5 +35,3 @@ venv/
 .DS_Store
 Thumbs.db
 *.log
-
-/docs/
