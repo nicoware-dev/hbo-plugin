@@ -7,6 +7,8 @@ type Workspace = {
   demoSources?: { googleSheetsSpreadsheetId?: string; defaultSheetName?: string };
 };
 
+const PAGE_SIZE = 10;
+
 export function LeadsPage() {
   const { React, components } = getSDK();
   const { Card, CardContent, Button } = components;
@@ -19,6 +21,12 @@ export function LeadsPage() {
   const [editId, setEditId] = React.useState<string | null>(null);
   const [sheetId, setSheetId] = React.useState("");
   const [sheetName, setSheetName] = React.useState("Hoja 1");
+  const [search, setSearch] = React.useState("");
+  const [filterStatus, setFilterStatus] = React.useState("");
+  const [filterPriority, setFilterPriority] = React.useState("");
+  const [filterSegment, setFilterSegment] = React.useState("");
+  const [filterAgent, setFilterAgent] = React.useState("");
+  const [page, setPage] = React.useState(0);
   const [form, setForm] = React.useState({
     name: "",
     source: "dashboard",
@@ -106,7 +114,46 @@ export function LeadsPage() {
 
   if (loading) return React.createElement("p", null, "Loading leads…");
 
-  const leads = data?.leads ?? [];
+  const allLeads = data?.leads ?? [];
+
+  // Filter
+  const searchLower = search.toLowerCase();
+  const filtered = allLeads.filter((l) => {
+    if (searchLower && !String(l.name ?? "").toLowerCase().includes(searchLower)
+        && !String(l.company ?? "").toLowerCase().includes(searchLower)
+        && !String(l.email ?? "").toLowerCase().includes(searchLower)) return false;
+    if (filterStatus && l.status !== filterStatus) return false;
+    if (filterPriority && l.priority !== filterPriority) return false;
+    if (filterSegment && l.segment !== filterSegment) return false;
+    if (filterAgent && l.ownerAgentId !== filterAgent) return false;
+    return true;
+  });
+
+  // Pagination
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages - 1);
+  const paged = filtered.slice(safePage * PAGE_SIZE, safePage * PAGE_SIZE + PAGE_SIZE);
+
+  // CSV export
+  function exportCSV() {
+    const headers = ["name", "email", "company", "phone", "source", "segment", "score", "priority", "status", "ownerAgentId", "recommendedAction"];
+    const rows = filtered.map((l) => headers.map((h) => {
+      const val = String(l[h] ?? "").replace(/"/g, '""');
+      return `"${val}"`;
+    }).join(","));
+    const csv = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `hbo-leads-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // Unique values for filter dropdowns
+  const segments = [...new Set(allLeads.map((l) => String(l.segment).filter(Boolean)))];
+  const agents = [...new Set(allLeads.map((l) => String(l.ownerAgentId).filter(Boolean)))];
 
   return React.createElement(
     "div",
@@ -135,7 +182,59 @@ export function LeadsPage() {
           onClick: () => setShowImport((v) => !v),
         },
         showImport ? "Cancel import" : "Import from Sheets"
+      ),
+      React.createElement(
+        Button,
+        { variant: "outline", size: "sm", onClick: exportCSV },
+        "Export CSV"
       )
+    ),
+    React.createElement(
+      "div",
+      { className: "flex flex-wrap gap-2 items-center" },
+      React.createElement("input", {
+        className: "border rounded p-2 text-sm flex-1 min-w-48",
+        placeholder: "Search by name, company, or email…",
+        value: search,
+        onChange: (e: { target: { value: string } }) => { setSearch(e.target.value); setPage(0); },
+      }),
+      React.createElement(
+        "select",
+        { className: "border rounded p-2 text-sm", value: filterStatus,
+          onChange: (e: { target: { value: string } }) => { setFilterStatus(e.target.value); setPage(0); } },
+        React.createElement("option", { value: "" }, "All statuses"),
+        React.createElement("option", { value: "new" }, "New"),
+        React.createElement("option", { value: "needs_followup" }, "Needs follow-up"),
+        React.createElement("option", { value: "hot" }, "Hot"),
+        React.createElement("option", { value: "converted" }, "Converted")
+      ),
+      React.createElement(
+        "select",
+        { className: "border rounded p-2 text-sm", value: filterPriority,
+          onChange: (e: { target: { value: string } }) => { setFilterPriority(e.target.value); setPage(0); } },
+        React.createElement("option", { value: "" }, "All priorities"),
+        React.createElement("option", { value: "low" }, "Low"),
+        React.createElement("option", { value: "medium" }, "Medium"),
+        React.createElement("option", { value: "high" }, "High")
+      ),
+      filterSegment && segments.length > 1 &&
+        React.createElement(
+          "select",
+          { className: "border rounded p-2 text-sm", value: filterSegment,
+            onChange: (e: { target: { value: string } }) => { setFilterSegment(e.target.value); setPage(0); } },
+          React.createElement("option", { value: "" }, "All segments"),
+          ...segments.map((s) => React.createElement("option", { key: s, value: s }, s))
+        ),
+      filterAgent && agents.length > 1 &&
+        React.createElement(
+          "select",
+          { className: "border rounded p-2 text-sm", value: filterAgent,
+            onChange: (e: { target: { value: string } }) => { setFilterAgent(e.target.value); setPage(0); } },
+          React.createElement("option", { value: "" }, "All agents"),
+          ...agents.map((a) => React.createElement("option", { key: a, value: a }, a))
+        ),
+      React.createElement("span", { className: "text-sm text-muted-foreground" },
+        `${filtered.length} of ${allLeads.length} leads`)
     ),
     showImport &&
       React.createElement(
@@ -222,7 +321,7 @@ export function LeadsPage() {
         React.createElement(
           "tbody",
           null,
-          ...leads.map((lead) =>
+          ...paged.map((lead) =>
             React.createElement(
               "tr",
               { key: String(lead.id), className: "border-t" },
@@ -239,6 +338,17 @@ export function LeadsPage() {
         )
       )
     ),
-    React.createElement(Card, null, React.createElement(CardContent, { className: "text-xs text-muted-foreground p-4" }, `${leads.length} leads loaded`))
+    totalPages > 1 &&
+      React.createElement(
+        "div",
+        { className: "flex items-center gap-2 justify-center" },
+        React.createElement(Button, { variant: "outline", size: "sm", disabled: safePage === 0,
+          onClick: () => setPage(safePage - 1) }, "← Prev"),
+        React.createElement("span", { className: "text-sm text-muted-foreground" },
+          `Page ${safePage + 1} of ${totalPages}`),
+        React.createElement(Button, { variant: "outline", size: "sm", disabled: safePage >= totalPages - 1,
+          onClick: () => setPage(safePage + 1) }, "Next →")
+      ),
+    React.createElement(Card, null, React.createElement(CardContent, { className: "text-xs text-muted-foreground p-4" }, `${filtered.length} leads shown (${allLeads.length} total)`))
   );
 }

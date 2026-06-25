@@ -1,4 +1,5 @@
 import { getSDK } from "./api/client";
+import { useFetch } from "./api/hooks";
 import { OverviewPage } from "./routes/Overview";
 import { AgentsPage } from "./routes/Agents";
 import { WorkflowsPage } from "./routes/Workflows";
@@ -11,16 +12,16 @@ import { SetupPage } from "./routes/Setup";
 import { BusinessPage } from "./routes/Business";
 
 const NAV = [
-  { id: "overview", label: "Overview" },
-  { id: "agents", label: "Agents" },
-  { id: "workflows", label: "Workflows" },
-  { id: "leads", label: "Leads" },
-  { id: "actions", label: "Actions" },
-  { id: "signals", label: "Signals" },
-  { id: "business", label: "Business" },
-  { id: "audit", label: "Audit" },
-  { id: "bridges", label: "Tool Bridges" },
-  { id: "setup", label: "Setup" },
+  { id: "overview", label: "Overview", badge: null },
+  { id: "agents", label: "Agents", badge: null },
+  { id: "workflows", label: "Workflows", badge: null },
+  { id: "leads", label: "Leads", badge: null },
+  { id: "actions", label: "Actions", badge: "pendingActions" },
+  { id: "signals", label: "Signals", badge: "openSignals" },
+  { id: "business", label: "Business", badge: null },
+  { id: "audit", label: "Audit", badge: null },
+  { id: "bridges", label: "Tool Bridges", badge: null },
+  { id: "setup", label: "Setup", badge: null },
 ] as const;
 
 type PageId = (typeof NAV)[number]["id"];
@@ -50,6 +51,7 @@ function registerPlugin() {
   function BusinessOpsApp() {
     const [page, setPage] = useState<PageId>("overview");
     const Page = pages[page] ?? OverviewPage;
+    const { data: ws } = useFetch<{ pendingActions?: number; openSignals?: number }>("/workspace");
 
     return React.createElement(
       "div",
@@ -57,8 +59,9 @@ function registerPlugin() {
       React.createElement(
         "nav",
         { className: "flex flex-wrap gap-2", "aria-label": "Business Ops sections" },
-        ...NAV.map((item) =>
-          React.createElement(
+        ...NAV.map((item) => {
+          const badgeCount = item.badge ? Number(ws?.[item.badge as keyof typeof ws] ?? 0) : 0;
+          return React.createElement(
             Button,
             {
               key: item.id,
@@ -66,9 +69,11 @@ function registerPlugin() {
               size: "sm",
               onClick: () => setPage(item.id),
             },
-            item.label
-          )
-        )
+            badgeCount > 0
+              ? `${item.label} (${badgeCount})`
+              : item.label
+          );
+        })
       ),
       React.createElement(Page, { onNavigate: (id: string) => setPage(id as PageId) })
     );
