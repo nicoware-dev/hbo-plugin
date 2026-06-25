@@ -17,8 +17,7 @@ Write-Host "Syncing plugin to Hermes..."
 & (Join-Path $PSScriptRoot "sync-plugin.cmd")
 
 Write-Host "Resetting demo data..."
-$env:PYTHONPATH = Join-Path $RepoRoot "plugin"
-python -c "from hbo_plugin import state; r = state.load_demo_data(); print('Demo reset:', r.get('message', r))"
+python (Join-Path $PSScriptRoot "demo_reset.py")
 
 Write-Host ""
 Write-Host "Demo reset complete."

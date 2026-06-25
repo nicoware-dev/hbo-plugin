@@ -25,11 +25,7 @@ echo "Syncing plugin to Hermes..."
 bash "$SCRIPT_DIR/sync-plugin.sh"
 
 echo "Resetting demo data..."
-PYTHONPATH="$REPO_ROOT/plugin" python -c "
-from hbo_plugin import state
-result = state.load_demo_data()
-print('Demo reset:', result.get('message', result))
-"
+python "$SCRIPT_DIR/demo_reset.py"
 
 echo ""
 echo "✓ Demo reset complete."
