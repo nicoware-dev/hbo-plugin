@@ -14,17 +14,19 @@ Repository: [nicoware-dev/hbo-plugin](https://github.com/nicoware-dev/hbo-plugin
 | 3 profile distributions | Done |
 | 5 bundled skills | Done |
 | Docusaurus public site | Done |
-| Workflows (full outputs) | Partial |
+| Workflows (full outputs) | Done |
+| Approve/reject + audit (dashboard) | Done |
+| Plugin API tests | Done (11 tests) |
 | Composio bridge (live) | Docs only (by design for MVP) |
 
-## Phase 5 — Workflows, approvals, audit
+## Phase 5 — Workflows, approvals, audit ✅
 
-1. Enrich `inbound_sales`, `outbound_growth`, and `daily_ops_briefing` to emit signals and action proposals from demo state.
-2. Replace dashboard `window.location.reload()` with SDK refetch after approve/reject.
-3. Add tests for `plugin_api.py` (pattern from Hermes kanban plugin tests).
-4. Verify approve/reject + audit flow end-to-end in Hermes CLI and dashboard.
+1. ~~Enrich workflows~~ — `inbound_sales`, `outbound_growth`, `daily_ops_briefing` emit signals and action proposals.
+2. ~~Dashboard refetch~~ — approve/reject uses SDK `refetch()` (no full page reload).
+3. ~~Tests~~ — `tests/hbo_plugin/` (11 tests); run `pnpm test:plugin`.
+4. **Manual check:** verify end-to-end in Hermes CLI + dashboard after plugin sync.
 
-## Phase 6 — Demo polish
+## Phase 6 — Demo polish (next)
 
 1. Record demo script flow (install → profiles → briefing → approve → audit).
 2. Add screenshots to `apps/docs`.
