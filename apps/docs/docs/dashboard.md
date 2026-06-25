@@ -16,14 +16,58 @@ Bundle: `dashboard/dist/index.js` (build with `pnpm build:dashboard`)
 |------|--------------|-------------|
 | **Overview** | Stat cards + bar charts (funnel, segments, scores, audit timeline) | At-a-glance business health |
 | **Agents** | Sales Ops, Growth, Ops Lead profile cards | Agent focus areas |
-| **Workflows** | Built-in workflows + output panels | Run workflows; outbound shows **outreach previews** |
-| **Leads** | Leads table + import from Sheets | CRUD, edit, Google Sheets import |
+| **Workflows** | Built-in workflows + output panels | Run workflows; **conversation review** for inbound_sales; outreach previews |
+| **Leads** | Leads table + import from Sheets | CRUD, edit, filters, pagination, CSV export |
 | **Actions** | Pending action queue | Approve / Reject; outreach preview before approve |
 | **Signals** | Open signals | Create, resolve |
 | **Business** | Business context form | Name, products, tone — agents load via `hbo_get_business_context` |
 | **Audit** | Chronological decision log | Traceability |
 | **Tool Bridges** | Bridge mode + Composio status | Toggle local workspace / composio / hybrid |
-| **Setup** | Install checklist, workspace restore, recommended crons | Load bundled sample data |
+| **Setup** | Install checklist, workspace restore, recommended crons | Reset demo; **Copy enable command** per cron |
+
+## Screenshots
+
+After **Setup → Restore sample data**, each page reflects the bundled Business Ops Demo workspace.
+
+### Overview
+
+![Overview — stat cards, lead funnel, segments, scores, and audit timeline](/img/screenshots/overview.png)
+
+### Workflows
+
+![Workflows — run inbound, outbound, and daily ops; expand outreach previews](/img/screenshots/workflows.png)
+
+### Leads
+
+![Leads — table with search, filters, import from Sheets, and edit](/img/screenshots/leads.png)
+
+### Actions
+
+![Actions — pending proposals with approve, reject, and delete](/img/screenshots/actions.png)
+
+### Signals
+
+![Signals — open alerts with type, owner, lead, and resolve](/img/screenshots/signals.png)
+
+### Agents
+
+![Agents — Sales Ops, Growth, and Ops Lead profile cards](/img/screenshots/agents.png)
+
+### Business
+
+![Business — company context form for agent tone and products](/img/screenshots/business.png)
+
+### Audit
+
+![Audit — chronological log of approvals, rejections, and workflow runs](/img/screenshots/audit.png)
+
+### Tool Bridges
+
+![Tool Bridges — bridge mode toggle and Composio connection status](/img/screenshots/tool-bridges.png)
+
+### Setup
+
+![Setup — install checklist, restore sample data, recommended crons](/img/screenshots/setup.png)
 
 ## Overview charts
 
@@ -49,6 +93,10 @@ The **Actions** page is the operator control surface:
 
 Same mutations via `hbo_approve_action` / `hbo_reject_action` in Hermes chat.
 
+## Conversation review
+
+After **inbound_sales**, the Workflows page shows a **Conversation review** panel with message threads for bot QA flags. Approve or reject the linked review action inline without opening raw JSON.
+
 ## API routes
 
 Backend: `dashboard/plugin_api.py`
@@ -62,6 +110,8 @@ Backend: `dashboard/plugin_api.py`
 | `GET /automations` | Recommended cron catalog |
 | `GET /agents` | Agent list |
 | `GET /leads` | Leads |
+| `GET /conversations` | Inbound conversation threads |
+| `GET /conversations/{id}` | Single conversation with messages |
 | `POST /leads` | Create lead |
 | `POST /leads/import/sheets` | Import from Google Sheets |
 | `GET /signals` | Open signals |

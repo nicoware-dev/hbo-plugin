@@ -1,9 +1,9 @@
 # HBO Plugin — Improvement Plan
 
 **Created:** 2026-06-25  
-**Last updated:** 2026-06-25 (oleadas 0–4 + cron/sponsor/P8/P10)  
-**Status:** In progress — Phase 6 demo polish next  
-**Phase:** Post-MVP — Dashboard functionality & Composio bridge
+**Last updated:** 2026-06-25 (oleadas 0–5 implementation)  
+**Status:** In progress — Phase 6 demo polish + P9 skills  
+**Phase:** Post-MVP — extensibility skills & public demo
 
 ---
 
@@ -19,7 +19,7 @@
 | Priority 5.7 mode toggle | Done — `workspace.selectedBridge` + Tool Bridges UI |
 | Priority 5.8 scripts | Done |
 | Composio bridge status API | Done — `GET /bridge/status`, fix CRLF WSL |
-| Tests | **33+** passing (`pnpm test:plugin`) |
+| Tests | **48+** passing (`pnpm test:plugin`) |
 | Priority 8 Overview charts | Done — funnel, segments, scores, priorities |
 | Priority 10 Business context tab | Done — `business-context.json` + form |
 | Sheets phone fix | Done — `_clean_phone()` preserves `+` |
@@ -118,17 +118,14 @@ The HBO Plugin has **17 `hbo_*` tools**, 3 profiles, full workflow outputs, and 
 
 ## Priority 4 — Workflow enhancements
 
-### 4.1 Inbound Sales — conversation review
-- **Current:** Flags bot QA issues and creates follow-up actions
-- **Enhancement:** Show conversation details inline so a human can review and approve/reject from the dashboard
+### 4.1 Inbound Sales — conversation review ✅
+- **Done:** `GET /conversations`, message threads in demo data, `ConversationReviewPanel` on Workflows with inline approve/reject
 
-### 4.2 Outbound Growth — outreach preview
-- **Current:** Creates an outreach batch
-- **Enhancement:** Preview the draft message before approving the action
+### 4.2 Outbound Growth — outreach preview ✅
+- **Done:** `OutreachPreviewPanel` in Workflows.tsx; `outreachPreview` on Actions rows
 
-### 4.3 Daily Briefing — schedule
-- **Current:** On-demand generation
-- **Enhancement:** Cron integration so ops-lead-agent generates briefings automatically
+### 4.3 Daily Briefing — schedule ✅ (manual cron)
+- **Done:** Cron blueprints + Setup **Copy enable command** + DEMO_SCRIPT step 6b
 
 ---
 
@@ -155,11 +152,11 @@ The HBO Plugin has **17 `hbo_*` tools**, 3 profiles, full workflow outputs, and 
 - Closes the loop: workflow proposes → user approves → Composio executes
 - Add `hbo_send_approval_email` tool
 
-### 5.4 HubSpot sync (future)
+### 5.4 HubSpot sync — **Deferred / out of scope (MVP)**
 - Map HubSpot contacts → HBO leads
 - Create HubSpot tickets from approved actions
 
-### 5.5 Proactive signals from Gmail
+### 5.5 Proactive signals from Gmail — **Deferred / out of scope (MVP)**
 - Detect unanswered emails → create signals automatically
 - Use `composio listen` for real-time event streaming
 
@@ -198,16 +195,16 @@ The HBO Plugin has **17 `hbo_*` tools**, 3 profiles, full workflow outputs, and 
 ## Priority 7 — Testing & CI
 
 ### 7.1 Current test coverage
-- **30 tests** passing (business_rules, plugin_api, execution, sheets, business_context)
-- Missing: workflows.py, state.py edge cases, dashboard component tests
+- **48+ tests** passing (business_rules, plugin_api, execution, sheets, mutations, business_context, sync)
+- Missing: dashboard component tests (deferred)
 
 ### 7.2 Add tests
 - `test_workflows.py` — inbound_sales, outbound_growth, daily_briefing outputs
 - `test_state.py` — append/update/reset operations
-- `test_tools.py` — tool definition schema validation
+- `test_mutations.py` — validation and response shape ✅
 
-### 7.3 GitHub Actions
-- CI pipeline: pytest + pnpm build on push
+### 7.3 GitHub Actions ✅
+- CI pipeline: pytest + pnpm build on push — `.github/workflows/ci.yml`
 
 ---
 
@@ -217,46 +214,17 @@ Implemented CSS bar charts (no heavy chart library): funnel, segments, score bin
 
 ---
 
-## Priority 9 — Skills system (extensibility)
+## Priority 9 — Skills system (extensibility) ✅
 
-### 9.1 Skill "Conectar nueva fuente" (data source onboarding)
-- Guides user to connect external apps via Composio
-- Flow: ask which app → search in Composio → link account → configure mapping → test
-- Creates a new adapter in `sources/` dynamically
-- Files: new skill `skills/connect-source/SKILL.md`, `sources/registry.py`
-
-### 9.2 Skill "Crear nuevo agente" (agent builder)
-- Guides user to create a specialized agent profile
-- Flow: ask role → tone → tools → workflows → generate profile → install
-- Uses a template system for dynamic profile generation
-- Files: new skill `skills/create-agent/SKILL.md`, `profiles/_template/`
-
-### 9.3 Skill "Buscar leads" (prospective lead search)
-- Search for leads using Google Places, LinkedIn, or other sources
-- Flow: ask what/where to search → call Composio → preview results → import
-- Files: new skill `skills/search-leads/SKILL.md`, `sources/google_maps.py` (future)
-
-### 9.4 Skill "Demo / Tour guiado" (onboarding)
-- Interactive walkthrough for new users
-- Shows: what the system does, how to run workflows, how to import leads, how to approve actions
-- Files: new skill `skills/demo-tour/SKILL.md`
-
-### 9.5 Skill "Auditoría de salud del sistema" (system health)
-- Checks: workflow status, unassigned leads, stale signals, Composio connection health
-- Generates a health report
-- Files: new skill `skills/health-check/SKILL.md`
-
-### 9.6 Skill "Exportar / Reportes" (reporting)
-- Export leads to CSV
-- Generate activity reports per agent/workflow
-- Files: new skill `skills/export-report/SKILL.md`
-
-### 9.7 Skill "Customizar sistema" (admin configuration)
-- Add custom action types
-- Add custom workflow templates
-- Add custom fields to leads
-- Configure approval rules (which actions need approval, risk levels)
-- Files: new skill `skills/customize/SKILL.md`
+| Skill | File | Status |
+|-------|------|--------|
+| 9.4 Demo tour | `skills/demo-tour/SKILL.md` | Done |
+| 9.5 Health check | `skills/health-check/SKILL.md` | Done |
+| 9.6 Export report | `skills/export-report/SKILL.md` | Done |
+| 9.1 Connect source | `skills/connect-source/SKILL.md` | Done |
+| 9.3 Search leads | `skills/search-leads/SKILL.md` | Done (Composio generic; no google_maps) |
+| 9.2 Create agent | `skills/create-agent/SKILL.md` + `profiles/_template/` | Done |
+| 9.7 Customize | `skills/customize/SKILL.md` | Done |
 
 ---
 
@@ -339,57 +307,43 @@ NVIDIA NemoClaw docs/skill, Stripe Link CLI docs/skill, `deploy/nemoclaw/` Docke
 15. ~~Sponsor integrations (12)~~ ✅
 16. ~~Sheets phone fix (13)~~ ✅
 17. ~~Profile skills (6.1)~~ ✅
-18. Skills system (9.1–9.7)
-19. Additional tests (7.2) + CI (7.3)
-20. Phase 6 demo polish — script, screenshots, video, GitHub Pages
+18. ~~Skills system (9.1–9.7)~~ ✅
+19. ~~Additional tests (7.2)~~ ✅ + CI (7.3) ✅
+20. ~~Phase 6 demo polish~~ — screenshots in docs; video project `videos/hbo-pitch/` lint-clean
 21. HubSpot sync (5.4) + proactive signals (5.5) — future
-22. **Response consistency** (11.1) — standardize all CRUD responses
-23. **Input validation** (11.2) — score 0-100, enum validation
-24. **Lead pagination** (12.1) — 10 per page
-25. **Search & filters** (12.2) — search bar + dropdowns
-26. **Notification badges** (12.3) — pending count on tabs
-27. **Visual timeline** (12.4) — bar chart for audit events
-28. **Export CSV** (12.5) — download leads as CSV
+22. ~~Response consistency (11.1)~~ ✅ — `mutations.py` standardized shape
+23. ~~Input validation (11.2)~~ ✅ — enums + score 0–100 via `schemas.parse_score`
+24. ~~Lead pagination (12.1)~~ ✅
+25. ~~Search & filters (12.2)~~ ✅
+26. ~~Notification badges (12.3)~~ ✅
+27. ~~Visual timeline (12.4)~~ ✅
+28. ~~Export CSV (12.5)~~ ✅
 
 ---
 
 ## Priority 11 — Response Consistency & Input Validation
 
-### 11.1 Response shape consistency
-- **Problem:** `delete_action` returns `{'deleted': {...}}` instead of `{'action': {...}}`; `update_lead` returns dict instead of None for missing records
-- **Fix:** Standardize all CRUD responses to `{'success': bool, 'action'|'lead'|'signal': {...}, 'auditEvent': {...}}` or `{'success': False, 'error': '...'}`
-- Files: `business_rules.py`
+### 11.1 Response shape consistency ✅
+- **Done:** `mutations.py` returns `{success, lead|action|signal, auditEvent}`; approve/reject/execute in `business_rules.py` match
 
-### 11.2 Input validation
-- **Problem:** No validation on lead score (accepts >100, negative), status accepts any string
-- **Fix:** Validate score is 0-100, status/priority/risk are from allowed enums, required fields present
-- Files: `business_rules.py`, `schemas.py`
+### 11.2 Input validation ✅
+- **Done:** Enums validated in `mutations.py`; score 0–100 via `schemas.parse_score()` (API + Sheets import)
 
 ---
 
 ## Priority 12 — Dashboard UX Improvements
 
-### 12.1 Lead pagination
-- **Problem:** With 15+ leads, the list is long and hard to navigate
-- **Fix:** Add pagination (10 per page) or infinite scroll to Leads page
-- Files: `dashboard/src/routes/Leads.tsx`
+### 12.1 Lead pagination ✅
+- **Done:** 10 per page in `Leads.tsx`
 
-### 12.2 Search and filters
-- **Problem:** No way to find a specific lead or filter by status/agent/segment
-- **Fix:** Add search bar + filter dropdowns (status, priority, segment, agent)
-- Files: `dashboard/src/routes/Leads.tsx`, `plugin_api.py` (filtered list routes)
+### 12.2 Search and filters ✅
+- **Done:** Client-side search + filter dropdowns in `Leads.tsx`
 
-### 12.3 Notification badges
-- **Problem:** No visual indicator of pending actions count in tab headers
-- **Fix:** Add badge/count on Actions tab showing pending count
-- Files: `dashboard/src/index.tsx`, `dashboard/src/routes/Actions.tsx`
+### 12.3 Notification badges ✅
+- **Done:** `pendingActions` / `openSignals` badges in `index.tsx`
 
-### 12.4 Visual timeline chart
-- **Problem:** Audit timeline data exists but is not rendered as a chart
-- **Fix:** Render auditTimeline as a bar chart in Overview page
-- Files: `dashboard/src/routes/Overview.tsx`, `dashboard/src/components/BarChart.tsx`
+### 12.4 Visual timeline chart ✅
+- **Done:** `auditTimeline` bar chart in `Overview.tsx`
 
-### 12.5 Export to CSV
-- **Problem:** No way to export leads for sharing with team
-- **Fix:** Add export button on Leads page that generates CSV download
-- Files: `dashboard/src/routes/Leads.tsx`
+### 12.5 Export to CSV ✅
+- **Done:** Export button in `Leads.tsx`

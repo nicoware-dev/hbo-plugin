@@ -71,5 +71,5 @@ Skills are namespaced as `hbo-plugin:<skill>` in Hermes.
 ## Related
 
 - [How it works](./how-it-works) — signal and approval loop
-- [Demo script](./demo-script) — presentation flow
+- [Dashboard](./dashboard) — operator UI and approval flows
 - [Development](./development) — contributor setup

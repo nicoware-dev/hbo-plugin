@@ -56,7 +56,7 @@ Please:
 
 Windows: `.\scripts\demo-reset.ps1`
 
-See [Demo script](./demo-script) for the full presentation flow.
+Then open **Business Ops** in the Hermes dashboard — see [Dashboard](./dashboard) for a page-by-page walkthrough.
 
 ## Option B — Manual install
 

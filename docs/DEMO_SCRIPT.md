@@ -86,6 +86,21 @@ hbo_run_workflow daily_ops_briefing
 
 Show output panels: signals created, action proposals, briefing title.
 
+For **inbound_sales**, expand the **Conversation review** panel: read the message thread and approve/reject the linked review action inline.
+
+---
+
+## 6b. Enable daily briefing cron (optional)
+
+From **Setup** → Recommended Automations → **Copy enable command** on **Daily Ops Briefing**, then run in terminal:
+
+```bash
+hermes cron add --name daily-ops-briefing --schedule "0 9 * * 1-5" \
+  --agent ops-lead --prompt "Run Daily Ops Briefing per profiles/ops-lead-agent/cron/daily-ops-briefing.md"
+```
+
+Crons are manual — review each blueprint before enabling.
+
 ---
 
 ## 7. Approve / reject / execute

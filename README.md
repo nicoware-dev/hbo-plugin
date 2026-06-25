@@ -20,6 +20,25 @@ HBO Plugin packages:
 
 ![HBO Plugin system architecture — Hermes platform, plugin core, dashboard, profiles, local state, and Composio bridge](apps/docs/static/img/hbo-architecture.jpg)
 
+## Dashboard preview
+
+The **Business Ops** tab in Hermes gives operators charts, lead management, workflow runs, and an approval queue — all backed by the same plugin state as Hermes chat.
+
+![Business Ops Overview — funnel, segments, scores, and audit timeline](apps/docs/static/img/screenshots/overview.png)
+
+![Actions queue — approve or reject agent proposals before execution](apps/docs/static/img/screenshots/actions.png)
+
+More screenshots: [Dashboard docs](https://hbo-plugin-docs.vercel.app/docs/dashboard#screenshots)
+
+## Pitch video (HyperFrames)
+
+B-roll scenes live in [`videos/hbo-pitch/`](videos/hbo-pitch/). Lint passes (`npm run check`); render with:
+
+```bash
+cd videos/hbo-pitch
+npx hyperframes render -c compositions/scene-01-hook.html -o renders/scene-01-hook.mp4 -q draft
+```
+
 ## Quick start
 
 ### Install the Hermes plugin
@@ -68,7 +87,6 @@ pnpm build             # Build dashboard + docs
 ## Documentation
 
 - [Public docs](https://hbo-plugin-docs.vercel.app/) — install, demo, architecture (source: `apps/docs/`)
-- [Demo script](https://hbo-plugin-docs.vercel.app/docs/demo-script) — canonical 3-minute demo path
 
 ## License
 

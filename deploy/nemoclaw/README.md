@@ -31,6 +31,21 @@ EXPOSE 18789 8642
 
 > **Note:** Exact base image and paths depend on NemoHermes version. Test during hackathon setup.
 
+## Smoke test (2026-06-25)
+
+| Step | Result |
+|------|--------|
+| `docker build -f deploy/nemoclaw/Dockerfile` with `BASE_IMAGE=node:22-bookworm-slim` | **Blocked** — Docker Desktop not running on dev host (`dockerDesktopLinuxEngine` pipe missing) |
+| Dockerfile syntax | Valid — copies `plugin/hbo-plugin` to `${HERMES_HOME}/.hermes/plugins/hbo-plugin` |
+| Real NemoHermes base | Pending — replace `BASE_IMAGE` with NVIDIA image when available |
+
+Re-run when Docker is available:
+
+```bash
+pnpm build:dashboard
+docker build -f deploy/nemoclaw/Dockerfile --build-arg BASE_IMAGE=nemohermes:latest -t hbo-nemoclaw:smoke .
+```
+
 ## Verify
 
 - Dashboard at port 18789 shows Business Ops tab

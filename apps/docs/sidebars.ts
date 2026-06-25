@@ -4,7 +4,6 @@ const sidebars: SidebarsConfig = {
   docs: [
     'intro',
     'install',
-    'demo-script',
     'how-it-works',
     'objectives',
     'architecture',

@@ -9,7 +9,7 @@ Skills live in `plugin/hbo-plugin/skills/` and register via `ctx.register_skill(
 
 Hermes namespaces them as `hbo-plugin:<skill-name>`.
 
-**7 bundled skills** in MVP.
+**14 bundled skills** in MVP.
 
 ## Workflow skills
 
@@ -43,6 +43,18 @@ Live execution requires Composio setup. See [Composio CLI](./composio-cli).
 | `stripe-link-cli` | Mock approved spend demo via Stripe Link CLI |
 
 MVP works without these — no credentials required.
+
+## Extensibility skills
+
+| Skill | Purpose |
+|-------|---------|
+| `demo-tour` | Guided onboarding of dashboard pages and approval loop |
+| `health-check` | Workspace health audit (signals, bridge, workflows) |
+| `export-report` | CSV leads export and activity summaries |
+| `connect-source` | Onboard Composio data sources into HBO |
+| `search-leads` | Preview external lead search before import |
+| `create-agent` | Scaffold custom profile from `profiles/_template/` |
+| `customize` | Admin guide for MVP customization limits |
 
 ## Profile-local skills
 
