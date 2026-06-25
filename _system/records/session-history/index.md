@@ -2,6 +2,7 @@
 
 Newest entries first.
 
+- [2026-06-25 25:00 — SOUL grading and 90+ profile upgrades](2026-06-25-2500-soul-grading-profiles.md) — soul-grader fleet review; two-pass SOUL remediation and playbook runbook split for all three agents.
 - [2026-06-25 24:00 — Audit P0–P3 implementation](2026-06-25-2400-audit-p0-p3-implementation.md) — Approve/execute split, Composio hardening, CI, demo reset, SOULs, Actions UX; 38 tests.
 - [2026-06-25 23:30 — Docs production tone, integrations](2026-06-25-2330-docs-production-integrations.md) — Unified install page, Plugin/Integrations sidebar, production copy without MVP/demo language.
 - [2026-06-25 22:45 — Charts theme, timeline, sync, outreach](2026-06-25-2245-charts-timeline-sync-outreach.md) — Hermes Card charts, hbo_sync_sales_sources, outreach preview, docs; 32 tests.
