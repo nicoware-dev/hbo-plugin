@@ -12,6 +12,16 @@ const sidebars: SidebarsConfig = {
     'profiles',
     'skills',
     'composio-cli',
+    {
+      type: 'category',
+      label: 'Sponsor Integrations',
+      collapsed: false,
+      items: [
+        'sponsor-integrations',
+        'sponsor-nvidia-nemoclaw',
+        'sponsor-stripe-link',
+      ],
+    },
     'development',
   ],
 };
