@@ -5,7 +5,13 @@
     "channel": "whatsapp",
     "summary": "Customer asked about shipping times; bot reply was vague.",
     "status": "needs_review",
-    "ownerAgentId": "sales-ops-agent"
+    "ownerAgentId": "sales-ops-agent",
+    "messages": [
+      { "role": "customer", "text": "Hi, how long does shipping take to Buenos Aires?", "at": "2026-06-24T14:02:00Z" },
+      { "role": "bot", "text": "Shipping varies. Please check our website.", "at": "2026-06-24T14:02:15Z" },
+      { "role": "customer", "text": "I need a specific estimate for express delivery.", "at": "2026-06-24T14:03:40Z" },
+      { "role": "bot", "text": "We offer fast shipping options.", "at": "2026-06-24T14:03:55Z" }
+    ]
   },
   {
     "id": "conv_002",
@@ -13,6 +19,10 @@
     "channel": "marketplace",
     "summary": "High-intent buyer asking about bulk pricing.",
     "status": "open",
-    "ownerAgentId": "sales-ops-agent"
+    "ownerAgentId": "sales-ops-agent",
+    "messages": [
+      { "role": "customer", "text": "We need 500 units — what's your bulk discount?", "at": "2026-06-24T16:10:00Z" },
+      { "role": "bot", "text": "Thanks for your interest! A team member will follow up.", "at": "2026-06-24T16:10:20Z" }
+    ]
   }
 ]

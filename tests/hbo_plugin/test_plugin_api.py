@@ -188,3 +188,21 @@ async def test_get_automations(api_module):
     result = await api_module.get_automations()
     assert len(result["automations"]) == 6
     assert "sales-source-sync" in result["recommendedOrder"]
+    daily = next(a for a in result["automations"] if a["id"] == "daily-ops-briefing")
+    assert "hermes cron add" in daily["enableCommand"]
+
+
+@pytest.mark.asyncio
+async def test_get_conversations(api_module):
+    result = await api_module.get_conversations()
+    assert len(result["conversations"]) >= 2
+    assert any(c.get("messages") for c in result["conversations"])
+
+
+@pytest.mark.asyncio
+async def test_get_conversation_by_id(api_module):
+    result = await api_module.get_conversation("conv_001")
+    assert result["success"] is True
+    assert result["conversation"]["id"] == "conv_001"
+    missing = await api_module.get_conversation("conv_missing")
+    assert missing["success"] is False

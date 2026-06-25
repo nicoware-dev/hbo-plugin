@@ -17,6 +17,13 @@ BUNDLED_SKILLS = (
     "composio",
     "nvidia-nemoclaw-setup",
     "stripe-link-cli",
+    "demo-tour",
+    "health-check",
+    "export-report",
+    "connect-source",
+    "search-leads",
+    "create-agent",
+    "customize",
 )
 
 

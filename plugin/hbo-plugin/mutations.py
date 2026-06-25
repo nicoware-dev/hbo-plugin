@@ -42,12 +42,15 @@ def create_lead(data: dict[str, Any]) -> dict[str, Any]:
     owner = data.get("ownerAgentId", "sales-ops-agent")
     if owner not in schemas.AGENT_IDS:
         return {"success": False, "error": f"Invalid ownerAgentId: {owner}"}
+    score = schemas.parse_score(data.get("score", 50))
+    if score is None:
+        return {"success": False, "error": "score must be 0-100"}
     lead = {
         "id": f"lead_{uuid4().hex[:8]}",
         "name": name,
         "source": data.get("source", "dashboard"),
         "segment": data.get("segment", "commerce"),
-        "score": int(data.get("score", 50)),
+        "score": score,
         "priority": data.get("priority", "medium"),
         "status": data.get("status", "new"),
         "ownerAgentId": owner,
@@ -71,6 +74,11 @@ def update_lead_record(lead_id: str, data: dict[str, Any]) -> dict[str, Any]:
                 return {"success": False, "error": err}
     if "ownerAgentId" in payload and payload["ownerAgentId"] not in schemas.AGENT_IDS:
         return {"success": False, "error": f"Invalid ownerAgentId: {payload['ownerAgentId']}"}
+    if "score" in payload:
+        score = schemas.parse_score(payload["score"], default=-1)
+        if score is None:
+            return {"success": False, "error": "score must be 0-100"}
+        payload["score"] = score
     updated = state.update_lead(lead_id, payload)
     if not updated:
         return {"success": False, "error": f"Lead not found: {lead_id}"}

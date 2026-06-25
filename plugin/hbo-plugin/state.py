@@ -134,6 +134,10 @@ def list_conversations() -> list[dict[str, Any]]:
     return read_json("conversations.json", [])
 
 
+def get_conversation(conversation_id: str) -> dict[str, Any] | None:
+    return next((c for c in list_conversations() if c.get("id") == conversation_id), None)
+
+
 def append_signal(signal: dict[str, Any]) -> dict[str, Any]:
     signals = read_json("signals.json", [])
     signal.setdefault("status", "open")

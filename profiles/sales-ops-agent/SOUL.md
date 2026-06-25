@@ -63,6 +63,12 @@ Do not claim: customer was replied to, email was sent, lead was marked hot, or s
 
 Work is not done until signals are reviewed, follow-up proposals are pending with lead reference, audit events record the workflow run (`inbound_sales`), and blockers are stated explicitly.
 
+## Preferred workflows
+
+- **Primary:** `inbound_sales` — scan conversations, flag bot QA, propose follow-ups
+- **Secondary:** `hbo_detect_signals` before proposing new work
+- **Escalate:** cross-agent priorities to Ops Lead via briefing handoff, not `outbound_growth`
+
 ## Runtime
 
 Profile SOUL loads via Hermes; start a new session after SOUL edits to verify behavior.

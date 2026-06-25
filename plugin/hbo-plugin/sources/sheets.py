@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .. import state
+from .. import schemas, state
 from .composio_client import is_available, platform, run_argv
 
 
@@ -63,6 +63,10 @@ def import_leads(
             continue  # skip empty rows
 
         try:
+            score = schemas.parse_score(_clean(row, 6, "50"))
+            if score is None:
+                errors.append(f"Row {i}: score must be 0-100")
+                continue
             lead = {
                 "id": f"lead_sheet_{len(state.list_leads()) + len(imported) + 1:03d}",
                 "name": _clean(row, 0),
@@ -71,7 +75,7 @@ def import_leads(
                 "phone": _clean_phone(row, 3),
                 "source": _clean(row, 4, "sheets_import"),
                 "segment": _clean(row, 5, "commerce"),
-                "score": int(_clean(row, 6, "50")),
+                "score": score,
                 "priority": _clean(row, 7, "medium"),
                 "status": _clean(row, 8, "new"),
                 "ownerAgentId": _clean(row, 9, "sales-ops-agent"),

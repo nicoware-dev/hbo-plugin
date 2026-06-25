@@ -16,6 +16,10 @@ CATALOG: list[dict[str, Any]] = [
         "bridge": "composio or hybrid",
         "silent": False,
         "cronFile": "profiles/sales-ops-agent/cron/sales-source-sync.md",
+        "enableCommand": (
+            'hermes cron add --name sales-source-sync --schedule "0 7 * * *" '
+            '--agent sales-ops --prompt "Run Sales Source Sync per profiles/sales-ops-agent/cron/sales-source-sync.md"'
+        ),
     },
     {
         "id": "unread-email-review",
@@ -28,6 +32,10 @@ CATALOG: list[dict[str, Any]] = [
         "bridge": "composio or hybrid",
         "silent": True,
         "cronFile": "profiles/sales-ops-agent/cron/unread-email-review.md",
+        "enableCommand": (
+            'hermes cron add --name unread-email-review --schedule "0 8 * * 1-5" '
+            '--agent sales-ops --prompt "Run Unread Email Review per profiles/sales-ops-agent/cron/unread-email-review.md"'
+        ),
     },
     {
         "id": "prospect-source-sync",
@@ -40,6 +48,10 @@ CATALOG: list[dict[str, Any]] = [
         "bridge": "composio or hybrid",
         "silent": False,
         "cronFile": "profiles/growth-agent/cron/prospect-source-sync.md",
+        "enableCommand": (
+            'hermes cron add --name prospect-source-sync --schedule "0 6 * * 1" '
+            '--agent growth --prompt "Run Prospect Source Sync per profiles/growth-agent/cron/prospect-source-sync.md"'
+        ),
     },
     {
         "id": "weekly-prospect-batch",
@@ -52,6 +64,10 @@ CATALOG: list[dict[str, Any]] = [
         "bridge": "any",
         "silent": False,
         "cronFile": "profiles/growth-agent/cron/weekly-prospect-batch.md",
+        "enableCommand": (
+            'hermes cron add --name weekly-prospect-batch --schedule "0 10 * * 3" '
+            '--agent growth --prompt "Run Weekly Prospect Batch per profiles/growth-agent/cron/weekly-prospect-batch.md"'
+        ),
     },
     {
         "id": "daily-ops-briefing",
@@ -64,6 +80,10 @@ CATALOG: list[dict[str, Any]] = [
         "bridge": "any",
         "silent": True,
         "cronFile": "profiles/ops-lead-agent/cron/daily-ops-briefing.md",
+        "enableCommand": (
+            'hermes cron add --name daily-ops-briefing --schedule "0 9 * * 1-5" '
+            '--agent ops-lead --prompt "Run Daily Ops Briefing per profiles/ops-lead-agent/cron/daily-ops-briefing.md"'
+        ),
     },
     {
         "id": "weekly-ops-review",
@@ -76,6 +96,10 @@ CATALOG: list[dict[str, Any]] = [
         "bridge": "any",
         "silent": False,
         "cronFile": "profiles/ops-lead-agent/cron/weekly-ops-review.md",
+        "enableCommand": (
+            'hermes cron add --name weekly-ops-review --schedule "0 10 * * 5" '
+            '--agent ops-lead --prompt "Run Weekly Ops Review per profiles/ops-lead-agent/cron/weekly-ops-review.md"'
+        ),
     },
 ]
 
