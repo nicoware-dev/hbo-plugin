@@ -71,4 +71,4 @@ def test_gmail_send_uses_run_argv():
     mock_argv.assert_called_once()
     call_args = mock_argv.call_args
     assert call_args[0][0] == ["execute", "GMAIL_SEND_EMAIL"]
-    assert call_args[1]["data"]["subject"] == "Subject with 'quotes'"
+    assert call_args[0][1]["subject"] == "Subject with 'quotes'"

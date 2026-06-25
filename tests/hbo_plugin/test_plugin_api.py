@@ -186,5 +186,5 @@ async def test_business_context(api_module):
 @pytest.mark.asyncio
 async def test_get_automations(api_module):
     result = await api_module.get_automations()
-    assert len(result["automations"]) == 5
+    assert len(result["automations"]) == 6
     assert "sales-source-sync" in result["recommendedOrder"]
