@@ -1,0 +1,9 @@
+[
+  {
+    "id": "conv_001",
+    "leadId": "lead_001",
+    "channel": "whatsapp",
+    "summary": "Customer asked about shipping times; bot reply was vague.",
+    "status": "needs_review"
+  }
+]

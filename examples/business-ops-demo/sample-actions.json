@@ -1,0 +1,9 @@
+[
+  {
+    "id": "act_001",
+    "title": "Create follow-up task",
+    "agentId": "sales-ops-agent",
+    "status": "pending",
+    "description": "Lead has high buying intent and no recent follow-up."
+  }
+]

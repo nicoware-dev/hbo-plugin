@@ -1,0 +1,4 @@
+name,source,segment,score,priority,status,ownerAgentId
+Demo Lead 001,demo_sheet,commerce,82,high,needs_followup,sales-ops-agent
+Demo Lead 002,google_places,wholesale,74,medium,new,growth-agent
+Demo Lead 003,marketplace,commerce,91,high,hot,sales-ops-agent
