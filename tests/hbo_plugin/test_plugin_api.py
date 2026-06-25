@@ -27,6 +27,7 @@ def _load_plugin_modules():
         ("sources.gmail", "sources/gmail.py"),
         ("sources.bridge", "sources/bridge.py"),
         ("sources.sheets", "sources/sheets.py"),
+        ("sources.sync", "sources/sync.py"),
         ("mutations", "mutations.py"),
         ("execution", "execution.py"),
         ("automations", "automations.py"),
@@ -170,6 +171,7 @@ async def test_get_stats(api_module):
     result = await api_module.get_stats()
     assert "funnel" in result
     assert "segments" in result
+    assert "auditTimeline" in result
     assert result["totalLeads"] == 12
 
 

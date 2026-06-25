@@ -5,5 +5,40 @@
     "agentId": "ops-lead-agent",
     "eventType": "workspace_loaded",
     "summary": "Business Ops Demo workspace initialized."
+  },
+  {
+    "id": "audit_demo_002",
+    "timestamp": "2026-06-22T14:30:00Z",
+    "agentId": "sales-ops-agent",
+    "eventType": "workflow_run",
+    "summary": "Ran inbound sales — 2 signals, 1 action proposals."
+  },
+  {
+    "id": "audit_demo_003",
+    "timestamp": "2026-06-23T09:15:00Z",
+    "agentId": "growth-agent",
+    "eventType": "workflow_run",
+    "summary": "Ran outbound growth — outreach batch of 4 leads."
+  },
+  {
+    "id": "audit_demo_004",
+    "timestamp": "2026-06-24T11:00:00Z",
+    "agentId": "ops-lead-agent",
+    "eventType": "action_approved",
+    "summary": "User approved action act_001: Create follow-up task."
+  },
+  {
+    "id": "audit_demo_005",
+    "timestamp": "2026-06-24T16:45:00Z",
+    "agentId": "sales-ops-agent",
+    "eventType": "source_sync",
+    "summary": "Sales source sync: imported 3 leads from Google Sheets."
+  },
+  {
+    "id": "audit_demo_006",
+    "timestamp": "2026-06-25T08:00:00Z",
+    "agentId": "ops-lead-agent",
+    "eventType": "workflow_run",
+    "summary": "Ran daily ops briefing — Daily Ops Briefing generated."
   }
 ]

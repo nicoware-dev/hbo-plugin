@@ -53,6 +53,7 @@ def load_plugin_modules():
     _load_module("sources.gmail", "sources/gmail.py")
     _load_module("sources.bridge", "sources/bridge.py")
     _load_module("sources.sheets", "sources/sheets.py")
+    _load_module("sources.sync", "sources/sync.py")
     _load_module("mutations", "mutations.py")
     _load_module("execution", "execution.py")
     rules = _load_module("business_rules", "business_rules.py")

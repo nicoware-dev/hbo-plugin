@@ -9,6 +9,22 @@ from uuid import uuid4
 from . import state
 
 
+def draft_outreach_message(lead: dict[str, Any]) -> str:
+    ctx = state.get_business_context()
+    business = ctx.get("businessName") or "our team"
+    tone = ctx.get("toneOfVoice") or "professional and helpful"
+    name = lead.get("name", "there")
+    product = ctx.get("products") or "our solutions"
+    return (
+        f"Hi {name},\n\n"
+        f"I'm reaching out from {business}. Based on your profile as a "
+        f"{lead.get('segment', 'prospect')} lead, I thought {product} might be a fit.\n\n"
+        f"{lead.get('recommendedAction', 'Would you be open to a short intro call?')}\n\n"
+        f"Best regards,\nGrowth Team\n\n"
+        f"(Tone: {tone})"
+    )
+
+
 def build_briefing_payload() -> dict[str, Any]:
     summary = state.get_workspace_summary()
     pending = state.list_actions(status="pending")
@@ -123,15 +139,19 @@ def run_outbound_growth() -> dict[str, Any]:
         "segment": "wholesale" if any(l.get("segment") == "wholesale" for l in growth_leads) else "mixed",
     }
 
+    outreach_drafts: list[dict[str, Any]] = []
     actions_created: list[dict[str, Any]] = []
     follow_up_tasks: list[dict[str, Any]] = []
     for lead in growth_leads[:2]:
+        preview = draft_outreach_message(lead)
         task = {
             "leadId": lead["id"],
             "name": lead.get("name"),
             "action": lead.get("recommendedAction", "Draft outreach"),
+            "preview": preview,
         }
         follow_up_tasks.append(task)
+        outreach_drafts.append({"leadId": lead["id"], "name": lead.get("name"), "preview": preview})
         actions_created.append(
             state.append_action(
                 {
@@ -141,6 +161,8 @@ def run_outbound_growth() -> dict[str, Any]:
                     "source": lead["id"],
                     "risk": "low",
                     "status": "pending",
+                    "actionType": "outreach_preview",
+                    "outreachPreview": preview,
                     "description": lead.get("recommendedAction", "Prepare first contact."),
                 }
             )
@@ -149,7 +171,7 @@ def run_outbound_growth() -> dict[str, Any]:
     return {
         "leadScores": [{"leadId": l["id"], "name": l.get("name"), "score": l.get("score")} for l in scored],
         "prioritySegments": {k: len(v) for k, v in segments.items()},
-        "outreachBatch": outreach_batch,
+        "outreachBatch": {**outreach_batch, "draftMessages": outreach_drafts},
         "actionProposals": actions_created,
         "followUpTasks": follow_up_tasks,
     }

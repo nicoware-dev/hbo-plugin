@@ -228,6 +228,28 @@ def get_tool_definitions() -> list[ToolDef]:
             }),
         ),
         (
+            "hbo_sync_sales_sources",
+            {
+                "name": "hbo_sync_sales_sources",
+                "description": "Sync inbound sales leads from Google Sheets (sales-source-sync cron). Writes audit event.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "spreadsheetId": {"type": "string"},
+                        "sheet": {"type": "string"},
+                        "maxRows": {"type": "integer"},
+                    },
+                },
+            },
+            lambda params, **_: _json_response(
+                business_rules.sync_sales_sources(
+                    spreadsheet_id=params.get("spreadsheetId", ""),
+                    sheet=params.get("sheet", "Hoja 1"),
+                    max_rows=int(params.get("maxRows", 100)),
+                )
+            ),
+        ),
+        (
             "hbo_set_bridge_mode",
             {
                 "name": "hbo_set_bridge_mode",

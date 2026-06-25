@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -297,6 +297,8 @@ def get_dashboard_stats() -> dict[str, Any]:
         st = signal.get("type", "custom")
         signal_types[st] = signal_types.get(st, 0) + 1
 
+    audit_timeline = _audit_timeline(days=7)
+
     return {
         "funnel": funnel,
         "segments": segments,
@@ -304,5 +306,19 @@ def get_dashboard_stats() -> dict[str, Any]:
         "priorities": priorities,
         "agentWorkload": agent_workload,
         "signalTypes": signal_types,
+        "auditTimeline": audit_timeline,
         "totalLeads": len(leads),
     }
+
+
+def _audit_timeline(days: int = 7) -> dict[str, int]:
+    today = datetime.now(timezone.utc).date()
+    buckets: dict[str, int] = {}
+    for i in range(days):
+        day = today - timedelta(days=days - 1 - i)
+        buckets[day.isoformat()] = 0
+    for event in list_audit_events():
+        ts = str(event.get("timestamp", ""))[:10]
+        if ts in buckets:
+            buckets[ts] += 1
+    return buckets

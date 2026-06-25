@@ -158,6 +158,20 @@ def set_bridge_mode(mode: str) -> dict[str, Any]:
     return bridge.set_mode(mode)
 
 
+def sync_sales_sources(
+    spreadsheet_id: str = "",
+    sheet: str = "Hoja 1",
+    max_rows: int = 100,
+) -> dict[str, Any]:
+    from .sources import sync
+
+    return sync.sync_sales_sources(
+        spreadsheet_id=spreadsheet_id,
+        sheet=sheet,
+        max_rows=max_rows,
+    )
+
+
 def send_approval_email(
     action_id: str = "",
     recipient_email: str = "",
