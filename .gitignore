@@ -1,19 +1,18 @@
 _local/
 _temp/
 .cursor/
-_system/
-# But allow session history
+_system/*
+!_system/records/
+_system/records/*
 !_system/records/session-history/
-!_system/records/session-history/*.md
-!_system/records/session-history/index.md
+!_system/records/session-history/**
 
 # Contributor docs (local only; public site is apps/docs/)
-# But allow improvement plan, session logs, and project status
+/docs/*
 !docs/IMPROVEMENT_PLAN.md
 !docs/SESSION_LOG_*.md
 !docs/PROJECT_STATUS.md
 !docs/ROADMAP.md
-/docs/
 
 # Dependencies
 node_modules/
