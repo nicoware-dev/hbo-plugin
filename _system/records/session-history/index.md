@@ -2,7 +2,7 @@
 
 Newest entries first.
 
-- [2026-06-25 26:00 — Skillify all HBO agent and plugin skills](2026-06-25-2600-skillify-production-skills.md) — 11 skills to production quality: Contract, evals, benchmarks, MECE, routing-eval.
+- [2026-06-25 27:00 — Follow-up audit P0–P4 hackathon readiness](2026-06-25-2700-followup-audit-p0-p4.md) — Demo reset script, Vercel docs, sheet ID config, CI Python, 44 tests; screenshots left to user.
 - [2026-06-25 25:15 — Stripe Link CLI skill aligned with official](2026-06-25-2515-stripe-link-cli-skill.md) — Official create-payment-credential flow in rules/; HBO bridge; no code changes.
 - [2026-06-25 25:00 — SOUL grading and 90+ profile upgrades](2026-06-25-2500-soul-grading-profiles.md) — soul-grader fleet review; two-pass SOUL remediation and playbook runbook split for all three agents.
 - [2026-06-25 24:00 — Audit P0–P3 implementation](2026-06-25-2400-audit-p0-p3-implementation.md) — Approve/execute split, Composio hardening, CI, demo reset, SOULs, Actions UX; 38 tests.
