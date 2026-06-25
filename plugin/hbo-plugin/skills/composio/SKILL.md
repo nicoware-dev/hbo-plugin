@@ -73,7 +73,12 @@ Key commands:
 
 ### HBO Plugin integration
 
-Approved business actions execute via Composio **after** HBO approval gates. Map external results back to lead/action shapes.
+Business actions use a **two-step** gate:
+
+1. `hbo_approve_action` — records approval (audit: `action_approved`)
+2. `hbo_execute_action` — runs Composio Gmail/Sheets only after approval (audit: `action_executed`)
+
+In `local-demo` bridge mode, execute is limited to mock actions. Set bridge via Tool Bridges or `hbo_set_bridge_mode`.
 
 > [HBO Bridge](rules/hbo-bridge.md) — approvals, normalization, local-demo fallback
 

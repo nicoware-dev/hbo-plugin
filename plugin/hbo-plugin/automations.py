@@ -42,6 +42,18 @@ CATALOG: list[dict[str, Any]] = [
         "cronFile": "profiles/growth-agent/cron/prospect-source-sync.md",
     },
     {
+        "id": "weekly-prospect-batch",
+        "name": "Weekly Prospect Batch",
+        "agentId": "growth-agent",
+        "profile": "growth-agent",
+        "schedule": "Weekly Wednesday 10:00",
+        "purpose": "Build and score a weekly outbound prospect batch from synced leads.",
+        "skills": ["hbo-plugin:growth-ops", "hbo-plugin:local-demo"],
+        "bridge": "any",
+        "silent": False,
+        "cronFile": "profiles/growth-agent/cron/weekly-prospect-batch.md",
+    },
+    {
         "id": "daily-ops-briefing",
         "name": "Daily Ops Briefing",
         "agentId": "ops-lead-agent",
@@ -70,6 +82,7 @@ CATALOG: list[dict[str, Any]] = [
 DAILY_ORDER = [
     "sales-source-sync",
     "prospect-source-sync",
+    "weekly-prospect-batch",
     "unread-email-review",
     "daily-ops-briefing",
 ]
