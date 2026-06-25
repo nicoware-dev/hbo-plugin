@@ -25,8 +25,8 @@ HBO Plugin extends [Hermes Agent](https://hermes-agent.nousresearch.com/) with b
 - **Bridge:** `composio` skill only (optional; not required for first run)
 - **Profiles:** Sales Ops Agent, Growth Agent, Ops Lead Agent
 - **Dashboard:** One `Business Ops` tab with internal pages (Overview, Agents, Workflows, Leads, Actions, Signals, Business, Audit, Tool Bridges, Setup)
-- **Tools:** 17 `hbo_*` tools (includes `hbo_get_business_context`)
-- **Approvals:** Real approve/reject that mutates state and writes audit events
+- **Tools:** 18 `hbo_*` tools (includes `hbo_execute_action`, `hbo_get_business_context`)
+- **Approvals:** Approve/reject mutates state; execute is a separate step for external effects
 
 ## Hermes conventions
 
@@ -34,7 +34,7 @@ HBO Plugin extends [Hermes Agent](https://hermes-agent.nousresearch.com/) with b
 
 - Manifest: `plugin/hbo-plugin/plugin.yaml`
 - Entry: `register(ctx)` in `__init__.py`
-- Tools prefixed with `hbo_` (16 tools — e.g. `hbo_get_workspace`, `hbo_send_approval_email`)
+- Tools prefixed with `hbo_` (18 tools — e.g. `hbo_get_workspace`, `hbo_execute_action`)
 - Skills registered via `ctx.register_skill(name, path)` — namespaced as `hbo-plugin:skill`
 
 ### Dashboard extension

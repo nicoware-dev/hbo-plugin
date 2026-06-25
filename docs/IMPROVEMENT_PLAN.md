@@ -19,7 +19,7 @@
 | Priority 5.7 mode toggle | Done — `workspace.selectedBridge` + Tool Bridges UI |
 | Priority 5.8 scripts | Done |
 | Composio bridge status API | Done — `GET /bridge/status`, fix CRLF WSL |
-| Tests | **30** passing (`pnpm test:plugin`) |
+| Tests | **33+** passing (`pnpm test:plugin`) |
 | Priority 8 Overview charts | Done — funnel, segments, scores, priorities |
 | Priority 10 Business context tab | Done — `business-context.json` + form |
 | Sheets phone fix | Done — `_clean_phone()` preserves `+` |
@@ -135,9 +135,9 @@ The HBO Plugin has **17 `hbo_*` tools**, 3 profiles, full workflow outputs, and 
 ## Priority 5 — Composio bridge (real data)
 
 ### 5.1 Composio CLI status
-- **Already installed** in WSL Ubuntu (v0.2.31), logged in as `nicoware.dev@gmail.com`
-- **12 active connections:** Gmail, Google Sheets, Google Drive, Google Calendar, Google Meet, Google Maps, YouTube, HubSpot, LinkedIn (×3)
-- **WhatsApp and one Google Meet connection are EXPIRED** — need re-link
+- Install Composio CLI in WSL Ubuntu (Windows) or natively (macOS/Linux)
+- Verify with `composio whoami` after setup (`scripts/setup-composio-windows.ps1` on Windows)
+- Re-link expired connections as needed (`composio link <toolkit>`)
 
 ### 5.2 Google Sheets integration ✅ DONE
 - Create a Google Sheet with columns: name, email, company, phone, source, segment, score, priority, status, ownerAgentId, recommendedAction

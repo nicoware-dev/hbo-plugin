@@ -58,6 +58,8 @@ pnpm build             # Build dashboard + docs
 ## Documentation
 
 - [Public docs site](apps/docs/) — run `pnpm dev:docs`
+- [Demo script](docs/DEMO_SCRIPT.md) — canonical 3-minute demo path
+- [Hermes alignment](docs/HERMES_ALIGNMENT.md) — install paths and conventions
 - [Roadmap](docs/ROADMAP.md) — next steps and MVP phases
 
 ## License

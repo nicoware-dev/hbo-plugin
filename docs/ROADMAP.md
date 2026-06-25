@@ -8,26 +8,27 @@ Repository: [nicoware-dev/hbo-plugin](https://github.com/nicoware-dev/hbo-plugin
 | Area | Status |
 |------|--------|
 | Monorepo scaffold | Done |
-| Hermes plugin + **16** `hbo_*` tools | Done |
+| Hermes plugin + **18** `hbo_*` tools | Done |
 | Local demo JSON state + CRUD mutations | Done |
-| Dashboard tab (Business Ops) | **9 pages** — full CRUD, Signals, bridge toggle |
+| Dashboard tab (Business Ops) | **10 pages** — full CRUD, Signals, Business, bridge toggle |
 | 3 profile distributions | Done |
-| 5 bundled skills | Done |
+| 7 bundled skills | Done |
 | Docusaurus public site | Done |
 | Workflows (full outputs) | Done |
-| Approve/reject + audit + Gmail execution | Done |
-| Plugin API tests | Done (**21** tests) |
-| Composio bridge (live) | Sheets import, Gmail post-approve, status API |
+| Approve/reject/execute + audit | Done |
+| Plugin API tests + CI | Done |
+| Composio bridge (live) | Sheets import, Gmail execute, status API |
 | Google Sheets import | Done (dashboard + CLI) |
+| Demo script + reset scripts | Done |
 
 ## Phase 5 — Workflows, approvals, audit ✅
 
 1. ~~Enrich workflows~~ — `inbound_sales`, `outbound_growth`, `daily_ops_briefing` emit signals and action proposals.
-2. ~~Dashboard refetch~~ — approve/reject shows audit summary + execution status.
-3. ~~Tests~~ — `tests/hbo_plugin/` (21 tests); run `pnpm test:plugin`.
-4. ~~Manual check~~ — verified in Hermes CLI + dashboard (user confirmed).
+2. ~~Dashboard refetch~~ — approve/reject/execute shows audit summary.
+3. ~~Tests~~ — `tests/hbo_plugin/`; run `pnpm test:plugin`.
+4. ~~Manual check~~ — verified in Hermes CLI + dashboard.
 
-## Post-MVP oleadas (IMPROVEMENT_PLAN) ✅ 0–4
+## Post-MVP oleadas (IMPROVEMENT_PLAN) ✅ 0–4 + audit P0–P3
 
 | Oleada | Scope | Status |
 |--------|-------|--------|
@@ -37,23 +38,24 @@ Repository: [nicoware-dev/hbo-plugin](https://github.com/nicoware-dev/hbo-plugin
 | 3 | Dashboard CRUD UI + Signals page | Done |
 | 4 | Composio bridge + Gmail execution | Done |
 | 5 | Profile cron blueprints + sponsor docs | Done |
-| 6 | Demo script, screenshots, video, GitHub Pages | Pending |
+| 6 | Demo script, screenshots, video, GitHub Pages | Partial — script + reset done |
 
-## Phase 6 — Demo polish (next)
+## Phase 6 — Release packaging (next)
 
-1. Write `DEMO_SCRIPT.md` — install → reset → import Sheets → workflow → approve → Gmail → audit.
-2. Add screenshots to `apps/docs`.
-3. Publish docs site (GitHub Pages: `nicoware-dev.github.io/hbo-plugin`).
-4. Record demo video; clean up demo data copy and edge cases.
+1. ~~Write `DEMO_SCRIPT.md`~~ — done
+2. Add screenshots to `apps/docs`
+3. Publish docs site (GitHub Pages: `nicoware-dev.github.io/hbo-plugin`)
+4. Record demo video
 
 ## Technical follow-ups
 
 1. **Install docs:** always ship `plugin/hbo-plugin/dashboard/dist/` (run `pnpm build:dashboard` before release).
-2. **Dashboard API:** remind users to restart Hermes dashboard after plugin install/update.
-3. **Navigation:** use button nav in dashboard (Hermes SDK has no `TabsContent`).
-4. **CI:** GitHub Actions for `pnpm test:plugin` + `pnpm build:dashboard`.
-5. **Overview redesign:** charts, funnel, segment breakdown (Priority 8).
-6. **Optional:** pip entry-point for `hermes_agent.plugins` distribution.
+2. **Dashboard API:** restart Hermes dashboard after plugin install/update.
+3. **Navigation:** button nav in dashboard (Hermes SDK has no `TabsContent`).
+4. ~~**CI:** GitHub Actions~~ — `.github/workflows/ci.yml`
+5. ~~**Overview redesign**~~ — charts, funnel, segment breakdown
+6. **Optional:** pip entry-point for `hermes_agent.plugins` distribution
+7. **Optional:** migrate runtime state to `~/.hermes/hbo-plugin/state/`
 
 ## Out of scope (MVP)
 
