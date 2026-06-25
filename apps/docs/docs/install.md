@@ -29,9 +29,9 @@ Please:
 6. run the daily briefing workflow,
 7. show the action queue,
 8. approve one action,
-9. explain how to enable the composio-cli skill,
+9. explain approve vs execute (execute only for external effects in composio mode),
 10. open Business tab and confirm business context is loaded,
-11. restore sample workspace data from Setup if charts look empty.
+11. reset demo: ./scripts/demo-reset.sh or Setup → Reset demo.
 ```
 
 ### What each step does
@@ -44,9 +44,19 @@ Please:
 | 4–5 | Business Ops tab with Overview charts, Actions, Business context |
 | 6 | Ops Lead briefing with priorities and risks |
 | 7 | Pending action proposals in the queue |
-| 8 | Approval mutates state and writes audit event |
-| 9 | Path to Gmail, Slack, CRM via Composio CLI |
-| 10–11 | Business context + sample workspace data for full dashboard charts |
+| 8 | Approval mutates state; execute is separate for external effects |
+| 9 | Path to Composio bridge (optional) |
+| 10–11 | Business context + reset demo for full dashboard data |
+
+### Demo reset script
+
+```bash
+./scripts/demo-reset.sh
+```
+
+Windows: `.\scripts\demo-reset.ps1`
+
+See [Demo script](./demo-script) for the full presentation flow.
 
 ## Option B — Manual install
 

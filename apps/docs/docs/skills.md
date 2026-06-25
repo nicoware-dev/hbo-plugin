@@ -9,6 +9,8 @@ Skills live in `plugin/hbo-plugin/skills/` and register via `ctx.register_skill(
 
 Hermes namespaces them as `hbo-plugin:<skill-name>`.
 
+**7 bundled skills** in MVP.
+
 ## Workflow skills
 
 | Skill | Used by | Guides Hermes to |
@@ -16,33 +18,39 @@ Hermes namespaces them as `hbo-plugin:<skill-name>`.
 | `sales-ops` | Sales Ops profile | Run `inbound_sales`, detect signals, manage follow-ups |
 | `growth-ops` | Growth profile | Run `outbound_growth`, score leads, plan outreach |
 | `ops-lead` | Ops Lead profile | Run `daily_ops_briefing`, prioritize actions and signals |
+| `local-demo` | All profiles | Local JSON demo data workflows without external APIs |
 
 ### Typical tool chain
 
 ```text
-hbo_get_workspace → hbo_detect_signals → hbo_run_workflow → hbo_list_actions → hbo_approve_action
+hbo_get_workspace → hbo_detect_signals → hbo_run_workflow → hbo_list_actions
+→ hbo_approve_action → hbo_execute_action (external effects only when intended)
 ```
 
 ## Bridge skill
 
 | Skill | Purpose |
 |-------|---------|
-| `composio` | Connect Gmail, Slack, GitHub, CRM, and 1000+ apps via Composio CLI (+ `rules/` for install and HBO bridge) |
+| `composio` | Connect Gmail, Slack, GitHub, CRM, and 1000+ apps via Composio CLI |
 
 Live execution requires Composio setup. See [Composio CLI](./composio-cli).
 
-## Skill files
+## Sponsor skills (optional)
 
-Each skill is a `SKILL.md` with:
+| Skill | Purpose |
+|-------|---------|
+| `nvidia-nemoclaw-setup` | Deploy HBO on NemoClaw / NemoHermes runtime |
+| `stripe-link-cli` | Mock approved spend demo via Stripe Link CLI |
 
-- When to use the skill
-- Which `hbo_*` tools to call
-- Workflow-specific instructions
+MVP works without these — no credentials required.
 
-Example paths:
+## Profile-local skills
 
-- `skills/sales-ops/SKILL.md`
-- `skills/composio/SKILL.md`
+Each profile distribution may include a playbook under `profiles/*/skills/`:
+
+- `sales-ops-playbook`
+- `growth-playbook`
+- `ops-lead-playbook`
 
 ## Adding skills
 

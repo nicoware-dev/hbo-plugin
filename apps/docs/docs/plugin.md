@@ -7,7 +7,7 @@ title: Plugin
 
 Package: `plugin/hbo-plugin/`
 
-The plugin registers **12 HBO tools** (`hbo_*`), bundled skills, business rules, and file-backed workspace state. Entry point: `register(ctx)` in `__init__.py`.
+The plugin registers **18 HBO tools** (`hbo_*`), **7 bundled skills**, business rules, and file-backed workspace state. Entry point: `register(ctx)` in `__init__.py`.
 
 ## Tool reference
 
@@ -22,8 +22,25 @@ The plugin registers **12 HBO tools** (`hbo_*`), bundled skills, business rules,
 | `hbo_list_actions` | Action proposals (optional `status` filter) |
 | `hbo_approve_action` | Approve a pending action — writes audit event |
 | `hbo_reject_action` | Reject a pending action — writes audit event |
+| `hbo_execute_action` | Execute an approved action externally (e.g. Composio Gmail) |
 | `hbo_generate_briefing` | Generate daily ops briefing |
-| `hbo_list_audit` | Audit log entries |
+| `hbo_list_audit_events` | Audit log entries |
+| `hbo_load_demo_data` | Reset demo data from bundled seed |
+| `hbo_import_leads_from_sheets` | Import leads via Composio Google Sheets |
+| `hbo_send_approval_email` | Send email for approved action or explicit recipient |
+| `hbo_get_bridge_status` | Tool bridge status (local + Composio) |
+| `hbo_set_bridge_mode` | Set bridge mode: local-demo, composio, hybrid |
+| `hbo_get_business_context` | Business context for agent prompts |
+| `hbo_sync_sales_sources` | Sales source sync (cron-aligned import) |
+
+## Approval flow
+
+```text
+pending → approve → approved → execute → executed | failed
+         reject  → rejected
+```
+
+Approve records intent. Execute triggers external effects only when bridge mode allows.
 
 ## Workflows
 
@@ -33,40 +50,26 @@ The plugin registers **12 HBO tools** (`hbo_*`), bundled skills, business rules,
 | `outbound_growth` | Lead scores, segments, outreach batch, outreach proposals |
 | `daily_ops_briefing` | Priorities, risks, pending approvals, recommended actions |
 
-## Business rules
-
-`business_rules.py` coordinates:
-
-- Signal detection from current state
-- Workflow execution (delegates to `workflows.py`)
-- Approve/reject with audit side effects
-- Briefing generation
-
 ## State
 
-`state.py` reads and writes JSON workspace files:
-
-- Atomic read/write per entity file
-- `append_signal`, `append_action`, `append_audit` for mutations
-- Shared by plugin tools and dashboard API routes
+`state.py` reads and writes JSON workspace files under `data/business-ops-demo/`.
 
 ## Skills registered
 
-| Skill | Path |
-|-------|------|
+| Skill | Purpose |
+|-------|---------|
 | `sales-ops` | Inbound workflow guidance |
 | `growth-ops` | Outbound workflow guidance |
 | `ops-lead` | Briefing and coordination |
-| `composio-cli` | External app bridge |
+| `local-demo` | Local demo data workflows |
+| `composio` | External app bridge |
+| `nvidia-nemoclaw-setup` | Optional NemoClaw deployment |
+| `stripe-link-cli` | Optional mock spend demo |
 
-Skills are namespaced as `hbo-plugin:skill` in Hermes.
-
-## Manifest
-
-`plugin.yaml` declares plugin metadata, tool registration, and dashboard extension path.
+Skills are namespaced as `hbo-plugin:<skill>` in Hermes.
 
 ## Related
 
 - [How it works](./how-it-works) — signal and approval loop
-- [Architecture](./architecture) — system diagram
-- [Development](./development) — development setup
+- [Demo script](./demo-script) — presentation flow
+- [Development](./development) — contributor setup
