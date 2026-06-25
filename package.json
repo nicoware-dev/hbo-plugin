@@ -1,0 +1,17 @@
+{
+  "name": "hbo-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Hermes Business Operations Plugin — monorepo",
+  "scripts": {
+    "build": "pnpm -r build",
+    "build:dashboard": "pnpm --filter @hbo-plugin/dashboard build",
+    "build:docs": "pnpm --filter docs build",
+    "dev:docs": "pnpm --filter docs start",
+    "dev:dashboard": "pnpm --filter @hbo-plugin/dashboard dev",
+    "prepare": "pnpm build:dashboard"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

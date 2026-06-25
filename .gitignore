@@ -1,0 +1,31 @@
+_local/
+_temp/
+.cursor/
+_system/
+
+# Dependencies
+node_modules/
+
+# Build outputs
+build/
+.docusaurus/
+.cache/
+# Keep dashboard bundle — required for Hermes install without Node build
+dist/
+!plugin/hbo-plugin/dashboard/dist/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Environment
+.env
+.env.*
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+*.log
