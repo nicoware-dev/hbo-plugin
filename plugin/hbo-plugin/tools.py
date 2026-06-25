@@ -216,6 +216,18 @@ def get_tool_definitions() -> list[ToolDef]:
             lambda params, **_: _json_response(business_rules.get_bridge_status()),
         ),
         (
+            "hbo_get_business_context",
+            {
+                "name": "hbo_get_business_context",
+                "description": "Return business context from the dashboard (name, products, tone, instructions).",
+                "parameters": {"type": "object", "properties": {}},
+            },
+            lambda params, **_: _json_response({
+                **state.get_business_context(),
+                "promptBlock": state.format_business_context_prompt(),
+            }),
+        ),
+        (
             "hbo_set_bridge_mode",
             {
                 "name": "hbo_set_bridge_mode",

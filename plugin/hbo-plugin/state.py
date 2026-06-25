@@ -212,3 +212,97 @@ def load_demo_data() -> dict[str, Any]:
         "workspace": get_workspace_summary(),
         "message": "Demo data reset from bundled files.",
     }
+
+
+def get_business_context() -> dict[str, Any]:
+    default = {
+        "businessName": "",
+        "description": "",
+        "products": "",
+        "targetAudience": "",
+        "toneOfVoice": "",
+        "competitors": "",
+        "uniqueSellingPoints": "",
+        "customInstructions": "",
+    }
+    stored = read_json("business-context.json", default)
+    return {**default, **stored}
+
+
+def save_business_context(data: dict[str, Any]) -> dict[str, Any]:
+    ctx = get_business_context()
+    allowed = set(ctx.keys())
+    for key, value in data.items():
+        if key in allowed:
+            ctx[key] = str(value).strip()
+    ctx["updatedAt"] = datetime.now(timezone.utc).isoformat()
+    write_json("business-context.json", ctx)
+    return ctx
+
+
+def format_business_context_prompt() -> str:
+    """Single block for SOUL / agent system prompt injection."""
+    ctx = get_business_context()
+    if not ctx.get("businessName"):
+        return ""
+    lines = [
+        f"Business: {ctx['businessName']}",
+        f"Description: {ctx['description']}",
+        f"Products: {ctx['products']}",
+        f"Audience: {ctx['targetAudience']}",
+        f"Tone: {ctx['toneOfVoice']}",
+        f"USPs: {ctx['uniqueSellingPoints']}",
+    ]
+    if ctx.get("competitors"):
+        lines.append(f"Competitors: {ctx['competitors']}")
+    if ctx.get("customInstructions"):
+        lines.append(f"Instructions: {ctx['customInstructions']}")
+    return "\n".join(lines)
+
+
+def get_dashboard_stats() -> dict[str, Any]:
+    leads = list_leads()
+    funnel: dict[str, int] = {"new": 0, "needs_followup": 0, "hot": 0, "converted": 0}
+    segments: dict[str, int] = {}
+    score_bins = {"0-50": 0, "51-70": 0, "71-85": 0, "86-100": 0}
+    priorities: dict[str, int] = {"low": 0, "medium": 0, "high": 0}
+
+    for lead in leads:
+        status = lead.get("status", "new")
+        funnel[status] = funnel.get(status, 0) + 1
+        seg = lead.get("segment") or "other"
+        segments[seg] = segments.get(seg, 0) + 1
+        try:
+            score = int(lead.get("score", 0))
+        except (TypeError, ValueError):
+            score = 0
+        if score <= 50:
+            score_bins["0-50"] += 1
+        elif score <= 70:
+            score_bins["51-70"] += 1
+        elif score <= 85:
+            score_bins["71-85"] += 1
+        else:
+            score_bins["86-100"] += 1
+        pri = lead.get("priority", "medium")
+        priorities[pri] = priorities.get(pri, 0) + 1
+
+    agent_workload: dict[str, int] = {}
+    for action in list_actions(status="pending"):
+        aid = action.get("agentId", "unknown")
+        agent_workload[aid] = agent_workload.get(aid, 0) + 1
+
+    signal_types: dict[str, int] = {}
+    for signal in list_signals(open_only=True):
+        st = signal.get("type", "custom")
+        signal_types[st] = signal_types.get(st, 0) + 1
+
+    return {
+        "funnel": funnel,
+        "segments": segments,
+        "scoreBins": score_bins,
+        "priorities": priorities,
+        "agentWorkload": agent_workload,
+        "signalTypes": signal_types,
+        "totalLeads": len(leads),
+    }

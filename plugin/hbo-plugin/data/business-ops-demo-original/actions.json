@@ -32,5 +32,17 @@
     "risk": "medium",
     "status": "pending",
     "description": "Marketplace buyer requesting bulk quote."
+  },
+  {
+    "id": "act_004",
+    "title": "Approve CRM enrichment purchase",
+    "agentId": "ops-lead-agent",
+    "source": "workspace",
+    "risk": "medium",
+    "status": "pending",
+    "actionType": "mock_approved_spend_request",
+    "spendAmount": "49.00",
+    "spendCurrency": "usd",
+    "description": "Optional Stripe Link CLI demo — mock spend on approve."
   }
 ]

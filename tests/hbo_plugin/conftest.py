@@ -55,7 +55,9 @@ def load_plugin_modules():
     _load_module("sources.sheets", "sources/sheets.py")
     _load_module("mutations", "mutations.py")
     _load_module("execution", "execution.py")
-    return _load_module("business_rules", "business_rules.py")
+    rules = _load_module("business_rules", "business_rules.py")
+    _load_module("tools", "tools.py")
+    return rules
 
 
 @pytest.fixture

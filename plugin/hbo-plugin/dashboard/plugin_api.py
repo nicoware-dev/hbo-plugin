@@ -63,6 +63,7 @@ def _load_plugin_modules():
         ("sources.sheets", "sources/sheets.py"),
         ("mutations", "mutations.py"),
         ("execution", "execution.py"),
+        ("automations", "automations.py"),
         ("business_rules", "business_rules.py"),
     ):
         full_name = f"{_PACKAGE}.{name}"
@@ -82,6 +83,8 @@ def _load_plugin_modules():
         key = name.split(".")[-1] if "." in name else name
         if name == "business_rules":
             loaded["business_rules"] = mod
+        elif name == "automations":
+            loaded["automations"] = mod
         elif name.startswith("sources."):
             loaded.setdefault("sources", sys.modules[f"{_PACKAGE}.sources"])
     if "state" not in loaded:
@@ -198,3 +201,23 @@ async def get_bridge_status():
 @router.post("/bridge/mode")
 async def set_bridge_mode(body: dict[str, Any] = Body(...)):
     return _rules.set_bridge_mode(body.get("mode", "local-demo"))
+
+
+@router.get("/stats")
+async def get_stats():
+    return _state.get_dashboard_stats()
+
+
+@router.get("/business-context")
+async def get_business_context():
+    return _state.get_business_context()
+
+
+@router.post("/business-context")
+async def save_business_context(body: dict[str, Any] = Body(...)):
+    return {"success": True, "context": _state.save_business_context(body)}
+
+
+@router.get("/automations")
+async def get_automations():
+    return _modules["automations"].list_automations()

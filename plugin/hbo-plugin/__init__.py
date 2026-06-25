@@ -15,6 +15,8 @@ BUNDLED_SKILLS = (
     "ops-lead",
     "local-demo",
     "composio",
+    "nvidia-nemoclaw-setup",
+    "stripe-link-cli",
 )
 
 

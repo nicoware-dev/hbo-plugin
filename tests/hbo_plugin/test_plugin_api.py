@@ -29,6 +29,7 @@ def _load_plugin_modules():
         ("sources.sheets", "sources/sheets.py"),
         ("mutations", "mutations.py"),
         ("execution", "execution.py"),
+        ("automations", "automations.py"),
         ("business_rules", "business_rules.py"),
     ):
         full_name = f"{PACKAGE}.{name}"
@@ -67,7 +68,7 @@ def api_module(demo_data_dir):
 async def test_get_workspace(api_module):
     result = await api_module.get_workspace()
     assert result["workspaceName"] == "Business Ops Demo"
-    assert result["pendingActions"] == 3
+    assert result["pendingActions"] == 4
 
 
 @pytest.mark.asyncio
@@ -98,7 +99,7 @@ async def test_reset_demo(api_module):
     result = await api_module.reset_demo()
     assert result["success"] is True
     workspace = await api_module.get_workspace()
-    assert workspace["pendingActions"] == 3
+    assert workspace["pendingActions"] == 4
 
 
 @pytest.mark.asyncio
@@ -162,3 +163,26 @@ async def test_set_bridge_mode_api(api_module):
     assert result["mode"] == "hybrid"
     status = await api_module.get_bridge_status()
     assert status["mode"] == "hybrid"
+
+
+@pytest.mark.asyncio
+async def test_get_stats(api_module):
+    result = await api_module.get_stats()
+    assert "funnel" in result
+    assert "segments" in result
+    assert result["totalLeads"] == 12
+
+
+@pytest.mark.asyncio
+async def test_business_context(api_module):
+    saved = await api_module.save_business_context({"businessName": "Test Co"})
+    assert saved["success"] is True
+    ctx = await api_module.get_business_context()
+    assert ctx["businessName"] == "Test Co"
+
+
+@pytest.mark.asyncio
+async def test_get_automations(api_module):
+    result = await api_module.get_automations()
+    assert len(result["automations"]) == 5
+    assert "sales-source-sync" in result["recommendedOrder"]

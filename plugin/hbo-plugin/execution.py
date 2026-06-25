@@ -9,10 +9,12 @@ from uuid import uuid4
 from . import state
 from .sources import bridge, gmail
 
-EXECUTABLE_TYPES = ("send_email",)
+EXECUTABLE_TYPES = ("send_email", "mock_approved_spend_request")
 
 
 def should_execute(action: dict[str, Any]) -> bool:
+    if action.get("actionType") == "mock_approved_spend_request":
+        return True
     mode = state.get_workspace_config().get("selectedBridge", "local-demo")
     if mode not in ("composio", "hybrid"):
         return False
@@ -26,6 +28,8 @@ def should_execute(action: dict[str, Any]) -> bool:
 
 
 def execute_approved_action(action: dict[str, Any]) -> dict[str, Any]:
+    if action.get("actionType") == "mock_approved_spend_request":
+        return _mock_stripe_spend(action)
     if action.get("actionType") == "send_email" or action.get("composioTool") == "GMAIL_SEND_EMAIL":
         return _send_email_for_action(action)
     if "follow-up" in action.get("title", "").lower():
@@ -109,3 +113,31 @@ def _lead_for_action(action: dict[str, Any]) -> dict[str, Any] | None:
 def _lead_has_email(lead_id: str) -> bool:
     lead = next((l for l in state.list_leads() if l.get("id") == lead_id), None)
     return bool(lead and lead.get("email"))
+
+
+def _mock_stripe_spend(action: dict[str, Any]) -> dict[str, Any]:
+    amount = action.get("spendAmount", "49.00")
+    currency = action.get("spendCurrency", "usd")
+    purpose = action.get("title", "Approved purchase")
+    cmd = (
+        f'stripe link spend create --amount {amount} --currency {currency} '
+        f'--description "{purpose}"'
+    )
+    event = state.append_audit_event(
+        {
+            "id": f"audit_{uuid4().hex[:8]}",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "agentId": action.get("agentId", "ops-lead-agent"),
+            "eventType": "mock_stripe_spend",
+            "summary": f"Stripe Link CLI spend request would be created: {purpose} ({amount} {currency}).",
+            "actionId": action.get("id"),
+        }
+    )
+    return {
+        "success": True,
+        "mock": True,
+        "tool": "stripe-link-cli",
+        "command": cmd,
+        "message": "Mock mode — no real payment credentials used.",
+        "auditEvent": event,
+    }

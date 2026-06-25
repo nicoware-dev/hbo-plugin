@@ -19,3 +19,4 @@ provides_tools:
   - hbo_send_approval_email
   - hbo_get_bridge_status
   - hbo_set_bridge_mode
+  - hbo_get_business_context

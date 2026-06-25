@@ -1,5 +1,5 @@
 import { getSDK } from "../api/client";
-import { postAction } from "../api/hooks";
+import { postAction, useFetch } from "../api/hooks";
 
 const STEPS = [
   "Install HBO Plugin into ~/.hermes/plugins/",
@@ -7,18 +7,32 @@ const STEPS = [
   "Install Sales Ops, Growth, and Ops Lead profiles",
   "Load demo data via hbo_load_demo_data or Reset below",
   "Open this Business Ops tab",
+  "Fill Business context (Business tab)",
   "Run Daily Ops Briefing workflow",
   "Approve one pending action",
   "Optional: enable composio skill (hbo-plugin:composio) for external app bridge",
   "Set bridge mode to composio or hybrid in Tool Bridges to execute emails on approve",
-  "Re-link expired Composio connections: composio link whatsapp && composio link googlemeet",
+  "Enable recommended crons below after reviewing each blueprint",
 ];
+
+type Automation = {
+  id: string;
+  name: string;
+  agentId: string;
+  schedule: string;
+  purpose: string;
+  skills: string[];
+  bridge: string;
+  silent: boolean;
+  cronFile: string;
+};
 
 export function SetupPage() {
   const { React, components } = getSDK();
-  const { Card, CardContent, Button } = components;
+  const { Card, CardContent, CardHeader, CardTitle, Button } = components;
   const [busy, setBusy] = React.useState(false);
   const [message, setMessage] = React.useState<string | null>(null);
+  const { data: autoData } = useFetch<{ automations: Automation[]; safetyNote: string }>("/automations");
 
   async function resetDemo() {
     if (!window.confirm("Reset all demo data to bundled defaults? This cannot be undone.")) return;
@@ -59,6 +73,38 @@ export function SetupPage() {
           busy ? "Resetting…" : "Reset demo data"
         ),
         message && React.createElement("p", { className: "text-sm text-muted-foreground" }, message)
+      )
+    ),
+    React.createElement(
+      Card,
+      null,
+      React.createElement(CardHeader, null, React.createElement(CardTitle, null, "Recommended Automations")),
+      React.createElement(
+        CardContent,
+        { className: "p-4 space-y-4" },
+        React.createElement(
+          "p",
+          { className: "text-sm text-muted-foreground" },
+          autoData?.safetyNote ?? "Crons are recommended — enable manually after review."
+        ),
+        React.createElement(
+          "ul",
+          { className: "space-y-3" },
+          ...(autoData?.automations ?? []).map((a) =>
+            React.createElement(
+              "li",
+              { key: a.id, className: "rounded border p-3 text-sm space-y-1" },
+              React.createElement("div", { className: "font-medium" }, `${a.name} — ${a.schedule}`),
+              React.createElement("p", { className: "text-muted-foreground" }, a.purpose),
+              React.createElement(
+                "p",
+                { className: "text-xs text-muted-foreground" },
+                `Agent: ${a.agentId} · Bridge: ${a.bridge} · Skills: ${a.skills.join(", ")}`
+              ),
+              React.createElement("code", { className: "text-xs block mt-1" }, a.cronFile)
+            )
+          )
+        )
       )
     )
   );

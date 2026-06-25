@@ -8,6 +8,7 @@ import { SignalsPage } from "./routes/Signals";
 import { AuditPage } from "./routes/Audit";
 import { ToolBridgesPage } from "./routes/ToolBridges";
 import { SetupPage } from "./routes/Setup";
+import { BusinessPage } from "./routes/Business";
 
 const NAV = [
   { id: "overview", label: "Overview" },
@@ -16,6 +17,7 @@ const NAV = [
   { id: "leads", label: "Leads" },
   { id: "actions", label: "Actions" },
   { id: "signals", label: "Signals" },
+  { id: "business", label: "Business" },
   { id: "audit", label: "Audit" },
   { id: "bridges", label: "Tool Bridges" },
   { id: "setup", label: "Setup" },
@@ -39,6 +41,7 @@ function registerPlugin() {
     leads: LeadsPage,
     actions: ActionsPage,
     signals: SignalsPage,
+    business: BusinessPage,
     audit: AuditPage,
     bridges: ToolBridgesPage,
     setup: SetupPage,

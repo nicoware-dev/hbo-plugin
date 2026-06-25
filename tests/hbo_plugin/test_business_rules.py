@@ -24,7 +24,7 @@ def test_run_outbound_growth_creates_batch(rules_module):
     assert result["success"] is True
     batch = result["outputs"]["outreachBatch"]
     assert batch["leadCount"] >= 1
-    assert len(result["outputs"]["leadScores"]) == 3
+    assert len(result["outputs"]["leadScores"]) == 12
 
 
 def test_run_daily_briefing_generates_briefing(rules_module, demo_data_dir):
@@ -53,4 +53,4 @@ def test_reset_demo_data_restores_pending_actions(rules_module, state_module):
     rules_module.approve_action("act_001")
     state_module.reset_demo_data()
     pending = state_module.list_actions(status="pending")
-    assert len(pending) == 3
+    assert len(pending) == 4

@@ -58,3 +58,12 @@ def test_bridge_status(rules_module):
         status = rules_module.get_bridge_status()
     assert status["mode"] == "local-demo"
     assert any(b["id"] == "composio" for b in status["bridges"])
+
+
+def test_mock_stripe_executes_in_local_demo(rules_module, state_module):
+    state_module.set_selected_bridge("local-demo")
+    result = rules_module.approve_action("act_004")
+    assert result["success"] is True
+    assert result["action"]["status"] == "executed"
+    assert result["execution"]["mock"] is True
+    assert "stripe link spend" in result["execution"]["command"].lower()

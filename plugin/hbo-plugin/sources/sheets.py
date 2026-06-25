@@ -69,7 +69,7 @@ def import_leads(
                 "name": _clean(row, 0),
                 "email": _clean(row, 1),
                 "company": _clean(row, 2),
-                "phone": _clean(row, 3),
+                "phone": _clean_phone(row, 3),
                 "source": _clean(row, 4, "sheets_import"),
                 "segment": _clean(row, 5, "commerce"),
                 "score": int(_clean(row, 6, "50")),
@@ -89,6 +89,25 @@ def import_leads(
         "errors": errors,
         "total_leads": len(state.list_leads()),
     }
+
+
+def _clean_phone(row: list[str], index: int, default: str = "") -> str:
+    """Preserve international phone numbers; Sheets often breaks + formulas."""
+    if index >= len(row):
+        return default
+    raw = str(row[index]).strip()
+    if raw.startswith("'"):
+        raw = raw[1:].strip()
+    if raw.startswith("#") or not raw:
+        return default
+    digits_plus = "".join(c for c in raw if c.isdigit() or c == "+")
+    if not digits_plus:
+        return default
+    if digits_plus.startswith("+"):
+        return digits_plus
+    if len(digits_plus) >= 8:
+        return f"+{digits_plus}"
+    return digits_plus
 
 
 def _clean(row: list[str], index: int, default: str = "") -> str:
