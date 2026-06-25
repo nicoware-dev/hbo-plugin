@@ -9,6 +9,7 @@ from typing import Any
 
 PLUGIN_DIR = Path(__file__).parent
 DATA_DIR = PLUGIN_DIR / "data" / "business-ops-demo"
+ORIGINAL_DIR = PLUGIN_DIR / "data" / "business-ops-demo-original"
 
 
 def read_json(name: str, default: Any) -> Any:
@@ -45,16 +46,66 @@ def list_agents() -> list[dict[str, Any]]:
     return read_json("agents.json", [])
 
 
+_WORKFLOW_DEFS = [
+    {"id": "inbound_sales", "name": "Inbound Sales", "ownerAgentId": "sales-ops-agent"},
+    {"id": "outbound_growth", "name": "Outbound Growth", "ownerAgentId": "growth-agent"},
+    {"id": "daily_ops_briefing", "name": "Daily Ops Briefing", "ownerAgentId": "ops-lead-agent"},
+]
+
+
 def list_workflows() -> list[dict[str, Any]]:
-    return [
-        {"id": "inbound_sales", "name": "Inbound Sales", "ownerAgentId": "sales-ops-agent"},
-        {"id": "outbound_growth", "name": "Outbound Growth", "ownerAgentId": "growth-agent"},
-        {"id": "daily_ops_briefing", "name": "Daily Ops Briefing", "ownerAgentId": "ops-lead-agent"},
-    ]
+    runs = read_json("workflow_runs.json", {})
+    workflows: list[dict[str, Any]] = []
+    for wf in _WORKFLOW_DEFS:
+        run = runs.get(wf["id"], {})
+        workflows.append(
+            {
+                **wf,
+                "lastRunAt": run.get("ranAt"),
+                "status": run.get("status", "idle"),
+                "lastOutputs": run.get("outputs"),
+            }
+        )
+    return workflows
+
+
+def record_workflow_run(workflow_id: str, outputs: dict[str, Any]) -> dict[str, Any]:
+    runs = read_json("workflow_runs.json", {})
+    record = {
+        "workflowId": workflow_id,
+        "ranAt": datetime.now(timezone.utc).isoformat(),
+        "status": "completed",
+        "outputs": outputs,
+    }
+    runs[workflow_id] = record
+    write_json("workflow_runs.json", runs)
+    return record
 
 
 def list_leads() -> list[dict[str, Any]]:
     return read_json("leads.json", [])
+
+
+def list_signals() -> list[dict[str, Any]]:
+    return read_json("signals.json", [])
+
+
+def list_conversations() -> list[dict[str, Any]]:
+    return read_json("conversations.json", [])
+
+
+def append_signal(signal: dict[str, Any]) -> dict[str, Any]:
+    signals = read_json("signals.json", [])
+    signals.append(signal)
+    write_json("signals.json", signals)
+    return signal
+
+
+def append_action(action: dict[str, Any]) -> dict[str, Any]:
+    actions = read_json("actions.json", [])
+    actions.append(action)
+    write_json("actions.json", actions)
+    return action
 
 
 def list_actions(*, status: str | None = None) -> list[dict[str, Any]]:
@@ -93,9 +144,16 @@ def append_briefing(briefing: dict[str, Any]) -> dict[str, Any]:
     return briefing
 
 
+def reset_demo_data() -> None:
+    for path in ORIGINAL_DIR.glob("*.json"):
+        write_json(path.name, json.loads(path.read_text(encoding="utf-8")))
+    write_json("workflow_runs.json", {})
+
+
 def load_demo_data() -> dict[str, Any]:
+    reset_demo_data()
     return {
         "success": True,
         "workspace": get_workspace_summary(),
-        "message": "Demo data loaded from bundled files.",
+        "message": "Demo data reset from bundled files.",
     }

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import importlib.util
 import sys
+import types
 from pathlib import Path
 
 try:
@@ -25,25 +26,55 @@ except Exception:  # pragma: no cover - allows import without FastAPI in dev
 router = APIRouter()
 
 _PLUGIN_ROOT = Path(__file__).resolve().parent.parent
+_PACKAGE = "hbo_plugin"
 
 
-def _load_plugin_module(module_name: str, filename: str):
-    """Load state.py / business_rules.py from the plugin root."""
-    cache_key = f"hbo_plugin_{module_name}"
-    if cache_key in sys.modules:
-        return sys.modules[cache_key]
-    path = _PLUGIN_ROOT / filename
-    spec = importlib.util.spec_from_file_location(cache_key, path)
-    if spec is None or spec.loader is None:
-        raise ImportError(f"Cannot load {path}")
-    mod = importlib.util.module_from_spec(spec)
-    sys.modules[cache_key] = mod
-    spec.loader.exec_module(mod)
-    return mod
+def _load_plugin_modules():
+    """Load plugin modules when Hermes imports this file standalone."""
+    if _PACKAGE not in sys.modules:
+        sys.modules[_PACKAGE] = types.ModuleType(_PACKAGE)
+
+    loaded: dict[str, object] = {}
+    for name, filename in (
+        ("schemas", "schemas.py"),
+        ("state", "state.py"),
+        ("workflows", "workflows.py"),
+        ("business_rules", "business_rules.py"),
+    ):
+        full_name = f"{_PACKAGE}.{name}"
+        if full_name in sys.modules:
+            loaded[name] = sys.modules[full_name]
+            continue
+        path = _PLUGIN_ROOT / filename
+        spec = importlib.util.spec_from_file_location(full_name, path)
+        if spec is None or spec.loader is None:
+            raise ImportError(f"Cannot load {path}")
+        mod = importlib.util.module_from_spec(spec)
+        mod.__package__ = _PACKAGE
+        sys.modules[full_name] = mod
+        spec.loader.exec_module(mod)
+        loaded[name] = mod
+    return loaded
 
 
-_state = _load_plugin_module("state", "state.py")
-_rules = _load_plugin_module("business_rules", "business_rules.py")
+_modules = _load_plugin_modules()
+_state = _modules["state"]
+_rules = _modules["business_rules"]
+
+
+@router.get("/workflows")
+async def get_workflows():
+    return {"workflows": _state.list_workflows()}
+
+
+@router.get("/signals")
+async def get_signals():
+    return {"signals": _state.list_signals()}
+
+
+@router.post("/demo/reset")
+async def reset_demo():
+    return _state.load_demo_data()
 
 
 @router.get("/workspace")
