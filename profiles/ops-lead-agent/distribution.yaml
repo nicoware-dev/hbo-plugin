@@ -1,0 +1,5 @@
+name: ops-lead-agent
+version: 1.0.0
+description: "Ops leadership — daily briefing, prioritization, approvals"
+hermes_requires: ">=0.12.0"
+license: MIT

@@ -1,0 +1,8 @@
+model:
+  default: openrouter/owl-alpha
+  provider: openrouter
+  temperature: 0.4
+
+plugins:
+  enabled:
+  - hbo-plugin

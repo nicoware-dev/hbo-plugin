@@ -1,0 +1,9 @@
+# Profile config — standard Hermes format
+model:
+  default: openrouter/owl-alpha
+  provider: openrouter
+  temperature: 0.3
+
+plugins:
+  enabled:
+  - hbo-plugin

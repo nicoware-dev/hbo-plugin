@@ -1,0 +1,5 @@
+name: sales-ops-agent
+version: 1.0.0
+description: "Inbound sales operations — conversations, bot QA, follow-ups"
+hermes_requires: ">=0.12.0"
+license: MIT
