@@ -14,7 +14,7 @@ const solutions = [
   'A Hermes-native Business Ops layer, not another standalone SaaS app',
   'Specialized agent profiles (Sales Ops, Growth, Ops Lead) with bundled skills',
   'Signals from business data, Hermes proposes actions, humans approve or reject',
-  'Optional Composio CLI bridge to connect Gmail, Slack, CRM, and more',
+  'Composio CLI bridge to connect Gmail, Slack, CRM, and more',
 ];
 
 export default function ProblemSolution(): ReactNode {

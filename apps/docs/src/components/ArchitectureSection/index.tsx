@@ -12,7 +12,7 @@ const TABS = [
     label: 'Package view',
     alt: 'HBO Plugin package architecture diagram',
     caption:
-      'Plugin core, dashboard extension, profile distributions, local workspace state, and optional Composio bridge in one installable Hermes package.',
+      'Plugin core, dashboard extension, profile distributions, local workspace state, and Composio bridge in one installable Hermes package.',
   },
   {
     id: 'runtime',

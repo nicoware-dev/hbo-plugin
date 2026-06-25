@@ -84,7 +84,7 @@ const FeatureList: FeatureItem[] = [
     tint: 'muted',
     description: (
       <>
-        Optional <code>composio-cli</code> skill connects Gmail, Slack, CRM, and
+        Composio <code>composio-cli</code> skill connects Gmail, Slack, CRM, and
         1000+ apps when credentials are configured. Local workspace works without it.
       </>
     ),

@@ -62,9 +62,9 @@ const CARDS: DocCard[] = [
     icon: <ShieldIcon className={styles.iconSvg} />,
   },
   {
-    title: 'Composio CLI',
-    description: 'Optional bridge to Gmail, Slack, CRM, and 1000+ apps.',
-    to: '/docs/composio-cli',
+    title: 'Integrations',
+    description: 'Composio, NVIDIA NemoClaw, and Stripe Link CLI.',
+    to: '/docs/integrations',
     icon: <BridgeIcon className={styles.iconSvg} />,
   },
 ];

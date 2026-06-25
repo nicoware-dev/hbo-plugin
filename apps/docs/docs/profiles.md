@@ -52,7 +52,7 @@ Profiles reference HBO bundled skills:
 - Growth → `growth-ops`
 - Ops Lead → `ops-lead`
 
-Optional: `composio-cli` for live external app execution.
+Add `composio-cli` when you need live external app execution.
 
 ## Related
 

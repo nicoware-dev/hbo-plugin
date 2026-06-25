@@ -5,7 +5,7 @@ title: Objectives
 
 # Objectives & scope
 
-This page defines what HBO Plugin is for, who it serves, and what the MVP includes.
+This page defines what HBO Plugin is for, who it serves, and what the product includes.
 
 ## Product thesis
 
@@ -41,9 +41,9 @@ Make the signal → action → approval loop visible and actionable:
 - Real approve/reject with audit events
 - Dashboard and chat surfaces for operators
 
-### O4 — Optional real integrations
+### O4 — External integrations
 
-Document and bundle the Composio CLI bridge as the path to Gmail, Slack, CRM, and other apps.
+Document and bundle bridges to Gmail, Slack, CRM, secure runtimes, and approved spending workflows.
 
 ### O5 — Public documentation
 
@@ -72,14 +72,13 @@ User pastes install prompt → Hermes installs everything → Dashboard opens �
 - Bundled skills for workflows and integrations
 - Public documentation and landing site
 
-## What HBO Plugin is not (MVP)
+## What HBO Plugin is not
 
 - A CRM replacement
 - A WhatsApp inbox
 - A standalone SaaS application
 - A full automation platform (n8n replacement)
 - A Composio-only or WithOne-only project
-- Production CRM sync (file-backed workspace for MVP)
 
 ## Success criteria
 
@@ -91,17 +90,8 @@ User pastes install prompt → Hermes installs everything → Dashboard opens �
 | Three profiles usable | Each profile runs its workflow skill |
 | Docs self-explanatory | New user understands problem, loop, and install |
 
-## Roadmap snapshot
-
-Current MVP status (see repository `docs/ROADMAP.md`):
-
-- Plugin + tools, workspace state, dashboard UI — **done**
-- Profile distributions + skills — **done**
-- Workflow enrichment (signals/actions from scans) — **in progress**
-- Composio live bridge — **docs only** (by design for MVP)
-- WithOne / n8n bridges — **out of scope**
-
 ## Related docs
 
 - [How it works](./how-it-works) — signal and approval loop detail
 - [Architecture](./architecture) — system diagram
+- [Integrations](./integrations) — Composio, NVIDIA, Stripe

@@ -1,11 +1,13 @@
 ---
 sidebar_position: 9
-title: Composio CLI
+title: Composio
 ---
 
 # Composio CLI Bridge
 
-The MVP external bridge is the **`composio`** skill (`hbo-plugin:composio`) — optional and not required for local workspace operation.
+The **`composio`** skill (`hbo-plugin:composio`) connects HBO Plugin to Gmail, Slack, Sheets, CRM, and 1000+ apps through the Composio CLI.
+
+HBO Plugin runs fully on **local workspace state** without Composio. Enable this integration when you need live reads and writes against external services.
 
 Official Composio docs: [docs.composio.dev/docs/cli](https://docs.composio.dev/docs/cli)
 
@@ -87,7 +89,7 @@ composio execute <TOOL> -d '{...}'
 | `composio execute` | Run a tool |
 | `composio whoami` | Verify authentication |
 
-## Fallback
+## Local workspace fallback
 
 If Composio is not configured, HBO Plugin continues to operate on **local workspace state** with no external credentials required.
 
@@ -101,4 +103,4 @@ If Composio is not configured, HBO Plugin continues to operate on **local worksp
 | `composio` not found after install | `source ~/.bashrc` or open a new terminal |
 | `wsl composio` fails from PowerShell | Run `.\scripts\setup-composio-windows.ps1`, then `composio` in a new window |
 
-Contributor install guide (full detail): `docs/COMPOSIO_CLI_INSTALL.md` in the repository.
+Extended install guide: `docs/COMPOSIO_CLI_INSTALL.md` in the repository.

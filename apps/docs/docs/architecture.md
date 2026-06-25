@@ -15,7 +15,7 @@ HBO Plugin extends Hermes as a single installable package under `plugin/hbo-plug
 |-------|--------------|
 | **Plugin core** | `hbo_*` tools, business rules, and file-backed JSON state |
 | **Dashboard** | React UI tab + FastAPI routes at `/api/plugins/hbo-plugin/` |
-| **Tool bridge** | Optional `composio-cli` skill for external app execution |
+| **Tool bridge** | `composio-cli` skill for external app execution |
 | **Profiles** | Sales Ops, Growth, and Ops Lead agent distributions |
 
 ## Data flow
@@ -29,4 +29,4 @@ HBO Plugin extends Hermes as a single installable package under `plugin/hbo-plug
 
 ![HBO Plugin architecture — alternate layout](/img/hbo-plugin-architecture-2.png)
 
-See contributor docs in the repository `docs/` folder for detailed architecture notes.
+See the repository `docs/` folder for detailed architecture notes.

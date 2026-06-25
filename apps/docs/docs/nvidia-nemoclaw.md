@@ -1,3 +1,7 @@
+---
+title: NVIDIA NemoClaw
+---
+
 # NVIDIA NemoClaw / Nemotron
 
 Run HBO Plugin inside **NemoHermes** with **NemoClaw** sandbox and **Nemotron** inference.
@@ -6,7 +10,7 @@ Run HBO Plugin inside **NemoHermes** with **NemoClaw** sandbox and **Nemotron** 
 
 - Secure Hermes runtime boundary
 - Inference via `inference.local` (credentials on host)
-- Recommended hackathon deployment story
+- Recommended deployment path for sandboxed Hermes
 
 ## Ports
 

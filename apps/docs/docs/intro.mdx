@@ -14,7 +14,7 @@ import DocsIndexCards from '@site/src/components/DocsIndexCards';
 
 ## One-liner
 
-> HBO Plugin is a Hermes-native business operations package: specialized agent profiles, workflows, a dashboard tab, signals and action queues with approval gates, and optional bridges to external tools.
+> HBO Plugin is a Hermes-native business operations package: specialized agent profiles, workflows, a dashboard tab, signals and action queues with approval gates, and integrations to external tools.
 
 ## The problem
 
@@ -36,7 +36,7 @@ HBO Plugin extends Hermes itself through:
 | **Plugin core** | 18 `hbo_*` tools, business rules, file-backed workspace state |
 | **Dashboard** | Business Ops tab — Overview (charts), Agents, Workflows, Leads, Actions, Signals, **Business**, Audit, Tool Bridges, Setup |
 | **Profiles** | Sales Ops, Growth, and Ops Lead agent distributions |
-| **Skills** | Workflow guidance + optional Composio, NVIDIA, Stripe Link CLI |
+| **Skills** | Workflow guidance + Composio, NVIDIA, Stripe Link CLI integrations |
 
 ## Core operating loop
 
@@ -48,7 +48,7 @@ Business data  →  Signals  →  Hermes workflows  →  Action proposals  →  
 2. **Workflows** (`inbound_sales`, `outbound_growth`, `daily_ops_briefing`) scan state and propose actions.
 3. **Operators** approve or reject in Hermes chat or the dashboard.
 4. **Audit** records every decision for traceability.
-5. **Tool bridge** (optional) executes approved actions against Gmail, Slack, CRM, etc.
+5. **Tool bridge** executes approved actions against Gmail, Slack, CRM, and other connected apps when integrations are enabled.
 
 See [How it works](./how-it-works) for the full walkthrough.
 
@@ -62,7 +62,7 @@ HBO Plugin helps Hermes answer:
 - Which actions require human approval before execution?
 - What was approved, rejected, and when?
 
-Read [Objectives & scope](./objectives) for product goals, target users, and MVP boundaries.
+Read [Objectives & scope](./objectives) for product goals, target users, and scope.
 
 ## Quick start
 

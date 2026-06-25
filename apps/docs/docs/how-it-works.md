@@ -25,7 +25,7 @@ flowchart LR
   ACT --> OP
   OP -->|approve| AUD
   OP -->|reject| AUD
-  OP -->|optional| BR
+  OP -->|when enabled| BR
   BR --> EXT
 ```
 
@@ -37,7 +37,7 @@ The plugin stores workspace state as **file-backed JSON**: leads, conversations,
 
 You can operate entirely on this local workspace without connecting external apps.
 
-### Connected apps (optional)
+### Connected apps
 
 When the **composio-cli** skill is enabled, Hermes can read and write external apps (Gmail, Slack, HubSpot, etc.). Signals and actions still flow through the same plugin tools and approval gates — the bridge is the execution layer.
 

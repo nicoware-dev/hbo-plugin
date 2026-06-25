@@ -22,12 +22,12 @@ Bundle: `dashboard/dist/index.js` (build with `pnpm build:dashboard`)
 | **Signals** | Open signals | Create, resolve |
 | **Business** | Business context form | Name, products, tone — agents load via `hbo_get_business_context` |
 | **Audit** | Chronological decision log | Traceability |
-| **Tool Bridges** | Bridge mode + Composio status | Toggle local-demo / composio / hybrid |
-| **Setup** | Install checklist, **reset demo**, recommended crons | Restore bundled demo data |
+| **Tool Bridges** | Bridge mode + Composio status | Toggle local workspace / composio / hybrid |
+| **Setup** | Install checklist, workspace restore, recommended crons | Load bundled sample data |
 
 ## Overview charts
 
-After install, run **Setup → Reset demo data** to load 12 sample leads and audit history. Charts use the same Card styling as the rest of the Hermes dashboard.
+After install, use **Setup → Restore sample data** to load the bundled lead set and audit history. Charts use the same Card styling as the rest of the Hermes dashboard.
 
 Metrics include:
 
@@ -68,7 +68,7 @@ Backend: `dashboard/plugin_api.py`
 | `GET /actions` | Action proposals |
 | `POST /actions/{id}/approve` | Approve action |
 | `POST /actions/{id}/reject` | Reject action |
-| `POST /demo/reset` | Reset demo data |
+| `POST /demo/reset` | Restore workspace to bundled sample data |
 | `GET /bridge/status` | Composio bridge status |
 
 CLI tool `hbo_sync_sales_sources` mirrors the sales-source-sync cron (import + audit).
@@ -80,11 +80,11 @@ CLI tool `hbo_sync_sales_sources` mirrors the sales-source-sync cron (import + a
 3. Hermes dashboard **restarted** after plugin install or update
 
 :::tip
-If API routes return 404, confirm the plugin path and restart the dashboard process. If charts are empty, use **Setup → Reset demo data**.
+If API routes return 404, confirm the plugin path and restart the dashboard process. If charts are empty, use **Setup → Restore sample data**.
 :::
 
 ## Related
 
 - [Install](./install) — setup and troubleshooting
-- [Sponsor Integrations](./sponsor-integrations) — optional NVIDIA / Stripe
+- [Integrations](./integrations) — Composio, NVIDIA, Stripe
 - [How it works](./how-it-works) — approval loop detail

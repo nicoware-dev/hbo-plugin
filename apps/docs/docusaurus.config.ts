@@ -64,18 +64,26 @@ const config: Config = {
           ],
         },
         {
-          title: 'Profiles',
+          title: 'Plugin',
           items: [
-            { label: 'Sales Ops Agent', to: '/docs/profiles' },
+            { label: 'Plugin tools', to: '/docs/plugin' },
+            { label: 'Dashboard', to: '/docs/dashboard' },
+            { label: 'Profiles', to: '/docs/profiles' },
             { label: 'Skills', to: '/docs/skills' },
+          ],
+        },
+        {
+          title: 'Integrations',
+          items: [
+            { label: 'Overview', to: '/docs/integrations' },
+            { label: 'Composio', to: '/docs/composio-cli' },
           ],
         },
         {
           title: 'More',
           items: [
             { label: 'GitHub', href: 'https://github.com/nicoware-dev/hbo-plugin' },
-            { label: 'Dashboard', to: '/docs/dashboard' },
-            { label: 'Composio CLI', to: '/docs/composio-cli' },
+            { label: 'Development', to: '/docs/development' },
           ],
         },
       ],

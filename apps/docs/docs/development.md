@@ -17,11 +17,9 @@ pnpm build           # Build dashboard + docs
 - `plugin/hbo-plugin/` — Python plugin + dashboard extension
 - `profiles/` — Agent distributions
 - `apps/docs/` — This documentation site
-- `docs/` — Contributor architecture docs
+- `docs/` — Architecture and implementation docs
 
-See `AGENTS.md` in the repository root for agent-oriented guidance.
+Additional references:
 
-Contributor docs:
-
-- [Project status](https://github.com/nicoware-dev/hbo-plugin/blob/main/docs/PROJECT_STATUS.md) — what is built and what remains
-- [Hermes alignment](https://github.com/nicoware-dev/hbo-plugin/blob/main/docs/HERMES_ALIGNMENT.md) — how we match Hermes conventions
+- [Project status](https://github.com/nicoware-dev/hbo-plugin/blob/main/docs/PROJECT_STATUS.md)
+- [Hermes alignment](https://github.com/nicoware-dev/hbo-plugin/blob/main/docs/HERMES_ALIGNMENT.md)

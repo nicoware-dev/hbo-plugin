@@ -31,7 +31,7 @@ Please:
 8. approve one action,
 9. explain how to enable the composio-cli skill,
 10. open Business tab and confirm business context is loaded,
-11. reset demo data from Setup if charts look empty.
+11. restore sample workspace data from Setup if charts look empty.
 ```
 
 ### What each step does
@@ -46,7 +46,7 @@ Please:
 | 7 | Pending action proposals in the queue |
 | 8 | Approval mutates state and writes audit event |
 | 9 | Path to Gmail, Slack, CRM via Composio CLI |
-| 10–11 | Business context + reset demo for full dashboard data |
+| 10–11 | Business context + sample workspace data for full dashboard charts |
 
 ## Option B — Manual install
 
@@ -94,7 +94,7 @@ Restart the Hermes dashboard process, then open the **Business Ops** tab.
 
 Verify:
 
-- **Overview** — stat cards + funnel/segment/score charts (use **Setup → Reset demo** if data looks sparse)
+- **Overview** — stat cards + funnel/segment/score charts (use **Setup → Restore sample data** if the workspace looks empty)
 - **Business** — edit business context agents load via `hbo_get_business_context`
 - **Agents** lists three profiles
 - **Actions** shows pending proposals (outreach actions include message preview)
@@ -108,15 +108,11 @@ Run hbo_run_workflow with workflow daily_ops_briefing, then list pending actions
 
 Approve one action via chat or the dashboard **Actions** page. Check **Audit** for the event.
 
-## Optional — enable Composio bridge
+## Integrations
 
-See [Composio CLI](./composio-cli). The plugin works on local workspace state without external credentials.
+HBO Plugin runs on **local workspace state** without external credentials. To connect Gmail, Slack, CRM, and other services, see [Integrations](./integrations) — Composio, NVIDIA NemoClaw, and Stripe Link CLI.
 
 For scheduled import, use `hbo_sync_sales_sources` (matches the **sales-source-sync** cron blueprint).
-
-## Sponsor integrations (optional)
-
-See [Sponsor Integrations](./sponsor-integrations) for NVIDIA NemoClaw and Stripe Link CLI — not required for MVP.
 
 ## Troubleshooting
 
