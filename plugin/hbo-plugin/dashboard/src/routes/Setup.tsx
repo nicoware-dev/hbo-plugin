@@ -8,7 +8,7 @@ const STEPS = [
   "Open this Business Ops tab",
   "Run Daily Ops Briefing workflow",
   "Approve one pending action",
-  "Optional: enable composio-cli bridge skill",
+  "Optional: enable composio skill (hbo-plugin:composio) for external app bridge",
 ];
 
 export function SetupPage() {

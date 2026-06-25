@@ -14,7 +14,7 @@ BUNDLED_SKILLS = (
     "growth-ops",
     "ops-lead",
     "local-demo",
-    "composio-cli",
+    "composio",
 )
 
 
