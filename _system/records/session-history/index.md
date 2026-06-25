@@ -2,6 +2,8 @@
 
 Newest entries first.
 
+- [2026-06-25 18:21 — HyperFrames pitch B-roll — 10 scenes](2026-06-25-1821-hyperframes-pitch-broll.md) — Ten HyperFrames scenes (2 batches), high-quality renders; `videos/` gitignored locally.
+- [2026-06-25 21:18 — Docusaurus marketing images and docs refresh](2026-06-25-2118-docs-marketing-images.md) — OG image, architecture/agents/how-it-works diagrams on site and docs; removed duplicate Mermaid.
 - [2026-06-25 27:00 — Follow-up audit P0–P4 hackathon readiness](2026-06-25-2700-followup-audit-p0-p4.md) — Demo reset script, Vercel docs, sheet ID config, CI Python, 44 tests; screenshots left to user.
 - [2026-06-25 25:15 — Stripe Link CLI skill aligned with official](2026-06-25-2515-stripe-link-cli-skill.md) — Official create-payment-credential flow in rules/; HBO bridge; no code changes.
 - [2026-06-25 25:00 — SOUL grading and 90+ profile upgrades](2026-06-25-2500-soul-grading-profiles.md) — soul-grader fleet review; two-pass SOUL remediation and playbook runbook split for all three agents.
