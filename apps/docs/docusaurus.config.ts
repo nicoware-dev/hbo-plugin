@@ -12,6 +12,9 @@ const config: Config = {
   organizationName: 'nicoware-dev',
   projectName: 'hbo-plugin',
   onBrokenLinks: 'throw',
+  headTags: [
+    { tagName: 'link', attributes: { rel: 'apple-touch-icon', href: '/hbo-plugin/img/apple-touch-icon.png' } },
+  ],
   i18n: { defaultLocale: 'en', locales: ['en'] },
   presets: [
     [
@@ -24,8 +27,16 @@ const config: Config = {
     ],
   ],
   themeConfig: {
+    colorMode: {
+      defaultMode: 'dark',
+      respectPrefersColorScheme: true,
+    },
     navbar: {
       title: 'HBO Plugin',
+      logo: {
+        alt: 'HBO Plugin',
+        src: 'img/hbo-logo.svg',
+      },
       items: [
         { type: 'docSidebar', sidebarId: 'docs', position: 'left', label: 'Docs' },
         { href: 'https://github.com/nicoware-dev/hbo-plugin', label: 'GitHub', position: 'right' },
@@ -33,6 +44,32 @@ const config: Config = {
     },
     footer: {
       style: 'dark',
+      links: [
+        {
+          title: 'Docs',
+          items: [
+            { label: 'Install', to: '/docs/install' },
+            { label: 'How it works', to: '/docs/how-it-works' },
+            { label: 'Architecture', to: '/docs/architecture' },
+          ],
+        },
+        {
+          title: 'Profiles',
+          items: [
+            { label: 'Sales Ops Agent', to: '/docs/profiles' },
+            { label: 'Demo prompt', to: '/docs/demo-prompt' },
+            { label: 'Skills', to: '/docs/skills' },
+          ],
+        },
+        {
+          title: 'More',
+          items: [
+            { label: 'GitHub', href: 'https://github.com/nicoware-dev/hbo-plugin' },
+            { label: 'Dashboard', to: '/docs/dashboard' },
+            { label: 'Composio CLI', to: '/docs/composio-cli' },
+          ],
+        },
+      ],
       copyright: `Copyright © ${new Date().getFullYear()} HBO Plugin contributors.`,
     },
     prism: {

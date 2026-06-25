@@ -1,58 +1,112 @@
 import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
+import {
+  AgentsIcon,
+  BridgeIcon,
+  DashboardIcon,
+  ShieldIcon,
+  SignalIcon,
+  ToolsIcon,
+} from '@site/src/components/icons';
 import styles from './styles.module.css';
 
 type FeatureItem = {
   title: string;
-  Svg: React.ComponentType<React.ComponentProps<'svg'>>;
+  icon: ReactNode;
   description: ReactNode;
+  size: 'wide' | 'tall' | 'default';
+  tint?: 'accent' | 'muted';
 };
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: '12 plugin tools',
+    icon: <ToolsIcon className={styles.iconSvg} />,
+    size: 'wide',
+    tint: 'accent',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        <code>hbo_get_workspace</code>, <code>hbo_run_workflow</code>,{' '}
+        <code>hbo_detect_signals</code>, <code>hbo_approve_action</code>, and more.
+        Full business ops API for Hermes sessions.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Business Ops dashboard',
+    icon: <DashboardIcon className={styles.iconSvg} />,
+    size: 'tall',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Eight internal pages: Overview, Agents, Workflows, Leads, Actions, Audit,
+        Tool Bridges, and Setup, with live approve/reject on the action queue.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Three agent profiles',
+    icon: <AgentsIcon className={styles.iconSvg} />,
+    size: 'default',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Sales Ops, Growth, and Ops Lead, each with SOUL, config, and bundled skills
+        for inbound sales, outbound growth, and daily briefings.
+      </>
+    ),
+  },
+  {
+    title: 'Signals and workflows',
+    icon: <SignalIcon className={styles.iconSvg} />,
+    size: 'default',
+    description: (
+      <>
+        Workflows scan leads and conversations, emit signals, and propose actions
+        for human review.
+      </>
+    ),
+  },
+  {
+    title: 'Approval gates and audit',
+    icon: <ShieldIcon className={styles.iconSvg} />,
+    size: 'default',
+    description: (
+      <>
+        Every proposed action stays <code>pending</code> until approved or rejected.
+        Decisions land in the audit log.
+      </>
+    ),
+  },
+  {
+    title: 'Composio CLI bridge',
+    icon: <BridgeIcon className={styles.iconSvg} />,
+    size: 'wide',
+    tint: 'muted',
+    description: (
+      <>
+        Optional <code>composio-cli</code> skill connects Gmail, Slack, CRM, and
+        1000+ apps when credentials are configured. The demo runs without it.
       </>
     ),
   },
 ];
 
-function Feature({title, Svg, description}: FeatureItem) {
+function Feature({title, icon, description, size, tint}: FeatureItem) {
   return (
-    <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
-      <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
-      </div>
-    </div>
+    <article
+      className={clsx(
+        styles.cell,
+        size === 'wide' && styles.cellWide,
+        size === 'tall' && styles.cellTall,
+        tint === 'accent' && styles.cellAccent,
+        tint === 'muted' && styles.cellMuted,
+      )}>
+      <div className={styles.iconWrap}>{icon}</div>
+      <Heading as="h3" className={styles.featureTitle}>
+        {title}
+      </Heading>
+      <p className={styles.featureDescription}>{description}</p>
+    </article>
   );
 }
 
@@ -60,9 +114,17 @@ export default function HomepageFeatures(): ReactNode {
   return (
     <section className={styles.features}>
       <div className="container">
-        <div className="row">
-          {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
+        <div className={styles.header}>
+          <Heading as="h2" className={styles.sectionTitle}>
+            What you get
+          </Heading>
+          <p className={styles.sectionLead}>
+            A complete Hermes-native business operations package, not a separate app.
+          </p>
+        </div>
+        <div className={styles.bento}>
+          {FeatureList.map((props) => (
+            <Feature key={props.title} {...props} />
           ))}
         </div>
       </div>

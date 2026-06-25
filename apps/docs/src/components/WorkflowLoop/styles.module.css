@@ -1,0 +1,105 @@
+.section {
+  padding: clamp(3rem, 6vw, 5rem) 0;
+}
+
+.header {
+  max-width: 40rem;
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  margin-bottom: 0.65rem;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  letter-spacing: -0.03em;
+}
+
+.lead {
+  margin: 0;
+  color: var(--hbo-text-muted);
+  line-height: 1.65;
+  max-width: 50ch;
+}
+
+.track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-right: 1.25rem;
+}
+
+.stepMarker {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.stepNum {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--hbo-accent);
+  padding: 0.35rem 0.55rem;
+  border-radius: 6px;
+  background: oklch(0.62 0.19 var(--hbo-hue) / 0.12);
+  border: 1px solid oklch(0.62 0.19 var(--hbo-hue) / 0.25);
+}
+
+.stepLine {
+  flex: 1;
+  height: 1px;
+  margin-left: 0.75rem;
+  background: linear-gradient(90deg, var(--hbo-border), transparent);
+}
+
+.stepContent {
+  padding-top: 0.25rem;
+}
+
+.stepTitle {
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.stepBody {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--hbo-text-muted);
+}
+
+.cta {
+  margin-top: 2.5rem;
+}
+
+@media screen and (max-width: 996px) {
+  .track {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .step {
+    flex-direction: row;
+    padding-right: 0;
+  }
+
+  .stepMarker {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stepLine {
+    display: none;
+  }
+}

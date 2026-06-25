@@ -1,0 +1,98 @@
+.section {
+  padding: clamp(3rem, 6vw, 4.5rem) 0;
+  background: var(--hbo-surface-sunken);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.panelProblem,
+.panelSolution {
+  padding: 2rem 1.75rem;
+  border-radius: 16px;
+  border: 1px solid var(--hbo-border);
+}
+
+.panelProblem {
+  background: var(--hbo-surface-raised);
+}
+
+.panelSolution {
+  background:
+    linear-gradient(160deg, oklch(0.62 0.19 var(--hbo-hue) / 0.12), transparent 50%),
+    var(--hbo-surface-raised);
+}
+
+.panelLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--hbo-text-muted);
+}
+
+.panelIcon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--hbo-accent);
+}
+
+.heading {
+  font-size: clamp(1.4rem, 2.5vw, 1.75rem);
+  margin-bottom: 0.65rem;
+  letter-spacing: -0.03em;
+}
+
+.intro {
+  color: var(--hbo-text-muted);
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+  max-width: 48ch;
+}
+
+.list,
+.listSolutions {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.list li,
+.listSolutions li {
+  position: relative;
+  padding-left: 1.1rem;
+  line-height: 1.55;
+  font-size: 0.94rem;
+  color: var(--hbo-text);
+}
+
+.list li::before,
+.listSolutions li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--hbo-text-muted);
+}
+
+.listSolutions li::before {
+  background: var(--hbo-accent);
+}
+
+@media screen and (max-width: 996px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

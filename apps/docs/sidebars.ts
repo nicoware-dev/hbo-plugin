@@ -5,6 +5,8 @@ const sidebars: SidebarsConfig = {
     'intro',
     'install',
     'demo-prompt',
+    'how-it-works',
+    'objectives',
     'architecture',
     'plugin',
     'dashboard',

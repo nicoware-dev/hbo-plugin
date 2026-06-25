@@ -1,11 +1,122 @@
 .features {
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  width: 100%;
+  padding: clamp(3rem, 6vw, 5rem) 0;
 }
 
-.featureSvg {
-  height: 200px;
-  width: 200px;
+.header {
+  max-width: 36rem;
+  margin-bottom: 2.5rem;
+}
+
+.sectionTitle {
+  margin-bottom: 0.6rem;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  letter-spacing: -0.03em;
+}
+
+.sectionLead {
+  margin: 0;
+  color: var(--hbo-text-muted);
+  line-height: 1.65;
+  max-width: 34ch;
+}
+
+.bento {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto auto;
+}
+
+.cell {
+  padding: 1.5rem 1.4rem;
+  border-radius: 14px;
+  border: 1px solid var(--hbo-border);
+  background: var(--hbo-surface-raised);
+  transition: border-color 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cell:hover {
+  border-color: oklch(0.62 0.19 var(--hbo-hue) / 0.45);
+  transform: translateY(-2px);
+}
+
+.cellWide {
+  grid-column: span 2;
+}
+
+.cellTall {
+  grid-row: span 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background:
+    radial-gradient(ellipse 80% 60% at 100% 0%, var(--hbo-glow), transparent 55%),
+    var(--hbo-surface-raised);
+}
+
+.cellAccent {
+  background:
+    linear-gradient(135deg, oklch(0.62 0.19 var(--hbo-hue) / 0.08), transparent 60%),
+    var(--hbo-surface-raised);
+}
+
+.cellMuted {
+  background: var(--hbo-surface-sunken);
+}
+
+.iconWrap {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  color: var(--hbo-accent);
+  background: oklch(0.62 0.19 var(--hbo-hue) / 0.1);
+}
+
+.iconSvg {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.featureTitle {
+  font-size: 1.1rem;
+  margin-bottom: 0.45rem;
+  letter-spacing: -0.02em;
+}
+
+.featureDescription {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--hbo-text-muted);
+  max-width: 52ch;
+}
+
+.featureDescription code {
+  font-size: 0.84em;
+}
+
+@media screen and (max-width: 996px) {
+  .bento {
+    grid-template-columns: 1fr;
+  }
+
+  .cellWide,
+  .cellTall {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cell {
+    transition: border-color 0.2s ease;
+  }
+
+  .cell:hover {
+    transform: none;
+  }
 }

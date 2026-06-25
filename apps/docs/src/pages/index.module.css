@@ -1,23 +1,157 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
-
 .heroBanner {
-  padding: 4rem 0;
-  text-align: center;
   position: relative;
   overflow: hidden;
+  padding: clamp(3rem, 7vw, 5rem) 0 clamp(3.5rem, 8vw, 6rem);
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%, var(--hbo-glow), transparent 55%),
+    radial-gradient(ellipse 40% 40% at 10% 80%, oklch(0.62 0.19 var(--hbo-hue) / 0.08), transparent 50%),
+    var(--hbo-surface);
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
+.heroGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(oklch(0.62 0.19 var(--hbo-hue) / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.62 0.19 var(--hbo-hue) / 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
+  pointer-events: none;
+}
+
+.heroInner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.heroCopy {
+  max-width: 36rem;
+}
+
+.heroLogo {
+  width: 4.5rem;
+  height: 4.5rem;
+  margin-bottom: 1.25rem;
+  display: block;
+}
+
+.heroEyebrow {
+  margin: 0 0 0.75rem;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hbo-accent);
+}
+
+.heroTitle {
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin-bottom: 1rem;
+}
+
+.heroLead {
+  margin: 0 0 1.75rem;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--hbo-text-muted);
+  max-width: 42ch;
 }
 
 .buttons {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.heroAside {
+  display: flex;
+  align-items: stretch;
+}
+
+.packageCard {
+  width: 100%;
+  padding: 1.35rem 1.4rem;
+  border-radius: 14px;
+  border: 1px solid var(--hbo-border);
+  background: var(--hbo-surface-raised);
+  box-shadow: 0 16px 40px oklch(0 0 0 / 0.12);
+}
+
+.packageLabel {
+  margin: 0 0 1rem;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hbo-text-muted);
+}
+
+.packageList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.packageList li {
+  font-size: 0.88rem;
+}
+
+.packageList code {
+  font-size: 0.84em;
+  padding: 0.2rem 0.45rem;
+  border-radius: 6px;
+  background: var(--hbo-surface-sunken);
+  border: 1px solid var(--hbo-border);
+}
+
+.architectureSection {
+  padding: clamp(3rem, 6vw, 5rem) 0;
+}
+
+.archHeader {
+  max-width: 36rem;
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  margin-bottom: 0.65rem;
+  letter-spacing: -0.03em;
+}
+
+.sectionLead {
+  margin: 0 0 1.25rem;
+  color: var(--hbo-text-muted);
+  line-height: 1.65;
+  max-width: 48ch;
+}
+
+.architectureFigure {
+  margin: 0;
+  max-width: 920px;
+}
+
+.architectureImage {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid var(--hbo-border);
+  box-shadow: 0 24px 60px oklch(0 0 0 / 0.2);
+}
+
+@media screen and (max-width: 996px) {
+  .heroInner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
 }

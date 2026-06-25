@@ -1,31 +1,32 @@
 ---
-sidebar_position: 4
+sidebar_position: 6
 title: Architecture
 ---
 
 # Architecture
 
-```mermaid
-flowchart TD
-  H[Hermes Agent] --> P[HBO Plugin]
-  P --> T[Plugin Tools]
-  P --> S[Bundled Skills]
-  P --> D[Business Ops Dashboard Tab]
-  P --> API[Plugin Backend Routes]
-  API --> STATE[Local Demo State]
-  API --> A[Action Queue]
-  API --> AUDIT[Audit Log]
+HBO Plugin extends Hermes as a single installable package under `plugin/hbo-plugin/`.
 
-  PROF[Profile Distributions] --> SA[Sales Ops Agent]
-  PROF --> GA[Growth Agent]
-  PROF --> OA[Ops Lead Agent]
+![HBO Plugin system architecture](/img/hbo-plugin-architecture.png)
 
-  SA --> P
-  GA --> P
-  OA --> P
+## Components
 
-  S --> CCLI[composio-cli Skill]
-  CCLI --> EXT[External Tools]
-```
+| Layer | What it does |
+|-------|--------------|
+| **Plugin core** | `hbo_*` tools, business rules, and file-backed JSON state |
+| **Dashboard** | React UI tab + FastAPI routes at `/api/plugins/hbo-plugin/` |
+| **Tool bridge** | Optional `composio-cli` skill for external app execution |
+| **Profiles** | Sales Ops, Growth, and Ops Lead agent distributions |
+
+## Data flow
+
+1. The **operator** interacts via Hermes Agent chat or the Business Ops dashboard.
+2. **Plugin core** reads and writes **local state** (demo JSON under `data/business-ops-demo/`).
+3. The **dashboard** calls the same backend logic through plugin API routes.
+4. The **tool bridge** executes actions in external apps when credentials are configured.
+
+## Alternate view
+
+![HBO Plugin architecture — alternate layout](/img/hbo-plugin-architecture-2.png)
 
 See contributor docs in the repository `docs/` folder for detailed architecture notes.

@@ -1,19 +1,74 @@
 ---
-sidebar_position: 5
+sidebar_position: 7
 title: Plugin
 ---
 
 # Hermes Plugin
 
-The plugin registers HBO business operations tools (`hbo_*`) and bundled skills.
+Package: `plugin/hbo-plugin/`
 
-## Key tools
+The plugin registers **12 HBO tools** (`hbo_*`), bundled skills, business rules, and file-backed demo state. Entry point: `register(ctx)` in `__init__.py`.
 
-- `hbo_get_workspace` — workspace summary
-- `hbo_list_agents` — agent profiles
-- `hbo_run_workflow` — run demo workflows
-- `hbo_list_actions` / `hbo_approve_action` / `hbo_reject_action` — action queue
-- `hbo_generate_briefing` — daily ops briefing
-- `hbo_load_demo_data` — reset demo state
+## Tool reference
 
-Package location: `plugin/hbo-plugin/`
+| Tool | Description |
+|------|-------------|
+| `hbo_get_workspace` | Workspace summary — pending actions, open signals, agent count |
+| `hbo_list_agents` | Configured agent profiles and recent activity |
+| `hbo_list_workflows` | Available demo workflows |
+| `hbo_run_workflow` | Run `inbound_sales`, `outbound_growth`, or `daily_ops_briefing` |
+| `hbo_list_leads` | Demo leads and prospects |
+| `hbo_detect_signals` | List open business signals |
+| `hbo_list_actions` | Action proposals (optional `status` filter) |
+| `hbo_approve_action` | Approve a pending action — writes audit event |
+| `hbo_reject_action` | Reject a pending action — writes audit event |
+| `hbo_generate_briefing` | Generate daily ops briefing |
+| `hbo_list_audit` | Audit log entries |
+| `hbo_load_demo_data` | Reset demo state from seed data |
+
+## Workflows
+
+| Name | Output |
+|------|--------|
+| `inbound_sales` | Bot QA flags, signals, follow-up action proposals |
+| `outbound_growth` | Lead scores, segments, outreach batch, outreach proposals |
+| `daily_ops_briefing` | Priorities, risks, pending approvals, recommended actions |
+
+## Business rules
+
+`business_rules.py` coordinates:
+
+- Signal detection from current state
+- Workflow execution (delegates to `workflows.py`)
+- Approve/reject with audit side effects
+- Briefing generation
+
+## State
+
+`state.py` reads/writes JSON under `data/business-ops-demo/`:
+
+- Atomic read/write per entity file
+- `append_signal`, `append_action`, `append_audit` for mutations
+- Used by both plugin tools and dashboard API routes
+
+## Skills registered
+
+| Skill | Path |
+|-------|------|
+| `sales-ops` | Inbound workflow guidance |
+| `growth-ops` | Outbound workflow guidance |
+| `ops-lead` | Briefing and coordination |
+| `local-demo` | Demo without external credentials |
+| `composio-cli` | External app bridge |
+
+Skills are namespaced as `hbo-plugin:skill` in Hermes.
+
+## Manifest
+
+`plugin.yaml` declares plugin metadata, tool registration, and dashboard extension path.
+
+## Related
+
+- [How it works](./how-it-works) — signal and approval loop
+- [Architecture](./architecture) — system diagram
+- [Development](./development) — contributor setup
