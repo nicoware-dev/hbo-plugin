@@ -7,13 +7,34 @@ description: >-
 tags: [nvidia, nemoclaw, nemohermes, nemotron, deployment, sandbox, hbo-plugin]
 ---
 
+## Contract
+
+- Full HBO Plugin requires custom sandbox image — not `skill install` alone
+- Skills-only install path is for `SKILL.md` bundles, not Python + dashboard API
+- Network policy must allow Composio/Link endpoints if those bridges run in sandbox
+- Business workflows (sales, growth, approvals) stay in HBO Plugin core skills
+
 ## When to Apply
 
 - User wants to run HBO Plugin inside **NemoHermes** / **NemoClaw**
 - Hackathon or production path using NVIDIA Nemotron inference
 - Questions about sandbox network policy for Composio or Stripe Link CLI
 
+## When to skip
+
+- Local Hermes demo on host → **local-demo**
+- Composio CLI usage without sandbox → **composio**
+- Sales/growth/ops workflows after deploy → domain skills and playbooks
+
 > **Not a business workflow skill.** This guides deployment only. Sales ops, approvals, and workflows remain HBO Plugin core.
+
+## Phases
+
+1. **Image** — build from `deploy/nemoclaw/Dockerfile` (plugin in Hermes plugin path).
+2. **Onboard** — `nemohermes onboard --name hbo-demo --from ./deploy/nemoclaw/Dockerfile`.
+3. **Verify** — dashboard port 18789, Business Ops tab, `hermes plugins list`.
+4. **Inference** — select NVIDIA Endpoints / Nemotron provider.
+5. **Policy** — if Composio/Link in sandbox, update `deploy/nemoclaw/policy-notes.md` rules.
 
 ## What NemoClaw provides
 
@@ -52,3 +73,30 @@ nemohermes status
 hermes plugins list
 # Open http://localhost:18789 → Business Ops tab
 ```
+
+## Output Format
+
+```
+NEMOCLAW SETUP REPORT
+- Image: built | pending
+- Dashboard: {url}
+- Plugin: hbo-plugin {enabled|missing}
+- Inference: Nemotron {configured|pending}
+- Network policy: {updated|n/a}
+```
+
+## Anti-Patterns
+
+| Don't | Why |
+|-------|-----|
+| `skill install` for full plugin | Missing Python + dashboard API |
+| Run sales workflows as deploy substitute | Use **sales-ops** after verify |
+| Skip policy for in-sandbox Composio | Outbound blocked |
+
+## vs sibling skills
+
+| Skill | Use for |
+|-------|---------|
+| **nvidia-nemoclaw-setup** (this) | NemoClaw deployment |
+| **local-demo** | Host demo without sandbox |
+| **composio** / **stripe-link-cli** | Bridges after deploy |

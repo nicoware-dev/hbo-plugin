@@ -1,0 +1,5 @@
+{"task_id":"go-v-001","task":"User: score leads and run outbound growth","judge":{"kind":"rule","checks":[{"op":"contains","arg":"hbo_list_leads"},{"op":"contains","arg":"outbound_growth"}]}}
+{"task_id":"go-v-002","task":"User: send outreach emails now","judge":{"kind":"rule","checks":[{"op":"contains","arg":"approv"},{"op":"not_contains","arg":"sent all"}]}}
+{"task_id":"go-v-003","task":"User: review inbound conversations","judge":{"kind":"rule","checks":[{"op":"contains","arg":"sales-ops"},{"op":"not_contains","arg":"outbound_growth"}]}}
+{"task_id":"go-v-004","task":"User: daily ops briefing","judge":{"kind":"rule","checks":[{"op":"contains","arg":"ops-lead"},{"op":"not_contains","arg":"outbound_growth"}]}}
+{"task_id":"go-v-005","task":"User: segment prospects by fit","judge":{"kind":"rule","checks":[{"op":"contains","arg":"segment"},{"op":"contains","arg":"hbo_get_business_context"}]}}

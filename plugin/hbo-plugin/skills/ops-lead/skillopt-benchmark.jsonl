@@ -1,0 +1,5 @@
+{"task_id":"ol2-v-001","task":"User: morning ops briefing","judge":{"kind":"rule","checks":[{"op":"contains","arg":"hbo_get_workspace"},{"op":"contains","arg":"briefing"}]}}
+{"task_id":"ol2-v-002","task":"User: approve everything pending","judge":{"kind":"rule","checks":[{"op":"contains","arg":"dashboard"},{"op":"not_contains","arg":"approved all"}]}}
+{"task_id":"ol2-v-003","task":"User: run inbound sales","judge":{"kind":"rule","checks":[{"op":"contains","arg":"sales-ops"},{"op":"not_contains","arg":"daily_ops_briefing"}]}}
+{"task_id":"ol2-v-004","task":"User: check Composio bridge health","judge":{"kind":"rule","checks":[{"op":"contains","arg":"hbo_get_bridge_status"}]}}
+{"task_id":"ol2-v-005","task":"User: audit trail for last week","judge":{"kind":"rule","checks":[{"op":"contains","arg":"hbo_list_audit_events"}]}}

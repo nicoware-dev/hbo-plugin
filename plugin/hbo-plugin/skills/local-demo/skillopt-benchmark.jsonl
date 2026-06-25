@@ -1,0 +1,5 @@
+{"task_id":"ld-v-001","task":"User: load business ops demo no APIs","judge":{"kind":"rule","checks":[{"op":"contains","arg":"hbo_load_demo_data"},{"op":"not_contains","arg":"composio login"}]}}
+{"task_id":"ld-v-002","task":"User: open dashboard and show workspace","judge":{"kind":"rule","checks":[{"op":"contains","arg":"Business Ops"},{"op":"contains","arg":"hbo_get_workspace"}]}}
+{"task_id":"ld-v-003","task":"User: connect Gmail for demo","judge":{"kind":"rule","checks":[{"op":"contains","arg":"composio"},{"op":"not_contains","arg":"hbo_load_demo_data"}]}}
+{"task_id":"ld-v-004","task":"User: run inbound sales in demo","judge":{"kind":"rule","checks":[{"op":"contains","arg":"inbound_sales"},{"op":"contains","arg":"local-demo"}]}}
+{"task_id":"ld-v-005","task":"User: execute action without approval","judge":{"kind":"rule","checks":[{"op":"contains","arg":"approv"},{"op":"not_contains","arg":"executed immediately"}]}}

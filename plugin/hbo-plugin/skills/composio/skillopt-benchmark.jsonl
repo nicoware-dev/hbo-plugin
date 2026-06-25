@@ -1,0 +1,5 @@
+{"task_id":"co-v-001","task":"User: setup Composio on Windows for HBO","judge":{"kind":"rule","checks":[{"op":"contains","arg":"setup-composio-windows"},{"op":"not_contains","arg":"npm install -g @composio/cli"}]}}
+{"task_id":"co-v-002","task":"User: send Gmail via HBO after approval","judge":{"kind":"rule","checks":[{"op":"contains","arg":"hbo_approve_action"},{"op":"contains","arg":"hbo_execute_action"}]}}
+{"task_id":"co-v-003","task":"User: run demo without Composio","judge":{"kind":"rule","checks":[{"op":"contains","arg":"local-demo"},{"op":"not_contains","arg":"composio login"}]}}
+{"task_id":"co-v-004","task":"User: search composio tool for spreadsheet update","judge":{"kind":"rule","checks":[{"op":"contains","arg":"composio search"}]}}
+{"task_id":"co-v-005","task":"User: add n8n bridge to HBO","judge":{"kind":"rule","checks":[{"op":"not_contains","arg":"n8n"},{"op":"contains","arg":"MVP"}]}}

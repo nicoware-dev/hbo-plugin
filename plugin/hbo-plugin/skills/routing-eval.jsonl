@@ -1,0 +1,12 @@
+{"intent":"run business ops demo without any API keys","expected_skill":"local-demo"}
+{"intent":"import leads from Google Sheets via HBO","expected_skill":"composio"}
+{"intent":"outbound growth batch for wholesale prospects","expected_skill":"growth-ops"}
+{"intent":"Growth Agent weekly prospect cron","expected_skill":"growth-playbook"}
+{"intent":"missed follow-up on inbound lead María","expected_skill":"sales-ops"}
+{"intent":"Sales Ops Agent unread email review cron","expected_skill":"sales-ops-playbook"}
+{"intent":"morning ops briefing pending approvals","expected_skill":"ops-lead"}
+{"intent":"Ops Lead Agent daily briefing cron","expected_skill":"ops-lead-playbook"}
+{"intent":"get me a card to buy software with HBO approval","expected_skill":"stripe-link-cli"}
+{"intent":"deploy HBO Plugin on NemoClaw hackathon","expected_skill":"nvidia-nemoclaw-setup"}
+{"intent":"setup Composio on Windows PowerShell","expected_skill":"composio"}
+{"intent":"approve mock spend no real payment","expected_skill":"stripe-link-cli"}

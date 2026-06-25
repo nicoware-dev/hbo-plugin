@@ -7,6 +7,13 @@ description: >-
 tags: [composio, tool-router, agents, mcp, tools, api, automation, cli, hbo-plugin]
 ---
 
+## Contract
+
+- Detect platform before install; never run Linux curl installer on Windows PowerShell/Git Bash
+- HBO business actions: approve (`hbo_approve_action`) then execute (`hbo_execute_action`) — two-step gate
+- CLI path: search → link → execute; prefer `--no-wait` for non-interactive agents
+- If Composio unavailable, fall back to `hbo-plugin:local-demo` — do not add One/n8n in MVP scope
+
 ## When to Apply
 
 - User wants to access or interact with external apps (Gmail, Slack, GitHub, Notion, etc.)
@@ -14,7 +21,23 @@ tags: [composio, tool-router, agents, mcp, tools, api, automation, cli, hbo-plug
 - Building an AI agent or app that integrates with external tools
 - HBO Plugin user wants the **composio bridge** beyond local demo data
 
+## When to skip
+
+- Demo without credentials → **local-demo**
+- Stripe Link payment credentials → **stripe-link-cli**
+- NemoClaw image build only → **nvidia-nemoclaw-setup**
+- Domain sales/growth workflows after bridge is healthy → **sales-ops** / **growth-ops**
+
 > **HBO Plugin MVP:** Composio is the only external bridge in scope. Use CLI workflows below; do not add One/n8n unless scope expands. If Composio is unavailable, use `hbo-plugin:local-demo`.
+
+## Phases
+
+1. **Detect platform** — Windows vs Linux/macOS install path.
+2. **Install & auth** — `composio login`, verify `composio whoami`.
+3. **Search** — `composio search "<query>"` for tool slug.
+4. **Link** — `composio link [toolkit]` with `--no-wait` for agents.
+5. **HBO gate** — propose action → user approves → `hbo_execute_action`.
+6. **Execute** — `composio execute <TOOL> -d '{...}'` when not routed via HBO tools.
 
 ## Setup — detect platform first
 
@@ -97,6 +120,36 @@ composio init   # inside project directory
 Use SDK patterns (`composio.create(user_id)`, `session.tools()`) only when building apps — for personal/agent CLI workflows, prefer the CLI.
 
 ---
+
+## Output Format
+
+```
+COMPOSIO REPORT
+- Platform: {windows|linux|macos}
+- Auth: {ok|needs login}
+- Toolkit: {name}
+- HBO bridge: {local-demo|composio|hybrid}
+- Next: link {toolkit} | approve action {id} | execute tool {slug}
+```
+
+## Anti-Patterns
+
+| Don't | Why |
+|-------|-----|
+| `curl install` on Windows PS/Git Bash | Fails — use WSL script |
+| `npm install -g @composio/cli` | Package 404 on npm |
+| `hbo_execute_action` before approval | Two-step gate |
+| One/n8n bridge in MVP | Out of scope |
+| Full SDK tutorial inline | See `rules/` references |
+
+## vs sibling skills
+
+| Skill | Use for |
+|-------|---------|
+| **composio** (this) | External app bridge |
+| **local-demo** | No-credentials demo |
+| **stripe-link-cli** | Payment credentials |
+| **hbo-bridge** rule | HBO normalization detail |
 
 ## Rule index
 

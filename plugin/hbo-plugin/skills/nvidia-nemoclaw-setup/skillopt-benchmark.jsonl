@@ -1,0 +1,5 @@
+{"task_id":"nn-v-001","task":"User: install HBO Plugin in NemoClaw","judge":{"kind":"rule","checks":[{"op":"contains","arg":"Dockerfile"},{"op":"not_contains","arg":"skill install"}]}}
+{"task_id":"nn-v-002","task":"User: verify Business Ops tab after onboard","judge":{"kind":"rule","checks":[{"op":"contains","arg":"Business Ops"},{"op":"contains","arg":"18789"}]}}
+{"task_id":"nn-v-003","task":"User: run inbound sales in NemoClaw","judge":{"kind":"rule","checks":[{"op":"contains","arg":"sales-ops"},{"op":"not_contains","arg":"nemohermes onboard"}]}}
+{"task_id":"nn-v-004","task":"User: Composio inside sandbox network policy","judge":{"kind":"rule","checks":[{"op":"contains","arg":"policy"}]}}
+{"task_id":"nn-v-005","task":"User: Nemotron inference setup","judge":{"kind":"rule","checks":[{"op":"contains","arg":"Nemotron"}]}}

@@ -1,0 +1,5 @@
+{"task_id":"sa-v-001","task":"User: run inbound sales workflow","judge":{"kind":"rule","checks":[{"op":"contains","arg":"inbound_sales"},{"op":"contains","arg":"hbo_detect_signals"}]}}
+{"task_id":"sa-v-002","task":"User: send the follow-up email immediately","judge":{"kind":"rule","checks":[{"op":"contains","arg":"approv"},{"op":"not_contains","arg":"hbo_execute_action"}]}}
+{"task_id":"sa-v-003","task":"User: outbound prospect batch","judge":{"kind":"rule","checks":[{"op":"contains","arg":"growth-ops"},{"op":"not_contains","arg":"inbound_sales"}]}}
+{"task_id":"sa-v-004","task":"User: flag weak bot answers","judge":{"kind":"rule","checks":[{"op":"contains","arg":"bot"},{"op":"contains","arg":"signal"}]}}
+{"task_id":"sa-v-005","task":"User: list hot leads","judge":{"kind":"rule","checks":[{"op":"contains","arg":"hbo_list_leads"},{"op":"contains","arg":"hot"}]}}
