@@ -86,6 +86,24 @@ def list_leads() -> list[dict[str, Any]]:
     return read_json("leads.json", [])
 
 
+def append_lead(lead: dict[str, Any]) -> dict[str, Any]:
+    leads = read_json("leads.json", [])
+    leads.append(lead)
+    write_json("leads.json", leads)
+    return lead
+
+
+def update_lead(lead_id: str, data: dict[str, Any]) -> dict[str, Any] | None:
+    leads = read_json("leads.json", [])
+    for lead in leads:
+        if lead.get("id") == lead_id:
+            lead.update(data)
+            lead["updatedAt"] = datetime.now(timezone.utc).isoformat()
+            write_json("leads.json", leads)
+            return lead
+    return None
+
+
 def list_signals() -> list[dict[str, Any]]:
     return read_json("signals.json", [])
 

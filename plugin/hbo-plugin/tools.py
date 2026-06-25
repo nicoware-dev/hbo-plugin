@@ -6,6 +6,7 @@ import json
 from typing import Any, Callable
 
 from . import business_rules, schemas, state
+from .sources import sheets
 
 ToolDef = tuple[str, dict[str, Any], Callable[..., str]]
 
@@ -157,5 +158,28 @@ def get_tool_definitions() -> list[ToolDef]:
                 "parameters": {"type": "object", "properties": {}},
             },
             lambda params, **_: _json_response(state.load_demo_data()),
+        ),
+        (
+            "hbo_import_leads_from_sheets",
+            {
+                "name": "hbo_import_leads_from_sheets",
+                "description": "Import leads from a Google Sheet into HBO Plugin state.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "spreadsheetId": {"type": "string"},
+                        "sheet": {"type": "string"},
+                        "maxRows": {"type": "integer"},
+                    },
+                    "required": ["spreadsheetId"],
+                },
+            },
+            lambda params, **_: _json_response(
+                sheets.import_leads(
+                    spreadsheet_id=params.get("spreadsheetId", ""),
+                    sheet=params.get("sheet", "Hoja 1"),
+                    max_rows=params.get("maxRows", 100),
+                )
+            ),
         ),
     ]
