@@ -16,6 +16,10 @@ const config: Config = {
     { tagName: 'link', attributes: { rel: 'apple-touch-icon', href: '/hbo-plugin/img/apple-touch-icon.png' } },
   ],
   i18n: { defaultLocale: 'en', locales: ['en'] },
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
   presets: [
     [
       'classic',
@@ -39,6 +43,12 @@ const config: Config = {
       },
       items: [
         { type: 'docSidebar', sidebarId: 'docs', position: 'left', label: 'Docs' },
+        {
+          to: '/docs/install',
+          label: 'Get started',
+          position: 'right',
+          className: 'button button--primary navbar__cta',
+        },
         { href: 'https://github.com/nicoware-dev/hbo-plugin', label: 'GitHub', position: 'right' },
       ],
     },
@@ -57,7 +67,7 @@ const config: Config = {
           title: 'Profiles',
           items: [
             { label: 'Sales Ops Agent', to: '/docs/profiles' },
-            { label: 'Demo prompt', to: '/docs/demo-prompt' },
+            { label: 'Install prompt', to: '/docs/install-prompt' },
             { label: 'Skills', to: '/docs/skills' },
           ],
         },
@@ -75,6 +85,9 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+    },
+    mermaid: {
+      theme: {light: 'neutral', dark: 'dark'},
     },
   } satisfies Preset.ThemeConfig,
 };

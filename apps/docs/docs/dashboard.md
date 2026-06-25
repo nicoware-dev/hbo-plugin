@@ -16,19 +16,19 @@ Bundle: `dashboard/dist/index.js` (build with `pnpm build:dashboard`)
 |------|--------------|-------------|
 | **Overview** | Workspace summary cards — leads, signals, pending actions | Quick status at a glance |
 | **Agents** | Sales Ops, Growth, Ops Lead profile cards | Agent focus areas and activity |
-| **Workflows** | Three demo workflows | Run inbound sales, outbound growth, daily briefing |
-| **Leads** | Demo leads table | Scores, segments, status, recommended actions |
+| **Workflows** | Built-in workflows | Run inbound sales, outbound growth, daily briefing |
+| **Leads** | Leads table | Scores, segments, status, recommended actions |
 | **Actions** | Pending action queue | **Approve** / **Reject** — mutates state + audit |
 | **Audit** | Chronological decision log | Traceability for approvals |
-| **Tool Bridges** | Local demo + Composio CLI | Path to external app integration |
-| **Setup** | Installation checklist | Verify plugin, profiles, demo data |
+| **Tool Bridges** | Local workspace + Composio CLI | Path to external app integration |
+| **Setup** | Installation checklist | Verify plugin and profiles |
 
 ## Approvals in the UI
 
 The **Actions** page is the operator control surface for the approval loop:
 
 1. Lists actions with `status: pending`
-2. Approve or reject updates JSON state via plugin API
+2. Approve or reject updates workspace state via plugin API
 3. Audit page shows the resulting event
 
 Same mutations are available via `hbo_approve_action` / `hbo_reject_action` in Hermes chat.

@@ -1,42 +1,52 @@
 /**
- * HBO Plugin docs — devtool brand register, tinted neutrals, Manrope + Source Code Pro.
+ * HBO Plugin docs — tokens, global chrome. Fonts via src/theme/Root.tsx.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap');
+@import './docs-theme.css';
 
 :root {
   --hbo-hue: 220;
-  --hbo-accent: oklch(0.62 0.19 var(--hbo-hue));
-  --hbo-accent-hover: oklch(0.56 0.2 var(--hbo-hue));
+  --hbo-accent: oklch(0.55 0.19 var(--hbo-hue));
+  --hbo-accent-hover: oklch(0.48 0.2 var(--hbo-hue));
   --hbo-surface: oklch(0.98 0.008 var(--hbo-hue));
   --hbo-surface-raised: oklch(1 0.004 var(--hbo-hue));
   --hbo-surface-sunken: oklch(0.94 0.012 var(--hbo-hue));
   --hbo-text: oklch(0.22 0.03 var(--hbo-hue));
-  --hbo-text-muted: oklch(0.48 0.025 var(--hbo-hue));
-  --hbo-border: oklch(0.88 0.015 var(--hbo-hue));
-  --hbo-glow: oklch(0.62 0.19 var(--hbo-hue) / 0.18);
+  --hbo-text-muted: oklch(0.45 0.025 var(--hbo-hue));
+  --hbo-border: oklch(0.86 0.015 var(--hbo-hue));
+  --hbo-glow: oklch(0.55 0.19 var(--hbo-hue) / 0.14);
+  --hbo-terminal-bg: oklch(0.16 0.025 var(--hbo-hue));
+  --hbo-terminal-bar: oklch(0.19 0.028 var(--hbo-hue));
+  --hbo-terminal-text: oklch(0.88 0.015 var(--hbo-hue));
 
   --ifm-color-primary: var(--hbo-accent);
   --ifm-color-primary-dark: var(--hbo-accent-hover);
-  --ifm-color-primary-darker: oklch(0.5 0.18 var(--hbo-hue));
-  --ifm-color-primary-darkest: oklch(0.38 0.14 var(--hbo-hue));
-  --ifm-color-primary-light: oklch(0.72 0.14 var(--hbo-hue));
-  --ifm-color-primary-lighter: oklch(0.82 0.09 var(--hbo-hue));
-  --ifm-color-primary-lightest: oklch(0.92 0.04 var(--hbo-hue));
+  --ifm-color-primary-darker: oklch(0.42 0.18 var(--hbo-hue));
+  --ifm-color-primary-darkest: oklch(0.32 0.14 var(--hbo-hue));
+  --ifm-color-primary-light: oklch(0.65 0.16 var(--hbo-hue));
+  --ifm-color-primary-lighter: oklch(0.78 0.1 var(--hbo-hue));
+  --ifm-color-primary-lightest: oklch(0.9 0.04 var(--hbo-hue));
   --ifm-background-color: var(--hbo-surface);
   --ifm-font-family-base: 'Manrope', system-ui, sans-serif;
   --ifm-font-family-monospace: 'Source Code Pro', ui-monospace, monospace;
+  --ifm-heading-color: var(--hbo-text);
+  --ifm-font-color-base: var(--hbo-text);
   --ifm-heading-font-weight: 700;
   --ifm-code-font-size: 90%;
   --ifm-global-radius: 10px;
   --ifm-navbar-height: 4rem;
-  --ifm-navbar-background-color: oklch(0.99 0.006 var(--hbo-hue) / 0.85);
+  --ifm-navbar-background-color: oklch(0.99 0.006 var(--hbo-hue) / 0.9);
   --ifm-navbar-shadow: 0 1px 0 var(--hbo-border);
   --ifm-footer-background-color: oklch(0.16 0.03 var(--hbo-hue));
-  --docusaurus-highlighted-code-line-bg: oklch(0.62 0.19 var(--hbo-hue) / 0.1);
+  --ifm-menu-color: var(--hbo-text-muted);
+  --ifm-menu-color-active: var(--hbo-accent);
+  --ifm-toc-link-color: var(--hbo-text-muted);
+  --docusaurus-highlighted-code-line-bg: oklch(0.55 0.19 var(--hbo-hue) / 0.1);
 }
 
 [data-theme='dark'] {
+  --hbo-accent: oklch(0.7 0.16 var(--hbo-hue));
+  --hbo-accent-hover: oklch(0.76 0.14 var(--hbo-hue));
   --hbo-surface: oklch(0.14 0.02 var(--hbo-hue));
   --hbo-surface-raised: oklch(0.18 0.025 var(--hbo-hue));
   --hbo-surface-sunken: oklch(0.11 0.018 var(--hbo-hue));
@@ -44,11 +54,12 @@
   --hbo-text-muted: oklch(0.68 0.02 var(--hbo-hue));
   --hbo-border: oklch(0.28 0.025 var(--hbo-hue));
   --hbo-glow: oklch(0.62 0.19 var(--hbo-hue) / 0.22);
-  --hbo-accent: oklch(0.7 0.16 var(--hbo-hue));
-  --hbo-accent-hover: oklch(0.76 0.14 var(--hbo-hue));
+  --hbo-terminal-bg: oklch(0.1 0.018 var(--hbo-hue));
+  --hbo-terminal-bar: oklch(0.13 0.022 var(--hbo-hue));
+  --hbo-terminal-text: oklch(0.82 0.02 var(--hbo-hue));
 
   --ifm-background-color: var(--hbo-surface);
-  --ifm-navbar-background-color: oklch(0.14 0.02 var(--hbo-hue) / 0.9);
+  --ifm-navbar-background-color: oklch(0.14 0.02 var(--hbo-hue) / 0.92);
   --ifm-footer-background-color: oklch(0.1 0.018 var(--hbo-hue));
 }
 
@@ -79,6 +90,20 @@ body {
   font-size: 0.92rem;
 }
 
+.navbar__cta {
+  margin-left: 0.35rem;
+  padding: 0.4rem 1rem !important;
+  font-size: 0.88rem !important;
+  line-height: 1.4 !important;
+  border-radius: 8px !important;
+  color: oklch(0.99 0.005 var(--hbo-hue)) !important;
+}
+
+.navbar__cta:hover {
+  color: oklch(0.99 0.005 var(--hbo-hue)) !important;
+  text-decoration: none;
+}
+
 .button {
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -94,6 +119,10 @@ body {
 .button--primary:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 20px var(--hbo-glow);
+}
+
+.button--outline {
+  border-color: oklch(0.62 0.19 var(--hbo-hue) / 0.45);
 }
 
 .button:active {

@@ -21,7 +21,7 @@ HBO Plugin extends Hermes as a single installable package under `plugin/hbo-plug
 ## Data flow
 
 1. The **operator** interacts via Hermes Agent chat or the Business Ops dashboard.
-2. **Plugin core** reads and writes **local state** (demo JSON under `data/business-ops-demo/`).
+2. **Plugin core** reads and writes **local workspace state** (file-backed JSON).
 3. The **dashboard** calls the same backend logic through plugin API routes.
 4. The **tool bridge** executes actions in external apps when credentials are configured.
 

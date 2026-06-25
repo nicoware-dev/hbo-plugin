@@ -9,13 +9,12 @@ Please:
 1. read the README and docs,
 2. install the Hermes plugin,
 3. install the Sales Ops, Growth, and Ops Lead profile distributions,
-4. load the Business Ops Demo data,
-5. open the Hermes dashboard,
-6. verify the Business Ops tab,
-7. run the daily briefing workflow,
-8. show the action queue,
-9. approve one action,
-10. explain how to enable the composio-cli skill.`;
+4. open the Hermes dashboard,
+5. verify the Business Ops tab,
+6. run the daily briefing workflow,
+7. show the action queue,
+8. approve one action,
+9. explain how to enable the composio-cli skill.`;
 
 export default function CopyInstallPrompt(): ReactNode {
   const [copied, setCopied] = useState(false);
@@ -39,8 +38,8 @@ export default function CopyInstallPrompt(): ReactNode {
               One prompt to install everything
             </Heading>
             <p className={styles.lead}>
-              Copy this into Hermes Agent. It installs the plugin, profiles, demo data,
-              and walks through the Business Ops dashboard.
+              Copy this into Hermes Agent. It installs the plugin, profiles, and
+              walks through the Business Ops dashboard and approval loop.
             </p>
             <button type="button" className="button button--primary button--lg" onClick={onCopy}>
               {copied ? 'Copied' : 'Copy install prompt'}

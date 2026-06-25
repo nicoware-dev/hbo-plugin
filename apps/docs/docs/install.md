@@ -9,15 +9,14 @@ Two paths: **prompt-driven** (recommended) or **manual CLI**.
 
 ## Option A — Paste into Hermes (recommended)
 
-Copy the full prompt from [Demo prompt](./demo-prompt) and paste it into a Hermes Agent session. Hermes will:
+Copy the full prompt from [Install prompt](./install-prompt) and paste it into a Hermes Agent session. Hermes will:
 
 1. Read the repository README and docs
 2. Install the plugin to `~/.hermes/plugins/hbo-plugin`
 3. Install Sales Ops, Growth, and Ops Lead profiles
-4. Load Business Ops Demo data
-5. Open the dashboard and verify the Business Ops tab
-6. Run the daily briefing workflow
-7. Show the action queue and approve one action
+4. Open the dashboard and verify the Business Ops tab
+5. Run the daily briefing workflow
+6. Show the action queue and approve one action
 
 This is the fastest way to see the full signal → approval loop.
 
@@ -61,17 +60,7 @@ hermes profile install ./profiles/ops-lead-agent --alias ops-lead
 
 Each profile includes `distribution.yaml`, `SOUL.md`, `config.yaml`, and references bundled HBO skills.
 
-### 4. Load demo data
-
-In a Hermes session with the plugin enabled:
-
-```text
-Call hbo_load_demo_data to reset the Business Ops Demo workspace.
-```
-
-Or ask Hermes to load demo data as part of the install prompt.
-
-### 5. Restart and open dashboard
+### 4. Restart and open dashboard
 
 Restart the Hermes dashboard process, then open the **Business Ops** tab.
 
@@ -82,7 +71,7 @@ Verify:
 - **Actions** shows pending proposals
 - **Workflows** can run `daily_ops_briefing`
 
-### 6. Run first workflow
+### 5. Run first workflow
 
 ```text
 Run hbo_run_workflow with workflow daily_ops_briefing, then list pending actions.
@@ -92,7 +81,7 @@ Approve one action via chat or the dashboard **Actions** page. Check **Audit** f
 
 ## Optional — enable Composio bridge
 
-See [Composio CLI](./composio-cli). The demo works fully without external credentials.
+See [Composio CLI](./composio-cli). The plugin works on local workspace state without external credentials.
 
 ## Troubleshooting
 
@@ -100,7 +89,7 @@ See [Composio CLI](./composio-cli). The demo works fully without external creden
 |-------|-----|
 | Business Ops tab missing | `hermes plugins enable hbo-plugin`, restart dashboard |
 | API routes 404 | Plugin must be in `~/.hermes/plugins/hbo-plugin` with `dashboard/dist/` built |
-| Empty state | Run `hbo_load_demo_data` |
+| Empty workspace | Run a workflow (`daily_ops_briefing`) or check plugin enablement |
 | Profiles not found | Re-run `hermes profile install` from repo `profiles/` paths |
 
 ## Next steps

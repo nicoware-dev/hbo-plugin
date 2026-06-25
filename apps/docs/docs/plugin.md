@@ -7,7 +7,7 @@ title: Plugin
 
 Package: `plugin/hbo-plugin/`
 
-The plugin registers **12 HBO tools** (`hbo_*`), bundled skills, business rules, and file-backed demo state. Entry point: `register(ctx)` in `__init__.py`.
+The plugin registers **12 HBO tools** (`hbo_*`), bundled skills, business rules, and file-backed workspace state. Entry point: `register(ctx)` in `__init__.py`.
 
 ## Tool reference
 
@@ -15,16 +15,15 @@ The plugin registers **12 HBO tools** (`hbo_*`), bundled skills, business rules,
 |------|-------------|
 | `hbo_get_workspace` | Workspace summary — pending actions, open signals, agent count |
 | `hbo_list_agents` | Configured agent profiles and recent activity |
-| `hbo_list_workflows` | Available demo workflows |
+| `hbo_list_workflows` | Available built-in workflows |
 | `hbo_run_workflow` | Run `inbound_sales`, `outbound_growth`, or `daily_ops_briefing` |
-| `hbo_list_leads` | Demo leads and prospects |
+| `hbo_list_leads` | Leads and prospects in the workspace |
 | `hbo_detect_signals` | List open business signals |
 | `hbo_list_actions` | Action proposals (optional `status` filter) |
 | `hbo_approve_action` | Approve a pending action — writes audit event |
 | `hbo_reject_action` | Reject a pending action — writes audit event |
 | `hbo_generate_briefing` | Generate daily ops briefing |
 | `hbo_list_audit` | Audit log entries |
-| `hbo_load_demo_data` | Reset demo state from seed data |
 
 ## Workflows
 
@@ -45,11 +44,11 @@ The plugin registers **12 HBO tools** (`hbo_*`), bundled skills, business rules,
 
 ## State
 
-`state.py` reads/writes JSON under `data/business-ops-demo/`:
+`state.py` reads and writes JSON workspace files:
 
 - Atomic read/write per entity file
 - `append_signal`, `append_action`, `append_audit` for mutations
-- Used by both plugin tools and dashboard API routes
+- Shared by plugin tools and dashboard API routes
 
 ## Skills registered
 
@@ -58,7 +57,6 @@ The plugin registers **12 HBO tools** (`hbo_*`), bundled skills, business rules,
 | `sales-ops` | Inbound workflow guidance |
 | `growth-ops` | Outbound workflow guidance |
 | `ops-lead` | Briefing and coordination |
-| `local-demo` | Demo without external credentials |
 | `composio-cli` | External app bridge |
 
 Skills are namespaced as `hbo-plugin:skill` in Hermes.

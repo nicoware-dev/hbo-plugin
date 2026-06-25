@@ -48,9 +48,9 @@ All three share the same HBO Plugin workspace state and appear on the dashboard 
 
 Profiles reference HBO bundled skills:
 
-- Sales Ops → `sales-ops`, `local-demo`
-- Growth → `growth-ops`, `local-demo`
-- Ops Lead → `ops-lead`, `local-demo`
+- Sales Ops → `sales-ops`
+- Growth → `growth-ops`
+- Ops Lead → `ops-lead`
 
 Optional: `composio-cli` for live external app execution.
 

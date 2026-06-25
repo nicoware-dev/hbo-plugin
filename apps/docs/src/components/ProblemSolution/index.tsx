@@ -50,7 +50,7 @@ export default function ProblemSolution(): ReactNode {
             </Heading>
             <p className={styles.intro}>
               HBO Plugin packages everything Hermes needs to operate a commerce
-              workspace: tools, dashboard, profiles, demo data, and bridge skills.
+              workspace: tools, dashboard, profiles, and bridge skills.
             </p>
             <ul className={styles.listSolutions}>
               {solutions.map((item) => (

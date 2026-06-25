@@ -7,7 +7,7 @@ const steps = [
   {
     num: '01',
     title: 'Capture signals',
-    body: 'Data from external apps or demo JSON surfaces as signals: missed follow-ups, bot QA flags, hot leads, and conversation issues.',
+    body: 'Data from external apps or your workspace surfaces as signals: missed follow-ups, bot QA flags, hot leads, and conversation issues.',
   },
   {
     num: '02',

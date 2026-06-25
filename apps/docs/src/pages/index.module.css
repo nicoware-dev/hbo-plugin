@@ -11,12 +11,17 @@
 .heroGrid {
   position: absolute;
   inset: 0;
+  opacity: 0.85;
   background-image:
     linear-gradient(oklch(0.62 0.19 var(--hbo-hue) / 0.06) 1px, transparent 1px),
     linear-gradient(90deg, oklch(0.62 0.19 var(--hbo-hue) / 0.06) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
   pointer-events: none;
+}
+
+[data-theme='dark'] .heroGrid {
+  opacity: 1;
 }
 
 .heroInner {
@@ -118,11 +123,6 @@
   padding: clamp(3rem, 6vw, 5rem) 0;
 }
 
-.archHeader {
-  max-width: 36rem;
-  margin-bottom: 2rem;
-}
-
 .sectionTitle {
   font-size: clamp(1.75rem, 3vw, 2.25rem);
   margin-bottom: 0.65rem;
@@ -134,19 +134,6 @@
   color: var(--hbo-text-muted);
   line-height: 1.65;
   max-width: 48ch;
-}
-
-.architectureFigure {
-  margin: 0;
-  max-width: 920px;
-}
-
-.architectureImage {
-  width: 100%;
-  height: auto;
-  border-radius: 14px;
-  border: 1px solid var(--hbo-border);
-  box-shadow: 0 24px 60px oklch(0 0 0 / 0.2);
 }
 
 @media screen and (max-width: 996px) {

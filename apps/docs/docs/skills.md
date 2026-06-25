@@ -16,7 +16,6 @@ Hermes namespaces them as `hbo-plugin:<skill-name>`.
 | `sales-ops` | Sales Ops profile | Run `inbound_sales`, detect signals, manage follow-ups |
 | `growth-ops` | Growth profile | Run `outbound_growth`, score leads, plan outreach |
 | `ops-lead` | Ops Lead profile | Run `daily_ops_briefing`, prioritize actions and signals |
-| `local-demo` | All profiles | Operate demo workspace without external credentials |
 
 ### Typical tool chain
 
@@ -30,7 +29,7 @@ hbo_get_workspace → hbo_detect_signals → hbo_run_workflow → hbo_list_actio
 |-------|---------|
 | `composio` | Connect Gmail, Slack, GitHub, CRM, and 1000+ apps via Composio CLI (+ `rules/` for install and HBO bridge) |
 
-The demo MVP documents this bridge; live execution requires Composio setup. See [Composio CLI](./composio-cli).
+Live execution requires Composio setup. See [Composio CLI](./composio-cli).
 
 ## Skill files
 

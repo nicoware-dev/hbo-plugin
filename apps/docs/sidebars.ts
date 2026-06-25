@@ -4,7 +4,7 @@ const sidebars: SidebarsConfig = {
   docs: [
     'intro',
     'install',
-    'demo-prompt',
+    'install-prompt',
     'how-it-works',
     'objectives',
     'architecture',
@@ -13,7 +13,6 @@ const sidebars: SidebarsConfig = {
     'profiles',
     'skills',
     'composio-cli',
-    'business-ops-demo',
     'development',
   ],
 };

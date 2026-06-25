@@ -5,13 +5,13 @@ title: How it works
 
 # How it works
 
-HBO Plugin implements a **signal → proposal → approval** operating loop inside Hermes. This page explains each stage and how external app data fits in.
+HBO Plugin implements a **signal → proposal → approval** operating loop inside Hermes. This page explains each stage and how business data flows through the system.
 
 ## Overview
 
 ```mermaid
 flowchart LR
-  EXT[External apps / demo JSON]
+  EXT[External apps / workspace data]
   SIG[Signals]
   WF[Workflows]
   ACT[Action queue]
@@ -31,47 +31,36 @@ flowchart LR
 
 ## 1. Data capture
 
-### Demo mode (no credentials)
+### Local workspace
 
-The **Business Ops Demo** ships with JSON state under `plugin/hbo-plugin/data/business-ops-demo/`:
+The plugin stores workspace state as **file-backed JSON**: leads, conversations, signals, action proposals, audit entries, briefings, and agent metadata. Plugin tools and the dashboard API read and write the same state through `state.py`.
 
-| File | Contents |
-|------|----------|
-| `leads.json` | Prospects with scores, segments, follow-up status |
-| `conversations.json` | Inbound messages and bot responses |
-| `signals.json` | Open business signals |
-| `actions.json` | Pending, approved, and rejected proposals |
-| `audit.json` | Decision history |
-| `briefings.json` | Daily ops briefing outputs |
-| `agents.json` | Agent profile metadata |
-| `workspace.json` | Workspace summary |
+You can operate entirely on this local workspace without connecting external apps.
 
-Load with `hbo_load_demo_data` or ask Hermes during install.
+### Connected apps (optional)
 
-### Live mode (optional bridge)
-
-When the **composio-cli** skill is enabled, Hermes can read and write external apps (Gmail, Slack, HubSpot, etc.). Signals and actions still flow through the same plugin tools and approval gates — the bridge is execution layer only.
+When the **composio-cli** skill is enabled, Hermes can read and write external apps (Gmail, Slack, HubSpot, etc.). Signals and actions still flow through the same plugin tools and approval gates — the bridge is the execution layer.
 
 ## 2. Signals
 
-A **signal** is a business event that needs attention. Examples from the demo:
+A **signal** is a business event that needs attention. Examples:
 
 | Type | Meaning |
 |------|---------|
 | `missed_followup` | High-priority lead with no follow-up in 48h |
 | `bot_qa` | Bot response may be incomplete or need human review |
 
-Signals are stored in `signals.json` and exposed via:
+Signals are exposed via:
 
 - `hbo_detect_signals` — list open signals
 - Dashboard **Overview** and workflow outputs
 - Ops Lead briefing priorities
 
-Workflows can also **create** new signals when they scan conversations and leads (see `run_inbound_sales` in the plugin).
+Workflows can also **create** new signals when they scan conversations and leads (see `inbound_sales` in the plugin).
 
 ## 3. Workflows
 
-Three demo workflows drive the operating loop:
+Three built-in workflows drive the operating loop:
 
 | Workflow | Agent | What it does |
 |----------|-------|--------------|
@@ -115,7 +104,7 @@ Tools:
 - `hbo_approve_action` — marks approved, writes audit event
 - `hbo_reject_action` — marks rejected, writes audit event
 
-Every decision is traceable in **Audit** (`audit.json`).
+Every decision is traceable in **Audit**.
 
 ## 6. Daily briefing
 
@@ -140,4 +129,4 @@ Profiles install separately but share the same HBO Plugin state and dashboard.
 
 ## Try it yourself
 
-Copy the [demo prompt](./demo-prompt) into Hermes. It runs the full loop: install → briefing → action queue → approve one → audit.
+Copy the [install prompt](./install-prompt) into Hermes. It runs the full loop: install → briefing → action queue → approve one → audit.

@@ -5,7 +5,7 @@ title: Composio CLI
 
 # Composio CLI Bridge
 
-The MVP external bridge is the **`composio`** skill (`hbo-plugin:composio`) — optional and not required for the local demo.
+The MVP external bridge is the **`composio`** skill (`hbo-plugin:composio`) — optional and not required for local workspace operation.
 
 Official Composio docs: [docs.composio.dev/docs/cli](https://docs.composio.dev/docs/cli)
 
@@ -89,7 +89,7 @@ composio execute <TOOL> -d '{...}'
 
 ## Fallback
 
-If Composio is not configured, use **local-demo** mode instead. The Business Ops Demo runs fully on local JSON state with no external credentials.
+If Composio is not configured, HBO Plugin continues to operate on **local workspace state** with no external credentials required.
 
 ## Troubleshooting
 

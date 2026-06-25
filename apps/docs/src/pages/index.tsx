@@ -5,10 +5,12 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import ArchitectureSection from '@site/src/components/ArchitectureSection';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import ProblemSolution from '@site/src/components/ProblemSolution';
 import WorkflowLoop from '@site/src/components/WorkflowLoop';
 import CopyInstallPrompt from '@site/src/components/CopyInstallPrompt';
+import RevealOnScroll from '@site/src/components/RevealOnScroll';
 import styles from './index.module.css';
 
 function HomepageHeader() {
@@ -45,41 +47,12 @@ function HomepageHeader() {
               <li><code>profiles/sales-ops-agent</code></li>
               <li><code>profiles/growth-agent</code></li>
               <li><code>profiles/ops-lead-agent</code></li>
-              <li><code>business-ops-demo</code></li>
+              <li><code>skills/</code> (workflows + Composio bridge)</li>
             </ul>
           </div>
         </div>
       </div>
     </header>
-  );
-}
-
-function ArchitectureSection() {
-  const architectureUrl = useBaseUrl('/img/hbo-plugin-architecture.png');
-  return (
-    <section className={styles.architectureSection}>
-      <div className="container">
-        <div className={styles.archHeader}>
-          <Heading as="h2" className={styles.sectionTitle}>
-            System architecture
-          </Heading>
-          <p className={styles.sectionLead}>
-            One installable Hermes package: plugin core, dashboard tab, profile
-            distributions, local demo state, and an optional external-app bridge.
-          </p>
-          <Link className="button button--outline button--primary" to="/docs/architecture">
-            Architecture docs
-          </Link>
-        </div>
-        <figure className={styles.architectureFigure}>
-          <img
-            src={architectureUrl}
-            alt="HBO Plugin architecture diagram"
-            className={styles.architectureImage}
-          />
-        </figure>
-      </div>
-    </section>
   );
 }
 
@@ -90,11 +63,21 @@ export default function Home(): ReactNode {
       description="Hermes Business Operations Plugin: signals, workflows, approvals, dashboard, and agent profiles">
       <HomepageHeader />
       <main>
-        <ProblemSolution />
-        <WorkflowLoop />
-        <HomepageFeatures />
-        <CopyInstallPrompt />
-        <ArchitectureSection />
+        <RevealOnScroll>
+          <ProblemSolution />
+        </RevealOnScroll>
+        <RevealOnScroll delayMs={80}>
+          <WorkflowLoop />
+        </RevealOnScroll>
+        <RevealOnScroll delayMs={120}>
+          <HomepageFeatures />
+        </RevealOnScroll>
+        <RevealOnScroll delayMs={160}>
+          <CopyInstallPrompt />
+        </RevealOnScroll>
+        <RevealOnScroll delayMs={200}>
+          <ArchitectureSection />
+        </RevealOnScroll>
       </main>
     </Layout>
   );

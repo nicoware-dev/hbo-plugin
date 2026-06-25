@@ -4,9 +4,13 @@ title: Home
 slug: /
 ---
 
+import DocsIndexCards from '@site/src/components/DocsIndexCards';
+
 # HBO Plugin
 
 **Hermes Business Operations Plugin** turns Hermes Agent into a practical operating system for commerce and business workflows — without building a separate SaaS app.
+
+<DocsIndexCards />
 
 ## One-liner
 
@@ -29,16 +33,15 @@ HBO Plugin extends Hermes itself through:
 
 | Layer | What it provides |
 |-------|------------------|
-| **Plugin core** | 12 `hbo_*` tools, business rules, file-backed JSON state |
+| **Plugin core** | 12 `hbo_*` tools, business rules, file-backed workspace state |
 | **Dashboard** | Business Ops tab with Overview, Agents, Workflows, Leads, Actions, Audit, Tool Bridges, Setup |
 | **Profiles** | Sales Ops, Growth, and Ops Lead agent distributions |
 | **Skills** | Workflow guidance + optional Composio CLI bridge |
-| **Demo workspace** | Self-contained commerce ops data — no credentials required |
 
 ## Core operating loop
 
 ```text
-External apps / demo data  →  Signals  →  Hermes workflows  →  Action proposals  →  Approve / reject  →  Audit log
+Business data  →  Signals  →  Hermes workflows  →  Action proposals  →  Approve / reject  →  Audit log
 ```
 
 1. **Signals** surface business events (missed follow-ups, bot QA flags, hot leads).
@@ -63,22 +66,6 @@ Read [Objectives & scope](./objectives) for product goals, target users, and MVP
 
 ## Quick start
 
-**Fastest path:** copy the [install prompt](./demo-prompt) into Hermes — it installs the plugin, profiles, demo data, and verifies the dashboard.
+**Fastest path:** copy the [install prompt](./install-prompt) into Hermes — it installs the plugin, profiles, and verifies the dashboard.
 
 **Manual path:** follow the [installation guide](./install).
-
-## Documentation map
-
-| Doc | Topic |
-|-----|-------|
-| [Install](./install) | Plugin, profiles, demo data, dashboard |
-| [Demo prompt](./demo-prompt) | Copy-paste Hermes install prompt |
-| [How it works](./how-it-works) | Signals, workflows, approvals |
-| [Objectives](./objectives) | Product goals and MVP scope |
-| [Architecture](./architecture) | System diagram and components |
-| [Plugin](./plugin) | All `hbo_*` tools |
-| [Dashboard](./dashboard) | Business Ops UI pages |
-| [Profiles](./profiles) | Agent distributions |
-| [Skills](./skills) | Bundled workflow and bridge skills |
-| [Composio CLI](./composio-cli) | External app integration |
-| [Business Ops Demo](./business-ops-demo) | Demo workspace and data |
