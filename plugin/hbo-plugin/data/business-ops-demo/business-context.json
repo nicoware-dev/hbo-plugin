@@ -1,0 +1,10 @@
+{
+  "businessName": "Acme Business Ops Demo",
+  "description": "B2B operations platform for inbound sales and growth teams.",
+  "products": "CRM workflows, lead scoring, approval queues, agent orchestration",
+  "targetAudience": "SMB and mid-market sales and ops teams",
+  "toneOfVoice": "Professional, concise, helpful \u2014 lead with priorities",
+  "competitors": "Generic CRM suites, spreadsheet-only ops",
+  "uniqueSellingPoints": "Hermes-native agents with human-in-the-loop approvals and audit trail",
+  "customInstructions": "Always propose actions for human approval before external sends or purchases."
+}

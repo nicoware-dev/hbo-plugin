@@ -9,7 +9,12 @@ from uuid import uuid4
 from .. import state
 from . import bridge, sheets
 
-DEFAULT_SPREADSHEET_ID = "1fXOFKrbU7w9b8TbXfhZsNYnyxg0jOKlaMQ-g3z5OA1g"
+
+def _sheet_config(spreadsheet_id: str, sheet: str) -> tuple[str, str]:
+    sources = state.get_demo_sources()
+    sid = spreadsheet_id or sources.get("googleSheetsSpreadsheetId", "")
+    sheet_name = sheet or sources.get("defaultSheetName", "Hoja 1")
+    return sid, sheet_name
 
 
 def sync_sales_sources(
@@ -19,7 +24,7 @@ def sync_sales_sources(
 ) -> dict[str, Any]:
     """Import leads from Google Sheets when bridge allows; always writes audit."""
     mode = state.get_workspace_config().get("selectedBridge", "local-demo")
-    sid = spreadsheet_id or DEFAULT_SPREADSHEET_ID
+    sid, sheet_name = _sheet_config(spreadsheet_id, sheet)
 
     if mode == "local-demo" and not bridge.is_available():
         event = state.append_audit_event(
@@ -39,7 +44,25 @@ def sync_sales_sources(
             "auditEvent": event,
         }
 
-    result = sheets.import_leads(spreadsheet_id=sid, sheet=sheet, max_rows=max_rows)
+    if not sid:
+        event = state.append_audit_event(
+            {
+                "id": f"audit_{uuid4().hex[:8]}",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "agentId": "sales-ops-agent",
+                "eventType": "source_sync",
+                "summary": "Sales source sync skipped — no spreadsheet ID configured.",
+            }
+        )
+        return {
+            "success": True,
+            "skipped": True,
+            "imported": 0,
+            "message": "Set demoSources.googleSheetsSpreadsheetId in workspace or pass spreadsheetId.",
+            "auditEvent": event,
+        }
+
+    result = sheets.import_leads(spreadsheet_id=sid, sheet=sheet_name, max_rows=max_rows)
     imported = result.get("imported", 0)
     summary = (
         f"Sales source sync: imported {imported} leads from Google Sheets."

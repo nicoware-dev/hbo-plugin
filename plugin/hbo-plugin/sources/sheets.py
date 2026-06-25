@@ -9,12 +9,12 @@ from __future__ import annotations
 from typing import Any
 
 from .. import state
-from .composio_client import is_available, platform, run, run_argv
+from .composio_client import is_available, platform, run_argv
 
 
 def search_spreadsheets(query: str) -> list[dict[str, Any]]:
     """Search for spreadsheets by title."""
-    data = run(f"search '{query}'")
+    data = run_argv(["search", query])
     return data.get("results", [])
 
 

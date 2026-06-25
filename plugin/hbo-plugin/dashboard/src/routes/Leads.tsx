@@ -1,19 +1,24 @@
 import { getSDK } from "../api/client";
 import { postJSON, putJSON, useFetch } from "../api/hooks";
 
-const DEFAULT_SHEET_ID = "1fXOFKrbU7w9b8TbXfhZsNYnyxg0jOKlaMQ-g3z5OA1g";
-
 type Lead = Record<string, string | number>;
 type ApiResult = { success?: boolean; error?: string; auditEvent?: { summary?: string } };
+type Workspace = {
+  demoSources?: { googleSheetsSpreadsheetId?: string; defaultSheetName?: string };
+};
 
 export function LeadsPage() {
   const { React, components } = getSDK();
   const { Card, CardContent, Button } = components;
   const { data, loading, refetch } = useFetch<{ leads: Lead[] }>("/leads");
+  const { data: workspace } = useFetch<Workspace>("/workspace");
   const [busy, setBusy] = React.useState<string | null>(null);
   const [message, setMessage] = React.useState<string | null>(null);
   const [showForm, setShowForm] = React.useState(false);
+  const [showImport, setShowImport] = React.useState(false);
   const [editId, setEditId] = React.useState<string | null>(null);
+  const [sheetId, setSheetId] = React.useState("");
+  const [sheetName, setSheetName] = React.useState("Hoja 1");
   const [form, setForm] = React.useState({
     name: "",
     source: "dashboard",
@@ -24,6 +29,17 @@ export function LeadsPage() {
     ownerAgentId: "sales-ops-agent",
     recommendedAction: "Review new lead",
   });
+
+  React.useEffect(() => {
+    const sources = workspace?.demoSources;
+    if (!sources) return;
+    if (!sheetId && sources.googleSheetsSpreadsheetId) {
+      setSheetId(sources.googleSheetsSpreadsheetId);
+    }
+    if (sources.defaultSheetName) {
+      setSheetName(sources.defaultSheetName);
+    }
+  }, [workspace, sheetId]);
 
   function openEdit(lead: Lead) {
     setEditId(String(lead.id));
@@ -64,12 +80,16 @@ export function LeadsPage() {
   }
 
   async function importFromSheets() {
+    if (!sheetId.trim()) {
+      setMessage("Enter a Google Sheets spreadsheet ID before importing.");
+      return;
+    }
     setBusy("import");
     setMessage(null);
     try {
       const result = (await postJSON("/leads/import/sheets", {
-        spreadsheetId: DEFAULT_SHEET_ID,
-        sheet: "Hoja 1",
+        spreadsheetId: sheetId.trim(),
+        sheet: sheetName.trim() || "Hoja 1",
       })) as { success?: boolean; error?: string; imported?: number; total_leads?: number };
       if (result.success) {
         setMessage(`Imported ${result.imported ?? 0} leads (${result.total_leads ?? 0} total).`);
@@ -109,10 +129,36 @@ export function LeadsPage() {
       ),
       React.createElement(
         Button,
-        { variant: "outline", size: "sm", disabled: busy === "import", onClick: importFromSheets },
-        busy === "import" ? "Importing…" : "Import from Sheets"
+        {
+          variant: "outline",
+          size: "sm",
+          onClick: () => setShowImport((v) => !v),
+        },
+        showImport ? "Cancel import" : "Import from Sheets"
       )
     ),
+    showImport &&
+      React.createElement(
+        "div",
+        { className: "border rounded p-3 grid gap-2 text-sm md:grid-cols-2" },
+        React.createElement("input", {
+          className: "border rounded p-2 md:col-span-2",
+          placeholder: "Google Sheets spreadsheet ID",
+          value: sheetId,
+          onChange: (e: { target: { value: string } }) => setSheetId(e.target.value),
+        }),
+        React.createElement("input", {
+          className: "border rounded p-2",
+          placeholder: "Sheet tab name",
+          value: sheetName,
+          onChange: (e: { target: { value: string } }) => setSheetName(e.target.value),
+        }),
+        React.createElement(
+          Button,
+          { disabled: busy === "import" || !sheetId.trim(), onClick: importFromSheets },
+          busy === "import" ? "Importing…" : "Run import"
+        )
+      ),
     showForm &&
       React.createElement(
         "div",

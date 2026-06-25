@@ -79,7 +79,7 @@ def run_argv(subcommand: list[str], data: dict[str, Any] | None = None) -> dict[
 
 
 def run(args: str) -> dict[str, Any]:
-    """Run a composio CLI command string (simple commands only)."""
+    """Run a composio CLI command string (simple static commands only — not for user input)."""
     if sys.platform == "win32" and _has_composio_wsl():
         if _is_simple_command(args):
             return _run_wsl_direct(args)

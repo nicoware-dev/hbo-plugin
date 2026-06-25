@@ -3,5 +3,9 @@
   "name": "Business Ops Demo",
   "status": "ready",
   "selectedBridge": "local-demo",
-  "createdAt": "2026-06-25T00:00:00Z"
+  "createdAt": "2026-06-25T00:00:00Z",
+  "demoSources": {
+    "googleSheetsSpreadsheetId": "",
+    "defaultSheetName": "Hoja 1"
+  }
 }

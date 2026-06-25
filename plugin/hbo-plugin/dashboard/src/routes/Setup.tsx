@@ -11,7 +11,7 @@ const STEPS = [
   "Run Daily Ops Briefing workflow",
   "Approve one pending action",
   "Optional: enable composio skill (hbo-plugin:composio) for external app bridge",
-  "Set bridge mode to composio or hybrid in Tool Bridges to execute emails on approve",
+  "Set bridge mode to composio or hybrid in Tool Bridges to enable explicit Execute on approved actions",
   "Enable recommended crons below after reviewing each blueprint",
 ];
 

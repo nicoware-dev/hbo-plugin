@@ -26,6 +26,11 @@ def write_json(name: str, data: Any) -> None:
         json.dump(data, f, indent=2, default=str)
 
 
+def get_demo_sources() -> dict[str, Any]:
+    ws = get_workspace_config()
+    return ws.get("demoSources", {})
+
+
 def get_workspace_summary() -> dict[str, Any]:
     ws = read_json("workspace.json", {})
     actions = read_json("actions.json", [])
@@ -36,6 +41,7 @@ def get_workspace_summary() -> dict[str, Any]:
         "workspaceName": ws.get("name", "Business Ops Demo"),
         "status": ws.get("status", "ready"),
         "selectedBridge": ws.get("selectedBridge", "local-demo"),
+        "demoSources": get_demo_sources(),
         "activeAgents": len(read_json("agents.json", [])),
         "openSignals": len(list_signals(open_only=True)),
         "pendingActions": pending,
