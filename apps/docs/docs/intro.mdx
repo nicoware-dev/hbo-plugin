@@ -33,9 +33,9 @@ HBO Plugin extends Hermes itself through:
 
 | Layer | What it provides |
 |-------|------------------|
-| **Plugin core** | 18 `hbo_*` tools, business rules, file-backed workspace state |
+| **Plugin core** | 19 `hbo_*` tools, 15 bundled skills, business rules, file-backed workspace state |
 | **Dashboard** | Business Ops tab — Overview (charts), Agents, Workflows, Leads, Actions, Signals, **Business**, Audit, Tool Bridges, Setup |
-| **Profiles** | Sales Ops, Growth, and Ops Lead agent distributions |
+| **Profiles** | Sales Ops, Growth, and Ops Lead agent distributions (+ 3 profile-local playbooks) |
 | **Skills** | Workflow guidance + Composio, NVIDIA, Stripe Link CLI integrations |
 
 ## Core operating loop
@@ -51,6 +51,14 @@ Business data  →  Signals  →  Hermes workflows  →  Action proposals  →  
 5. **Tool bridge** executes approved actions against Gmail, Slack, CRM, and other connected apps when integrations are enabled.
 
 See [How it works](./how-it-works) for the full walkthrough.
+
+## Why this matters for businesses
+
+- **No missed follow-ups** — signals and workflows keep hot leads and stale conversations visible
+- **Safer agent execution** — humans approve before agents trigger external effects
+- **Auditable business operations** — approvals, rejections, and runs logged in one workspace
+
+HBO Plugin is an operating layer for Hermes — not a CRM replacement.
 
 ## Objectives
 

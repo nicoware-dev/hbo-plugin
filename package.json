@@ -11,6 +11,7 @@
     "dev:dashboard": "pnpm --filter @hbo-plugin/dashboard dev",
     "test:plugin": "python -m pytest",
     "install:hbo": "bash scripts/install-hbo.sh",
+    "check:docs": "bash scripts/check-doc-counts.sh",
     "prepare": "pnpm build:dashboard"
   },
   "engines": {

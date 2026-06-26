@@ -18,7 +18,7 @@ Bundle: `dashboard/dist/index.js` (build with `pnpm build:dashboard`)
 | **Agents** | Sales Ops, Growth, Ops Lead profile cards | Agent focus areas |
 | **Workflows** | Built-in workflows + output panels | Run workflows; **conversation review** for inbound_sales; outreach previews |
 | **Leads** | Leads table + import from Sheets | CRUD, edit, filters, pagination, CSV export |
-| **Actions** | Pending action queue | Approve / Reject; outreach preview before approve |
+| **Actions** | Pending and approved action queue | Approve / Reject; **Execute** on approved actions; Delete non-approved; outreach preview |
 | **Signals** | Open signals | Create, resolve |
 | **Business** | Business context form | Name, products, tone — agents load via `hbo_get_business_context` |
 | **Audit** | Chronological decision log | Traceability |
@@ -43,7 +43,7 @@ After **Setup → Load demo data**, each page reflects the bundled Business Ops 
 
 ### Actions
 
-![Actions — pending proposals with approve, reject, and delete](/img/screenshots/actions.png)
+![Actions — approve, reject, execute (approved), and delete](/img/screenshots/actions.png)
 
 ### Signals
 
@@ -86,12 +86,14 @@ Metrics include:
 
 The **Actions** page is the operator control surface:
 
-1. Lists actions with `status: pending`
+1. Lists actions — filter by `pending`, `approved`, `rejected`, `executed`, or `failed`
 2. Outreach actions show an expandable **message preview**
-3. Approve or reject updates workspace state via plugin API
-4. Audit page shows the resulting event
+3. **Approve** or **Reject** updates workspace state (audit event recorded)
+4. **Execute** appears on **approved** actions when the bridge allows external effects — separate from approval
+5. **Delete** is available on non-approved actions
+6. Audit page shows the resulting events
 
-Same mutations via `hbo_approve_action` / `hbo_reject_action` in Hermes chat.
+Same flow via Hermes chat: `hbo_approve_action` / `hbo_reject_action`, then `hbo_execute_action` when ready.
 
 ## Conversation review
 

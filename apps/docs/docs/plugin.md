@@ -7,7 +7,9 @@ title: Plugin
 
 Package: `plugin/hbo-plugin/`
 
-The plugin registers **18 HBO tools** (`hbo_*`), **7 bundled skills**, business rules, and file-backed workspace state. Entry point: `register(ctx)` in `__init__.py`.
+The plugin registers **19 HBO tools** (`hbo_*`), **15 bundled skills**, business rules, and file-backed workspace state. Entry point: `register(ctx)` in `__init__.py`.
+
+Canonical counts: `plugin/hbo-plugin/package-stats.yaml`.
 
 ## Tool reference
 
@@ -56,17 +58,25 @@ Approve records intent. Execute triggers external effects only when bridge mode 
 
 ## Skills registered
 
-| Skill | Purpose |
-|-------|---------|
-| `sales-ops` | Inbound workflow guidance |
-| `growth-ops` | Outbound workflow guidance |
-| `ops-lead` | Briefing and coordination |
-| `local-demo` | Local demo data workflows |
-| `composio` | External app bridge |
-| `nvidia-nemoclaw-setup` | Optional NemoClaw deployment |
-| `stripe-link-cli` | Optional mock spend demo |
+| Skill | Category | Purpose |
+|-------|----------|---------|
+| `sales-ops` | Workflow | Inbound workflow guidance |
+| `growth-ops` | Workflow | Outbound workflow guidance |
+| `ops-lead` | Workflow | Briefing and coordination |
+| `local-demo` | Workflow | Local demo data workflows |
+| `plugin-manager` | Infrastructure | Install, sync, verify, repair |
+| `composio` | Bridge | External app bridge |
+| `nvidia-nemoclaw-setup` | Sponsor | Optional NemoClaw deployment |
+| `stripe-link-cli` | Sponsor | Optional mock spend demo |
+| `demo-tour` | Extensibility | Dashboard onboarding tour |
+| `health-check` | Extensibility | Workspace health audit |
+| `export-report` | Extensibility | CSV export and summaries |
+| `connect-source` | Extensibility | Composio source onboarding |
+| `search-leads` | Extensibility | External lead search preview |
+| `create-agent` | Extensibility | Custom profile scaffold |
+| `customize` | Extensibility | MVP customization guide |
 
-Skills are namespaced as `hbo-plugin:<skill>` in Hermes.
+Skills are namespaced as `hbo-plugin:<skill>` in Hermes. See [Skills](./skills) for full detail.
 
 ## Related
 

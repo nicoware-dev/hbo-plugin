@@ -9,7 +9,7 @@ Skills live in `plugin/hbo-plugin/skills/` and register via `ctx.register_skill(
 
 Hermes namespaces them as `hbo-plugin:<skill-name>`.
 
-**14 bundled skills** in MVP.
+**15 bundled skills** in the plugin. Each profile distribution also ships one **profile-local playbook** (3 total — see [Profiles](./profiles)).
 
 ## Workflow skills
 
@@ -26,6 +26,12 @@ Hermes namespaces them as `hbo-plugin:<skill-name>`.
 hbo_get_workspace → hbo_detect_signals → hbo_run_workflow → hbo_list_actions
 → hbo_approve_action → hbo_execute_action (external effects only when intended)
 ```
+
+## Infrastructure
+
+| Skill | Purpose |
+|-------|---------|
+| `plugin-manager` | Install, sync, verify, and repair HBO Plugin setup |
 
 ## Bridge skill
 
@@ -56,19 +62,22 @@ MVP works without these — no credentials required.
 | `create-agent` | Scaffold custom profile from `profiles/_template/` |
 | `customize` | Admin guide for MVP customization limits |
 
-## Profile-local skills
+## Profile-local playbooks
 
-Each profile distribution may include a playbook under `profiles/*/skills/`:
+Each profile distribution includes a playbook under `profiles/*/skills/`:
 
-- `sales-ops-playbook`
-- `growth-playbook`
-- `ops-lead-playbook`
+| Playbook | Profile |
+|----------|---------|
+| `sales-ops-playbook` | Sales Ops Agent |
+| `growth-playbook` | Growth Agent |
+| `ops-lead-playbook` | Ops Lead Agent |
 
 ## Adding skills
 
 1. Create `plugin/hbo-plugin/skills/<name>/SKILL.md`
 2. Register in `__init__.py` with `ctx.register_skill`
-3. Reference from profile `distribution.yaml` if needed
+3. Update `plugin/hbo-plugin/package-stats.yaml` and run `./scripts/check-doc-counts.sh`
+4. Reference from profile `distribution.yaml` if needed
 
 ## Related
 

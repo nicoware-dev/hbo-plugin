@@ -1,0 +1,5 @@
+# Canonical package counts — keep apps/docs and README in sync.
+# Validate: ./scripts/check-doc-counts.sh
+tools: 19
+bundled_skills: 15
+profile_playbooks: 3

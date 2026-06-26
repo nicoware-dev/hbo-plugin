@@ -8,6 +8,7 @@ import Heading from '@theme/Heading';
 import ArchitectureSection from '@site/src/components/ArchitectureSection';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import ProblemSolution from '@site/src/components/ProblemSolution';
+import WhyItMatters from '@site/src/components/WhyItMatters';
 import WorkflowLoop from '@site/src/components/WorkflowLoop';
 import CopyInstallPrompt from '@site/src/components/CopyInstallPrompt';
 import RevealOnScroll from '@site/src/components/RevealOnScroll';
@@ -43,11 +44,11 @@ function HomepageHeader() {
           <div className={styles.packageCard}>
             <p className={styles.packageLabel}>Package contents</p>
             <ul className={styles.packageList}>
-              <li><code>plugin/hbo-plugin</code></li>
-              <li><code>profiles/sales-ops-agent</code></li>
-              <li><code>profiles/growth-agent</code></li>
-              <li><code>profiles/ops-lead-agent</code></li>
-              <li><code>skills/</code> (workflows + Composio bridge)</li>
+              <li><strong>19</strong> Hermes tools</li>
+              <li><strong>15</strong> bundled skills</li>
+              <li><strong>3</strong> profile playbooks</li>
+              <li><code>plugin/hbo-plugin</code> + Business Ops dashboard</li>
+              <li><code>profiles/</code> — Sales Ops, Growth, Ops Lead</li>
             </ul>
           </div>
         </div>
@@ -68,15 +69,18 @@ export default function Home(): ReactNode {
           <ProblemSolution />
         </RevealOnScroll>
         <RevealOnScroll delayMs={80}>
-          <WorkflowLoop />
+          <WhyItMatters />
         </RevealOnScroll>
         <RevealOnScroll delayMs={120}>
-          <HomepageFeatures />
+          <WorkflowLoop />
         </RevealOnScroll>
         <RevealOnScroll delayMs={160}>
-          <CopyInstallPrompt />
+          <HomepageFeatures />
         </RevealOnScroll>
         <RevealOnScroll delayMs={200}>
+          <CopyInstallPrompt />
+        </RevealOnScroll>
+        <RevealOnScroll delayMs={240}>
           <ArchitectureSection />
         </RevealOnScroll>
       </main>

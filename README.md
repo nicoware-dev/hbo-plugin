@@ -8,13 +8,23 @@
 
 Turn Hermes into a business operations workspace: capture signals from your tools, let agents propose actions, and approve with full audit trails.
 
-HBO Plugin packages:
+## Why this matters for businesses
 
-- a Hermes plugin with business ops tools and local demo state
-- a **Business Ops** dashboard tab with internal pages
-- three profile distributions (Sales Ops, Growth, Ops Lead)
-- bundled workflow and bridge skills
-- a Docusaurus docs and landing site
+- **No missed follow-ups** — signals and workflows surface what needs attention before it slips through the cracks
+- **Safer agent execution** — approve or reject first; external execute is a separate, gated step
+- **Auditable business operations** — every decision logged in one Hermes-native workspace
+
+HBO Plugin is an **operating layer for Hermes**, not a CRM or inbox replacement.
+
+## Package contents
+
+| Component | Count |
+|-----------|-------|
+| Hermes tools (`hbo_*`) | **19** |
+| Bundled plugin skills | **15** |
+| Profile-local playbooks | **3** |
+| Profile distributions | Sales Ops, Growth, Ops Lead |
+| Dashboard | Business Ops tab (10 internal pages) |
 
 ## Architecture
 
@@ -26,7 +36,7 @@ The **Business Ops** tab in Hermes gives operators charts, lead management, work
 
 ![Business Ops Overview — funnel, segments, scores, and audit timeline](apps/docs/static/img/screenshots/overview.png)
 
-![Actions queue — approve or reject agent proposals before execution](apps/docs/static/img/screenshots/actions.png)
+![Actions queue — approve, reject, then execute approved actions separately](apps/docs/static/img/screenshots/actions.png)
 
 More screenshots: [Dashboard docs](https://hbo-plugin-docs.vercel.app/docs/dashboard#screenshots)
 
@@ -50,9 +60,7 @@ hermes dashboard --stop; hermes dashboard --no-open
 .\scripts\verify-hbo.ps1
 ```
 
-This installs the plugin, creates the **bundled symlink** required for dashboard API routes, enables the plugin, and installs all three profile distributions.
-
-> **Important:** Hermes 0.17+ blocks `plugin_api.py` for user plugins. The install script links the plugin into `hermes-agent/plugins/` so the Business Ops backend mounts correctly.
+The install script configures the Hermes dashboard backend, enables the plugin, and installs all three profile distributions automatically.
 
 ### Agent onboarding
 
@@ -60,20 +68,20 @@ After install, load skill `hbo-plugin:plugin-manager` for verify, restart, and t
 
 ### Demo prompt
 
-Paste the [demo prompt](https://hbo-plugin-docs.vercel.app/docs/install#prompt) into Hermes to run the Business Ops Demo end-to-end.
+Paste the [install prompt](https://hbo-plugin-docs.vercel.app/docs/install#prompt) for headless setup, or the [demo/QA prompt](https://hbo-plugin-docs.vercel.app/docs/install#demo--qa-prompt-interactive-session) for an interactive walkthrough.
 
 ## Troubleshooting
 
 ### Business Ops tab visible but no data (API 404)
 
-Hermes does not mount the Python backend for user-sourced plugins. Run:
+Run `./scripts/install-hbo.sh`, restart the dashboard, then verify:
 
 ```bash
-./scripts/install-hbo.sh
 hermes dashboard --stop && hermes dashboard --no-open
+curl http://127.0.0.1:9119/api/plugins/hbo-plugin/health
 ```
 
-Verify: `curl http://127.0.0.1:9119/api/plugins/hbo-plugin/health`
+See [Install troubleshooting](https://hbo-plugin-docs.vercel.app/docs/install#troubleshooting) for technical details.
 
 ## Monorepo layout
 
@@ -94,7 +102,8 @@ pnpm install
 pnpm dev:docs          # Docusaurus dev server
 pnpm dev:dashboard     # Dashboard extension (Vite)
 pnpm build             # Build dashboard + docs
-./scripts/sync-plugin.sh   # sync + bundled symlink to ~/.hermes/plugins/
+./scripts/sync-plugin.sh
+./scripts/check-doc-counts.sh
 ```
 
 ## Documentation

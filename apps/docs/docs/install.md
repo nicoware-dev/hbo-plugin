@@ -31,7 +31,7 @@ Please:
 
 | Step | Outcome |
 |------|---------|
-| 1 | Plugin + bundled symlink + profiles + demo data |
+| 1 | Plugin + dashboard backend setup + profiles + demo data |
 | 2–3 | Dashboard API routes reload; verify script passes |
 | 4 | Infra troubleshooting if something failed |
 | 5–6 | Business Ops tab and API data confirmed |
@@ -72,9 +72,15 @@ hermes dashboard --stop; hermes dashboard --no-open
 .\scripts\verify-hbo.ps1
 ```
 
-:::important
-Hermes 0.17+ blocks dashboard Python backends for user plugins. `install-hbo.sh` creates the bundled symlink under `hermes-agent/plugins/hbo-plugin` so `/api/plugins/hbo-plugin/*` routes work.
+:::tip
+The install script configures the Hermes dashboard backend automatically — plugin, profiles, and demo data in one command.
 :::
+
+<details>
+<summary>Technical note — dashboard backend path</summary>
+
+Hermes 0.17+ requires a bundled plugin path for dashboard Python APIs. `install-hbo.sh` handles this automatically. See [Troubleshooting](#troubleshooting) if API routes return 404.
+</details>
 
 ### Verify
 
