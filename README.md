@@ -92,7 +92,6 @@ hbo-plugin/
   profiles/               # Agent profile distributions
   scripts/                # install-hbo, sync-plugin, verify
   examples/               # Sample data exports
-  docs/                   # Contributor architecture docs
 ```
 
 ## Development

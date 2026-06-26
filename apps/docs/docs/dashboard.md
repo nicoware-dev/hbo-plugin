@@ -120,6 +120,7 @@ Backend: `dashboard/plugin_api.py`
 | `GET /actions` | Action proposals |
 | `POST /actions/{id}/approve` | Approve action |
 | `POST /actions/{id}/reject` | Reject action |
+| `POST /actions/{id}/execute` | Execute approved action when bridge allows |
 | `POST /demo/reset` | Restore workspace to bundled sample data |
 | `GET /bridge/status` | Composio bridge status |
 
