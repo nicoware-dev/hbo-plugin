@@ -1,5 +1,6 @@
 import { getSDK } from "../api/client";
 import { useFetch } from "../api/hooks";
+import { ApiUnavailableBanner } from "../components/ApiUnavailableBanner";
 import { BarChart, FUNNEL_COLORS } from "../components/BarChart";
 
 type PageProps = { onNavigate: (page: string) => void };
@@ -28,9 +29,14 @@ export function OverviewPage({ onNavigate }: PageProps) {
   if (wsError || statsError) {
     return React.createElement(
       "div",
-      { className: "p-4 space-y-2 text-destructive" },
-      React.createElement("p", null, "Overview data unavailable. Restart Hermes dashboard after syncing the plugin."),
-      React.createElement("p", { className: "text-sm text-muted-foreground" }, wsError || statsError)
+      { className: "p-4 space-y-4" },
+      React.createElement(ApiUnavailableBanner),
+      React.createElement(
+        "div",
+        { className: "space-y-2 text-destructive" },
+        React.createElement("p", null, "Overview data unavailable."),
+        React.createElement("p", { className: "text-sm text-muted-foreground" }, wsError || statsError)
+      )
     );
   }
 

@@ -100,6 +100,17 @@ _state = _modules["state"]
 _rules = _modules["business_rules"]
 
 
+@router.get("/health")
+async def health_check():
+    ws = _state.get_workspace_summary()
+    return {
+        "status": "ok",
+        "api_mounted": True,
+        "modules": sorted(_modules.keys()),
+        "has_demo_data": bool(ws.get("activeAgents")),
+    }
+
+
 @router.get("/workflows")
 async def get_workflows():
     return {"workflows": _state.list_workflows()}

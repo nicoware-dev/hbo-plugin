@@ -2,16 +2,17 @@ import { getSDK } from "../api/client";
 import { postAction, useFetch } from "../api/hooks";
 
 const STEPS = [
-  "Install HBO Plugin into ~/.hermes/plugins/",
-  "Enable hbo-plugin in ~/.hermes/config.yaml",
-  "Install Sales Ops, Growth, and Ops Lead profiles",
-  "Load demo data via hbo_load_demo_data or Reset below",
-  "Open this Business Ops tab",
+  "Run ./scripts/install-hbo.sh (sync + bundled symlink + profiles)",
+  "Enable hbo-plugin: hermes plugins enable hbo-plugin",
+  "Restart dashboard: hermes dashboard --stop && hermes dashboard --no-open",
+  "Load demo data below or via hbo_load_demo_data",
+  "Optional: skill hbo-plugin:plugin-manager for install troubleshooting",
+  "Open this Business Ops tab and verify Overview charts",
   "Fill Business context (Business tab)",
   "Run Daily Ops Briefing workflow",
   "Approve one pending action",
-  "Optional: enable composio skill (hbo-plugin:composio) for external app bridge",
-  "Set bridge mode to composio or hybrid in Tool Bridges to enable explicit Execute on approved actions",
+  "Optional: composio skill for external app bridge",
+  "Set bridge mode in Tool Bridges for Execute on approved actions",
   "Enable recommended crons below after reviewing each blueprint",
 ];
 
@@ -80,7 +81,7 @@ export function SetupPage() {
         React.createElement(
           Button,
           { variant: "outline", disabled: busy, onClick: resetDemo },
-          busy ? "Resetting…" : "Reset demo data"
+          busy ? "Loading…" : "Load demo data"
         ),
         message && React.createElement("p", { className: "text-sm text-muted-foreground" }, message)
       )

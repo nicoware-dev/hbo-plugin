@@ -1,5 +1,6 @@
 import { getSDK } from "./api/client";
 import { useFetch } from "./api/hooks";
+import { ApiUnavailableBanner } from "./components/ApiUnavailableBanner";
 import { OverviewPage } from "./routes/Overview";
 import { AgentsPage } from "./routes/Agents";
 import { WorkflowsPage } from "./routes/Workflows";
@@ -56,6 +57,7 @@ function registerPlugin() {
     return React.createElement(
       "div",
       { className: "hbo-plugin-page space-y-4 p-2 sm:p-4" },
+      React.createElement(ApiUnavailableBanner),
       React.createElement(
         "nav",
         { className: "flex flex-wrap gap-2", "aria-label": "Business Ops sections" },

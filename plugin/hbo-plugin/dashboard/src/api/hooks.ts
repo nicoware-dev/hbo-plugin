@@ -1,5 +1,39 @@
 import { API_BASE, getSDK } from "./client";
 
+export function useApiHealth(): {
+  loading: boolean;
+  apiMounted: boolean;
+  error: string | null;
+} {
+  const { useState, useEffect } = getSDK().hooks;
+  const [loading, setLoading] = useState(true);
+  const [apiMounted, setApiMounted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    getSDK()
+      .fetchJSON(`${API_BASE}/health`)
+      .then(() => {
+        if (!cancelled) setApiMounted(true);
+      })
+      .catch((err: Error) => {
+        if (!cancelled) {
+          setApiMounted(false);
+          setError(err.message);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return { loading, apiMounted, error };
+}
+
 export function useFetch<T>(path: string): {
   data: T | null;
   loading: boolean;

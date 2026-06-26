@@ -1,6 +1,7 @@
 @echo off
 REM sync-plugin.cmd — Sync HBO Plugin from repo to Hermes plugins directory (Windows)
 REM Usage: scripts\sync-plugin.cmd
+REM Also creates bundled symlink/junction for dashboard API routes.
 
 setlocal enabledelayedexpansion
 
@@ -25,9 +26,11 @@ echo   To:   %DEST%
 
 if not exist "%DEST%" mkdir "%DEST%"
 
-REM Mirror copy (exclude __pycache__ and node_modules)
 xcopy /E /Y /I /EXCLUDE:scripts\sync-exclude.txt "%SRC%" "%DEST%"
+
+powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+  ". '%SCRIPT_DIR%lib\hermes-paths.ps1'; Link-BundledPlugin"
 
 echo.
 echo Plugin synced to %DEST%
-echo Restart Hermes or run /restart to pick up changes.
+echo Restart Hermes dashboard: hermes dashboard --stop ^&^& hermes dashboard --no-open

@@ -10,6 +10,7 @@
     "dev:docs": "pnpm --filter docs start",
     "dev:dashboard": "pnpm --filter @hbo-plugin/dashboard dev",
     "test:plugin": "python -m pytest",
+    "install:hbo": "bash scripts/install-hbo.sh",
     "prepare": "pnpm build:dashboard"
   },
   "engines": {

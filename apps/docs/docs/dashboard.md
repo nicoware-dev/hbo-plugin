@@ -27,7 +27,7 @@ Bundle: `dashboard/dist/index.js` (build with `pnpm build:dashboard`)
 
 ## Screenshots
 
-After **Setup → Restore sample data**, each page reflects the bundled Business Ops Demo workspace.
+After **Setup → Load demo data**, each page reflects the bundled Business Ops Demo workspace.
 
 ### Overview
 
@@ -71,7 +71,7 @@ After **Setup → Restore sample data**, each page reflects the bundled Business
 
 ## Overview charts
 
-After install, use **Setup → Restore sample data** to load the bundled lead set and audit history. Charts use the same Card styling as the rest of the Hermes dashboard.
+After install, use **Setup → Load demo data** to load the bundled lead set and audit history.
 
 Metrics include:
 
@@ -130,7 +130,7 @@ CLI tool `hbo_sync_sales_sources` mirrors the sales-source-sync cron (import + a
 3. Hermes dashboard **restarted** after plugin install or update
 
 :::tip
-If API routes return 404, confirm the plugin path and restart the dashboard process. If charts are empty, use **Setup → Restore sample data**.
+If API routes return 404, run `./scripts/install-hbo.sh` and restart the dashboard. If charts are empty, use **Setup → Load demo data**.
 :::
 
 ## Related

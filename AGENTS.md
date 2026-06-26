@@ -73,4 +73,4 @@ pnpm build:docs        # apps/docs → static site
 
 ## Hermes install note
 
-Install the plugin to `~/.hermes/plugins/hbo-plugin` (not only `.hermes/plugins/`) so dashboard API routes load. Run `hermes plugins enable hbo-plugin`. See `docs/HERMES_ALIGNMENT.md`.
+Install the plugin to `~/.hermes/plugins/hbo-plugin` and run `scripts/install-hbo.sh` so dashboard API routes load (bundled symlink). Run `hermes plugins enable hbo-plugin`. See `docs/HERMES_ALIGNMENT.md`.

@@ -14,6 +14,7 @@ BUNDLED_SKILLS = (
     "growth-ops",
     "ops-lead",
     "local-demo",
+    "plugin-manager",
     "composio",
     "nvidia-nemoclaw-setup",
     "stripe-link-cli",

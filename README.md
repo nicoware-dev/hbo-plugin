@@ -32,28 +32,48 @@ More screenshots: [Dashboard docs](https://hbo-plugin-docs.vercel.app/docs/dashb
 
 ## Quick start
 
-### Install the Hermes plugin
+### Install the full HBO system (recommended)
 
-Copy or symlink into **user plugins** (required for dashboard API routes):
-
-```bash
-cp -r plugin/hbo-plugin ~/.hermes/plugins/hbo-plugin
-hermes plugins enable hbo-plugin
-```
-
-> **Note:** Project-local `.hermes/plugins/` loads the UI but Hermes blocks `plugin_api.py` import for security. Use `~/.hermes/plugins/` for full functionality.
-
-### Install profile distributions
+From a cloned repo:
 
 ```bash
-hermes profile install ./profiles/sales-ops-agent --alias sales-ops
-hermes profile install ./profiles/growth-agent --alias growth
-hermes profile install ./profiles/ops-lead-agent --alias ops-lead
+./scripts/install-hbo.sh --with-demo
+hermes dashboard --stop && hermes dashboard --no-open
+./scripts/verify-hbo.sh
 ```
+
+Windows:
+
+```powershell
+.\scripts\install-hbo.ps1 -WithDemo
+hermes dashboard --stop; hermes dashboard --no-open
+.\scripts\verify-hbo.ps1
+```
+
+This installs the plugin, creates the **bundled symlink** required for dashboard API routes, enables the plugin, and installs all three profile distributions.
+
+> **Important:** Hermes 0.17+ blocks `plugin_api.py` for user plugins. The install script links the plugin into `hermes-agent/plugins/` so the Business Ops backend mounts correctly.
+
+### Agent onboarding
+
+After install, load skill `hbo-plugin:plugin-manager` for verify, restart, and troubleshooting. Then use `local-demo` and `demo-tour` for the product walkthrough.
 
 ### Demo prompt
 
 Paste the [demo prompt](https://hbo-plugin-docs.vercel.app/docs/install#prompt) into Hermes to run the Business Ops Demo end-to-end.
+
+## Troubleshooting
+
+### Business Ops tab visible but no data (API 404)
+
+Hermes does not mount the Python backend for user-sourced plugins. Run:
+
+```bash
+./scripts/install-hbo.sh
+hermes dashboard --stop && hermes dashboard --no-open
+```
+
+Verify: `curl http://127.0.0.1:9119/api/plugins/hbo-plugin/health`
 
 ## Monorepo layout
 
@@ -62,6 +82,7 @@ hbo-plugin/
   apps/docs/              # Docusaurus landing + documentation
   plugin/hbo-plugin/      # Hermes plugin + dashboard extension
   profiles/               # Agent profile distributions
+  scripts/                # install-hbo, sync-plugin, verify
   examples/               # Sample data exports
   docs/                   # Contributor architecture docs
 ```
@@ -73,6 +94,7 @@ pnpm install
 pnpm dev:docs          # Docusaurus dev server
 pnpm dev:dashboard     # Dashboard extension (Vite)
 pnpm build             # Build dashboard + docs
+./scripts/sync-plugin.sh   # sync + bundled symlink to ~/.hermes/plugins/
 ```
 
 ## Documentation
