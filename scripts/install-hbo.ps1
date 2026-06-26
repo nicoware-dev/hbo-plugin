@@ -56,10 +56,10 @@ hermes plugins enable hbo-plugin 2>$null
 
 if (-not $SkipProfiles) {
     Write-Host "Installing profile distributions..."
-    hermes profile install (Join-Path $RepoRoot "profiles\sales-ops-agent") --alias sales-ops -y
-    hermes profile install (Join-Path $RepoRoot "profiles\growth-agent") --alias growth -y
-    hermes profile install (Join-Path $RepoRoot "profiles\ops-lead-agent") --alias ops-lead -y
-    Write-Host "Profiles: sales-ops, growth, ops-lead"
+    hermes profile install (Join-Path $RepoRoot "profiles\sales-ops-agent") -y
+    hermes profile install (Join-Path $RepoRoot "profiles\growth-agent") -y
+    hermes profile install (Join-Path $RepoRoot "profiles\ops-lead-agent") -y
+    Write-Host "Profiles: sales-ops-agent, growth-agent, ops-lead-agent"
 }
 
 if ($WithDemo) {

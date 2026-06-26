@@ -36,7 +36,7 @@ Infrastructure lifecycle for HBO Plugin: install, sync, repair API 404, restart 
 2. **Install/Repair** — `./scripts/install-hbo.sh [--with-demo]` from repo root (see [rules/install.md](rules/install.md))
 3. **Restart dashboard** — `hermes dashboard --stop && hermes dashboard --no-open` (see [rules/restart.md](rules/restart.md))
 4. **Verify** — `./scripts/verify-hbo.sh`; confirm HTTP 200 on `/health` (see [rules/verify.md](rules/verify.md))
-5. **Onboarding handoff** — **local-demo** + **demo-tour** (see [rules/onboarding-handoff.md](rules/onboarding-handoff.md))
+5. **Onboarding handoff** (interactive session only, post-install) — **local-demo** + **demo-tour** (see [rules/onboarding-handoff.md](rules/onboarding-handoff.md))
 
 ## Troubleshooting 404
 
@@ -51,7 +51,7 @@ Symlink bundled: present | created | missing
 Plugin enabled: yes | no
 Dashboard restarted: yes | pending
 API health: 200 | 404 | unreachable
-Profiles: sales-ops, growth, ops-lead | partial | none
+Profiles: sales-ops-agent, growth-agent, ops-lead-agent | partial | none
 Next: demo-tour | health-check | fix {issue}
 ```
 

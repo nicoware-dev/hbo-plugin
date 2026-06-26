@@ -20,10 +20,16 @@ Three Hermes agent profiles ship in `profiles/`. Each is installable via `hermes
 ## Install
 
 ```bash
-hermes profile install ./profiles/sales-ops-agent --alias sales-ops
-hermes profile install ./profiles/growth-agent --alias growth
-hermes profile install ./profiles/ops-lead-agent --alias ops-lead
+hermes profile install ./profiles/sales-ops-agent -y
+hermes profile install ./profiles/growth-agent -y
+hermes profile install ./profiles/ops-lead-agent -y
 ```
+
+Or install all three via `./scripts/install-hbo.sh` (includes profiles).
+
+:::note
+`--alias` on `hermes profile install` is a **boolean** flag (shell wrapper), not a profile name. Names come from each profile's `distribution.yaml`.
+:::
 
 ## Package contents
 

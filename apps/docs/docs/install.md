@@ -11,7 +11,7 @@ Two paths: **prompt-driven** (recommended) or **manual CLI**.
 
 ## Option A — Paste into Hermes (recommended)
 
-Copy the prompt below and paste it into **Hermes Agent**.
+Copy the prompt below and paste it into **Hermes Agent**. It covers **install and verification only** — no interactive chat session required.
 
 ### Prompt
 
@@ -22,12 +22,9 @@ Please:
 1. clone the repo and run ./scripts/install-hbo.sh --with-demo
 2. restart dashboard: hermes dashboard --stop && hermes dashboard --no-open
 3. run ./scripts/verify-hbo.sh
-4. load skill hbo-plugin:plugin-manager for any install fixes
-5. open the Hermes dashboard and verify Business Ops tab + Overview charts
-6. hand off to local-demo and demo-tour skills
-7. run daily_ops_briefing workflow and show the action queue
-8. approve one action and explain approve vs execute
-9. open Business tab and confirm business context
+4. load skill hbo-plugin:plugin-manager if any install step needs repair
+5. confirm Business Ops tab and Overview data via dashboard API (health + workspace endpoints)
+6. confirm business context via GET /api/plugins/hbo-plugin/business-context
 ```
 
 ### What each step does
@@ -35,10 +32,20 @@ Please:
 | Step | Outcome |
 |------|---------|
 | 1 | Plugin + bundled symlink + profiles + demo data |
-| 2–3 | Dashboard API routes reload; health check passes |
-| 4 | Infra troubleshooting skill available post-install |
-| 5–6 | Product onboarding with charts and guided tour |
-| 7–9 | Workflow, approval loop, business context |
+| 2–3 | Dashboard API routes reload; verify script passes |
+| 4 | Infra troubleshooting if something failed |
+| 5–6 | Business Ops tab and API data confirmed |
+
+### Demo / QA prompt (interactive session)
+
+Run this **after** install, in an interactive Hermes chat (not headless):
+
+```text
+HBO Plugin is installed. Please:
+1. load skills local-demo and demo-tour
+2. run daily_ops_briefing workflow and show the action queue
+3. approve one action and explain approve vs execute
+```
 
 ## Option B — Manual install
 
@@ -73,6 +80,7 @@ Hermes 0.17+ blocks dashboard Python backends for user plugins. `install-hbo.sh`
 
 ```bash
 curl http://127.0.0.1:9119/api/plugins/hbo-plugin/health
+curl http://127.0.0.1:9119/api/plugins/hbo-plugin/workspace
 ```
 
 Open **Business Ops** → **Overview** for stat cards and charts. Use **Setup → Load demo data** if the workspace looks empty.

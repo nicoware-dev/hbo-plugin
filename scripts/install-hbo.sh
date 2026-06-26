@@ -76,10 +76,10 @@ hermes plugins enable hbo-plugin 2>/dev/null || true
 
 if [[ "$SKIP_PROFILES" != true ]]; then
   echo "Installing profile distributions..."
-  hermes profile install "$REPO_ROOT/profiles/sales-ops-agent" --alias sales-ops -y
-  hermes profile install "$REPO_ROOT/profiles/growth-agent" --alias growth -y
-  hermes profile install "$REPO_ROOT/profiles/ops-lead-agent" --alias ops-lead -y
-  echo "✓ Profiles: sales-ops, growth, ops-lead"
+  hermes profile install "$REPO_ROOT/profiles/sales-ops-agent" -y
+  hermes profile install "$REPO_ROOT/profiles/growth-agent" -y
+  hermes profile install "$REPO_ROOT/profiles/ops-lead-agent" -y
+  echo "✓ Profiles: sales-ops-agent, growth-agent, ops-lead-agent"
 fi
 
 if [[ "$WITH_DEMO" == true ]]; then
